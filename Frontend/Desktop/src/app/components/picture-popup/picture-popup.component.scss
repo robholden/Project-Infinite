@@ -1,0 +1,41 @@
+.picture-popup-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    color: var(--sc-colour-default-contrast);
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+img {
+    height: 84px;
+    border-radius: var(--sc-br);
+    margin-right: 0.25rem;
+}
+
+.picture-popup-details {
+    p {
+        display: block;
+        margin: 0;
+
+        &:not(:first-child) {
+            margin-top: 0.25rem;
+        }
+
+        i {
+            width: 15px;
+        }
+
+        // &:not(:first-child) {
+        //     color: var(--sc-colour-medium);
+        //     font-size: 0.9em;
+        //     margin-top: 2px;
+
+        //     i {
+        //         font-size: 0.9em;
+        //     }
+        // }
+    }
+}

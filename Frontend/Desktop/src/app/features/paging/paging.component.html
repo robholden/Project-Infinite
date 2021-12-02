@@ -1,0 +1,33 @@
+<div class="paging-container flex-row-align" *ngIf="rows > 0">
+    <select *ngIf="rows > 0" class="input small mr" [ngModel]="pageSize" (ngModelChange)="pageTurn(1, $event)">
+        <ng-container *ngFor="let size of [5, 10, 25, 50, 100]">
+            <option [ngValue]="size">{{ size }}</option>
+        </ng-container>
+    </select>
+
+    <div class="mr-a">{{ 'paging.results' | trx: pageResult }}</div>
+
+    <div class="paging" *ngIf="pages.length > 0">
+        <button type="button" (click)="pageTurn(page - 1)" class="prev-page" [disabled]="page === 1">
+            <i class="far fa-arrow-left"></i>
+        </button>
+
+        <div class="pages">
+            <ng-container *ngIf="showEnds && page > pageViewLimit + 1">
+                <button type="button" (click)="pageTurn(1)" class="first-page">1</button>
+                <i *ngIf="pages[0] > 2" class="icon-more-circles-horizontal"></i>
+            </ng-container>
+            <button type="button" (click)="pageTurn(p)" *ngFor="let p of pages" [class.active]="p === page">{{ p }}</button>
+            <ng-container *ngIf="showEnds && page < pageCount - pageViewLimit">
+                <i *ngIf="pageCount > pages[pages.length - 1] + 1" class="icon-more-circles-horizontal"></i>
+                <button type="button" (click)="pageTurn(pageCount)" class="last-page" [disabled]="page === pageCount">
+                    {{ pageCount }}
+                </button>
+            </ng-container>
+        </div>
+
+        <button type="button" (click)="pageTurn(page + 1)" class="next-page" [disabled]="page === pageCount">
+            <i class="far fa-arrow-right"></i>
+        </button>
+    </div>
+</div>

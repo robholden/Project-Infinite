@@ -1,0 +1,21 @@
+.container {
+}
+
+.grid[cols='1'] {
+    max-width: 768px;
+    margin: auto;
+}
+
+.image-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 0.5rem;
+    padding-right: 0.5rem;
+
+    a {
+        display: block;
+        background: #000 no-repeat center;
+        background-size: contain;
+        height: 125px;
+    }
+}

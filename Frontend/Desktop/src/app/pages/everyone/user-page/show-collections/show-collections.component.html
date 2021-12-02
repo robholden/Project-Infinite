@@ -1,0 +1,91 @@
+<div *ngIf="result?.totalRows || filtered" class="flex-row-align mb">
+    <ng-content></ng-content>
+
+    <ng-container *ngIf="result?.totalRows || filtered">
+        <button class="button dropdown-toggle">
+            <button class="remove-ico mr-s" (click)="removeOrderBy(); search()" tippy="Remove filter" placement="left" *ngIf="!sameOrderBy()">
+                <i class="far fa-times"></i>
+            </button>
+
+            <span *ngIf="!pager.orderBy">Order By</span>
+
+            <strong *ngIf="pager.orderBy">{{ 'collections.order_by.' + pager.orderBy | trx }}</strong>
+
+            <i class="far fa-angle-down ml-s"></i>
+
+            <sc-drop-down position="bottomleft" [y]="-5" [x]="5">
+                <div class="link-section">
+                    <button *ngFor="let o of enum_values" (click)="pager.orderBy = o; search()" [class.active]="pager.orderBy === o">
+                        {{ 'collections.order_by.' + o | trx }}
+                    </button>
+                </div>
+            </sc-drop-down>
+        </button>
+
+        <button
+            class="ml-s"
+            (click)="pager.orderDir = 'desc'; search()"
+            tippy="Sort by descending"
+            placement="bottom-start"
+            *ngIf="pager.orderBy && pager.orderDir === 'asc'"
+        >
+            <i class="far fa-sort-amount-down-alt"></i>
+        </button>
+        <button
+            class="ml-s"
+            (click)="pager.orderDir = 'asc'; search()"
+            tippy="Sort by ascending"
+            placement="bottom-start"
+            *ngIf="pager.orderBy && pager.orderDir === 'desc'"
+        >
+            <i class="far fa-sort-amount-up-alt"></i>
+        </button>
+    </ng-container>
+</div>
+
+<div class="flex-col flex-spacer" *ngIf="!getting; else loadingRef" @fade>
+    <ng-container *ngIf="result?.totalRows; else noCollectionsRef">
+        <div class="collections mb">
+            <ng-container *ngFor="let col of result.rows || []; let i = index">
+                <a class="collection card flex-row-centre" [routerLink]="'/collection/' + col.collectionId">
+                    <img
+                        [src]="col.pictures?.length ? (col.pictures[0].path | imgUrl) : 'assets/images/layer-group-light.svg'"
+                        [class.no-picture]="!col.pictures?.length"
+                    />
+                    <div class="flex-row-centre">
+                        <span class="button as-link" background="default">{{ col.name }}</span>
+                    </div>
+                </a>
+            </ng-container>
+        </div>
+
+        <div class="mt-a">
+            <sc-paging [rows]="result.totalRows" [pageSize]="pager.pageSize" [page]="pager.page" (pageChange)="changePage($event)"></sc-paging>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #loadingRef>
+    <div class="collections">
+        <sc-skeleton-text height="300px" width="330px" [animated]="true"></sc-skeleton-text>
+        <sc-skeleton-text height="300px" width="330px" [animated]="true"></sc-skeleton-text>
+        <sc-skeleton-text height="300px" width="330px" [animated]="true"></sc-skeleton-text>
+        <sc-skeleton-text height="300px" width="330px" [animated]="true"></sc-skeleton-text>
+
+        <sc-skeleton-text height="300px" width="330px" [animated]="true"></sc-skeleton-text>
+        <sc-skeleton-text height="300px" width="330px" [animated]="true"></sc-skeleton-text>
+        <sc-skeleton-text height="300px" width="330px" [animated]="true"></sc-skeleton-text>
+        <sc-skeleton-text height="300px" width="330px" [animated]="true"></sc-skeleton-text>
+    </div>
+</ng-template>
+
+<ng-template #noCollectionsRef>
+    <div class="card" *ngIf="filtered">
+        <i class="far fa-frown mr-s"></i>
+        No collections could be found
+    </div>
+
+    <div *ngIf="!filtered" class="full-content">
+        <ng-content select="[empty]"></ng-content>
+    </div>
+</ng-template>

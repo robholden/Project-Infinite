@@ -1,0 +1,61 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title class="logo-text">{{ env.appTitle }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="flex-col h-100">
+        <ion-list-header>
+            <ion-label>Account</ion-label>
+        </ion-list-header>
+
+        <ion-list>
+            <ng-container *ngIf="authState.loggedIn else loggedOutLinks">
+                <ion-item lines="full" button detail routerLink="edit-details">Edit Profile</ion-item>
+                <ion-item lines="full" button detail routerLink="preferences">Preferences</ion-item>
+                <ion-item lines="full" button routerLink="security">Security</ion-item>
+            </ng-container>
+
+            <ng-template #loggedOutLinks>
+                <ion-item lines="full" button (click)="events.trigger(CustomEvent.Login, { presentingElement: routerOutlet.nativeEl })"> Login </ion-item>
+                <ion-item lines="full" button (click)="events.trigger(CustomEvent.Register, { presentingElement: routerOutlet.nativeEl })">
+                    Register
+                </ion-item>
+            </ng-template>
+        </ion-list>
+
+        <ion-list-header>
+            <ion-label>Links</ion-label>
+        </ion-list-header>
+
+        <ion-list>
+            <ion-item lines="full" button detail routerLink="feedback">Feedback & FAQs</ion-item>
+            <ion-item lines="full" button detail routerLink="legal">Legal</ion-item>
+            <ion-item lines="full">
+                <ion-label>Dark Mode</ion-label>
+                <ion-toggle [ngModel]="appState.nightMode$ | async" (ngModelChange)="appState.toggleNightMode()" slot="end"></ion-toggle>
+            </ion-item>
+        </ion-list>
+
+        <ng-container *ngIf="authState.is_admin">
+            <ion-list-header>
+                <ion-label>Admin</ion-label>
+            </ion-list-header>
+
+            <ion-list>
+                <ion-item lines="full" button detail (click)="sendAdminMessage()">Send Message to Admins</ion-item>
+            </ion-list>
+        </ng-container>
+
+        <div class="ion-padding ion-text-center mt-a">
+            <small class="ion-text-center">
+                <ion-text color="medium">v{{ version }}</ion-text>
+            </small>
+
+            <ion-button class="ion-margin-top" color="danger" expand="block" (click)="events.trigger(CustomEvent.Logout)" *ngIf="authState.loggedIn">
+                Logout
+            </ion-button>
+        </div>
+    </div>
+</ion-content>

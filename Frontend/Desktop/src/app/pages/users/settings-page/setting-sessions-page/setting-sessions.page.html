@@ -1,0 +1,65 @@
+<div class="form-box flex-row-align">
+    <div>
+        <div class="label">What does this mean?</div>
+        <small>
+            We keep track of all your sessions so you can control who has access to your account at anytime. If you do not recognize a session, you can
+            simply end it and their session will end.
+        </small>
+    </div>
+
+    <div class="flex-spacer"></div>
+
+    <button id="end-all-btn" class="button ml" background="danger" (click)="triggerDelete()">End All Sessions</button>
+</div>
+
+<h2 class="mt pt">Your Sessions</h2>
+<p>A list of all your sessions to Snow Capture</p>
+
+<ng-container *ngIf="sessions">
+    <ng-container *ngFor="let session of sessions || []; let $i = index">
+        <h4 class="mt" *ngIf="headerFn($i, sessions) as header">{{ header }}</h4>
+        <div class="card flex-row-align mt-s">
+            <div class="pill small mr-s" background="light">
+                <small>Device</small>
+                <strong>{{ session.platform }}</strong>
+            </div>
+            <div class="pill small mr-s" background="light">
+                <small>IP Address</small>
+                <strong>{{ session.ipAddress }}</strong>
+            </div>
+            <div class="pill small mr-s" background="light" [tippy]="'Refreshed at ' + (session.updated | utc : 'HH:mm:ss')">
+                <small>Status</small>
+                <strong [attr.colour]="session.active ? 'success' : 'danger'">{{ session.active ? 'Active' : 'Inactive' }}</strong>
+            </div>
+
+            <div class="flex-spacer"></div>
+
+            <button class="button small ml" background="danger" (click)="triggerDelete($i)" *ngIf="session.authTokenId !== authToken">Remove</button>
+
+            <div class="button small ml" *ngIf="session.authTokenId === authToken" background="success">Current</div>
+        </div>
+    </ng-container>
+
+    <div class="mt" *ngIf="result?.hasNextPage">
+        <button class="button" background="primary" [disabled]="getting" (click)="loadMore()">Load More</button>
+    </div>
+</ng-container>
+
+<div class="card mt" *ngIf="!getting && !sessions?.length">
+    <i class="far fa-frown mr-s"></i>
+    No sessions could be found
+</div>
+
+<ng-container *ngIf="!sessions && getting">
+    <sc-skeleton-text height="20px" width="125px" [animated]="true" class="mt"></sc-skeleton-text>
+
+    <div class="card flex-row-align mt-s" *ngFor="let a of [0,1,2]">
+        <sc-skeleton-text height="25px" width="80px" radius="15px" [animated]="true" class="mr-s"></sc-skeleton-text>
+        <sc-skeleton-text height="25px" width="80px" radius="15px" [animated]="true" class="mr-s"></sc-skeleton-text>
+        <sc-skeleton-text height="25px" width="80px" radius="15px" [animated]="true"></sc-skeleton-text>
+
+        <div class="flex-spacer"></div>
+
+        <sc-skeleton-text height="25px" width="55px" radius="15px" [animated]="true"></sc-skeleton-text>
+    </div>
+</ng-container>

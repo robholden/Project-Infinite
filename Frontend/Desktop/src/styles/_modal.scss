@@ -1,0 +1,75 @@
+.modal-wrapper {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    overflow: hidden;
+    opacity: 1;
+    transition: 0.25s ease;
+    z-index: 99;
+
+    &.loaded {
+        .modal-content,
+        .modal-overlay {
+            opacity: 1 !important;
+        }
+
+        .modal-content {
+            transform: translateY(25px) !important;
+        }
+    }
+
+    &.controller-out {
+        transition: 0.25s ease;
+        opacity: 0 !important;
+    }
+
+    .modal-overlay,
+    .modal-content {
+        transition: 0.25s ease;
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+
+        background-color: rgba(var(--sc-colour-dark-rgb), 0.9);
+
+        z-index: 1;
+    }
+
+    .modal-container {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        right: 0;
+        left: 0;
+        margin: auto;
+        overflow: auto;
+        padding: 5vh;
+
+        @extend .flex-col;
+
+        z-index: 999;
+
+        .modal-content {
+            position: relative;
+            top: 0;
+            opacity: 0;
+            transform: translateY(0);
+            z-index: 2;
+            margin: 7.5vh auto 0;
+
+            &.alert-content {
+                margin-top: 0;
+            }
+        }
+    }
+}

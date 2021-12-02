@@ -1,0 +1,17 @@
+<sc-page [small]="true">
+    <sc-page-header>
+        <h2>Unsubscribe</h2>
+    </sc-page-header>
+
+    <sc-page-content>
+        <div *ngIf="valid === null">
+            <i class="fas fa-spinner-third sc-spin"></i>
+        </div>
+
+        <div *ngIf="valid === false && !error">The provided key has been used, expired or is invalid</div>
+
+        <div colour="danger" *ngIf="valid === false && error">{{ error | trx }}</div>
+
+        <div colour="success" *ngIf="valid === true">Your email address has been removed from our mailing list</div>
+    </sc-page-content>
+</sc-page>

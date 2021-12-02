@@ -1,0 +1,33 @@
+<sc-page>
+    <sc-page-content>
+        <div class="container">
+            <div class="grid" [attr.cols]="!mapData ? 1 : 2">
+                <div>
+                    <sc-show-picture [picture]="picture" (deleted)="deleted()" [dedicated]="true" [redirectApproval]="fromApprovals"></sc-show-picture>
+
+                    <div class="mt-l" *ngIf="nearby?.length > 0" @fade>
+                        <h3 class="mb-s">Nearby Pictures</h3>
+                        <div class="card image-list">
+                            <a
+                                class="card-shadow"
+                                [routerLink]="'/picture/' + img.pictureId"
+                                [style.background-image]="'url(' + (img.path | imgUrl) + ')'"
+                                *ngFor="let img of nearby"
+                            >
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="card-shadow mb"
+                    style="height: 100%; width: 100%; z-index: 1"
+                    leaflet
+                    [leafletOptions]="mapData?.options"
+                    [leafletFitBounds]="mapData?.bounds"
+                    *ngIf="mapData"
+                ></div>
+            </div>
+        </div>
+    </sc-page-content>
+</sc-page>

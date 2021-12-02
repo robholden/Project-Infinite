@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css?family=DM+Sans:400,500,600,700|Snowburst+One&display=swap');
+
+:root {
+    --sc-font-family: 'DM Sans', serif;
+    --sc-logo-font: 'Snowburst One', serif;
+    --sc-font-size: 14px;
+    --sc-br: 4px;
+    --sc-header-height: 55px;
+
+    --sc-button-br: 4px;
+}
+
+body {
+    &:not(.night-theme) {
+        --sc-button-outline: #111;
+
+        --sc-colour-default: #ffffff;
+        --sc-colour-default-contrast: #111111;
+        --sc-colour-default-rgb: 255, 255, 255;
+        --sc-colour-default-shade: #f4f4f4;
+        --sc-colour-default-tint: #fff;
+
+        --sc-colour-primary: #064a99;
+        --sc-colour-primary-contrast: #ffffff;
+        --sc-colour-primary-rgb: 0, 99, 146;
+        --sc-colour-primary-shade: #093d79;
+        --sc-colour-primary-tint: #0c5ebb;
+
+        --sc-colour-secondary: #df50b9;
+        --sc-colour-secondary-contrast: #ffffff;
+        --sc-colour-secondary-rgb: 223, 80, 185;
+        --sc-colour-secondary-shade: #b14093;
+        --sc-colour-secondary-tint: #ec73cc;
+
+        --sc-colour-tertiary: #7044ff;
+        --sc-colour-tertiary-contrast: #ffffff;
+        --sc-colour-tertiary-rgb: 112, 68, 255;
+        --sc-colour-tertiary-shade: #522fc7;
+        --sc-colour-tertiary-tint: #7e57ff;
+
+        --sc-colour-success: #29a862;
+        --sc-colour-success-contrast: #ffffff;
+        --sc-colour-success-rgb: 36, 144, 134;
+        --sc-colour-success-shade: #2a8654;
+        --sc-colour-success-tint: #3ad37f;
+
+        --sc-colour-warning: #f3bc47;
+        --sc-colour-warning-contrast: #111111;
+        --sc-colour-warning-rgb: 243, 188, 71;
+        --sc-colour-warning-shade: #ed8b00;
+        --sc-colour-warning-tint: #fae100;
+
+        --sc-colour-danger: #f04141;
+        --sc-colour-danger-contrast: #ffffff;
+        --sc-colour-danger-rgb: 240, 65, 65;
+        --sc-colour-danger-shade: #d33939;
+        --sc-colour-danger-tint: #f25454;
+
+        --sc-colour-dark: #40444b;
+        --sc-colour-dark-contrast: #ffffff;
+        --sc-colour-dark-rgb: 64, 68, 75;
+        --sc-colour-dark-shade: #363a3f;
+        --sc-colour-dark-tint: #6a6e74;
+
+        --sc-colour-medium: #999999;
+        --sc-colour-medium-contrast: #ffffff;
+        --sc-colour-medium-rgb: 153, 153, 153;
+        --sc-colour-medium-shade: #6d6d6d;
+        --sc-colour-medium-tint: #c4c4c4;
+
+        --sc-colour-light: #f4f4f4;
+        --sc-colour-light-contrast: #000000;
+        --sc-colour-light-rgb: 244, 244, 244;
+        --sc-colour-light-shade: #dddddd;
+        --sc-colour-light-tint: #f9f9f9;
+    }
+
+    &.night-theme {
+        --sc-button-outline: #eee;
+
+        --sc-colour-default: #333333;
+        --sc-colour-default-contrast: #ffffff;
+        --sc-colour-default-rgb: 32, 32, 32;
+        --sc-colour-default-shade: #777;
+        --sc-colour-default-tint: #000000;
+
+        --sc-colour-primary: #006392;
+        --sc-colour-primary-contrast: #ffffff;
+        --sc-colour-primary-rgb: 0, 99, 146;
+        --sc-colour-primary-shade: #004363;
+        --sc-colour-primary-tint: #0080bb;
+
+        --sc-colour-secondary: #b14093;
+        --sc-colour-secondary-contrast: #ffffff;
+        --sc-colour-secondary-rgb: 223, 80, 185;
+        --sc-colour-secondary-shade: #913979;
+        --sc-colour-secondary-tint: #cc4eaa;
+
+        --sc-colour-tertiary: #7044ff;
+        --sc-colour-tertiary-contrast: #ffffff;
+        --sc-colour-tertiary-rgb: 112, 68, 255;
+        --sc-colour-tertiary-shade: #522fc7;
+        --sc-colour-tertiary-tint: #7e57ff;
+
+        --sc-colour-success: #29a862;
+        --sc-colour-success-contrast: #ffffff;
+        --sc-colour-success-rgb: 36, 144, 134;
+        --sc-colour-success-shade: #2a8654;
+        --sc-colour-success-tint: #3ad37f;
+
+        --sc-colour-warning: #f3bc47;
+        --sc-colour-warning-contrast: #111111;
+        --sc-colour-warning-rgb: 243, 188, 71;
+        --sc-colour-warning-shade: #ed8b00;
+        --sc-colour-warning-tint: #fae100;
+
+        --sc-colour-danger: #b35b5b;
+        --sc-colour-danger-contrast: #ffffff;
+        --sc-colour-danger-rgb: 179, 91, 91;
+        --sc-colour-danger-shade: #964e4e;
+        --sc-colour-danger-tint: #d66c6c;
+
+        --sc-colour-dark: #555555;
+        --sc-colour-dark-contrast: #ffffff;
+        --sc-colour-dark-rgb: 25, 25, 25;
+        --sc-colour-dark-shade: #555555;
+        --sc-colour-dark-tint: #222222;
+
+        --sc-colour-medium: #bbbbbb;
+        --sc-colour-medium-contrast: #000000;
+        --sc-colour-medium-rgb: 170, 170, 170;
+        --sc-colour-medium-shade: #aaaaaa;
+        --sc-colour-medium-tint: #cccccc;
+
+        --sc-colour-light: #222222;
+        --sc-colour-light-contrast: #ffffff;
+        --sc-colour-light-rgb: 51, 51, 51;
+        --sc-colour-light-shade: #555555;
+        --sc-colour-light-tint: #222222;
+    }
+}

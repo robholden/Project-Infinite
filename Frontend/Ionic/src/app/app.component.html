@@ -1,0 +1,20 @@
+<ion-app [attr.theme]="(appState.nightMode$ | async) ? 'dark' : 'light'" *ngIf="loaded; else spinnerRef">
+    <ion-tabs>
+        <ion-tab-bar slot="bottom">
+            <ion-tab-button tab="home">
+                <ion-icon name="home"></ion-icon>
+                <ion-label>Home</ion-label>
+            </ion-tab-button>
+            <ion-tab-button tab="account">
+                <ion-icon name="person-circle-outline"></ion-icon>
+                <ion-label>Account</ion-label>
+            </ion-tab-button>
+        </ion-tab-bar>
+    </ion-tabs>
+</ion-app>
+
+<ng-template #spinnerRef>
+    <div class="h-100 flex-col">
+        <ion-spinner name="crescent" class="my-a mx-a"></ion-spinner>
+    </div>
+</ng-template>

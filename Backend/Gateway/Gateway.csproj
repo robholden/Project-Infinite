@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<UserSecretsId>d727c8ff-581d-41cb-9542-5824d3ad6f93</UserSecretsId>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(RunConfiguration)' == 'IIS Express' " />
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
+		<PackageReference Include="Ocelot" Version="17.0.0" />
+		<PackageReference Include="Ocelot.Provider.Consul" Version="17.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Libraries\Library.Service\Library.Service.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EditorConfigFiles Remove="C:\Coding\SnowCapture\Backend\Gateway\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EditorConfigFiles Remove="C:\Coding\SnowCapture\Backend\Gateway\.editorconfig" />
+	</ItemGroup>
+</Project>

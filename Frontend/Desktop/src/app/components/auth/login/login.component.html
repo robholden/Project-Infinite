@@ -1,0 +1,27 @@
+<form (submit)="login()" [formGroup]="form" novalidate="novalidate">
+    <div class="form-section mb">
+        <label for="username">Email or username </label>
+        <input id="username" class="input" type="text" autocomplete="username" formControlName="username" />
+
+        <small *ngIf="form.get('username').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+    </div>
+
+    <div class="form-section mb">
+        <label for="password">Password</label>
+        <input id="password" class="input" type="password" autocomplete="current-password" formControlName="password" />
+
+        <small *ngIf="form.get('password').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+    </div>
+
+    <div class="br p-s mt" background="danger" *ngIf="error">{{ error | trx }}</div>
+
+    <div class="flex-row-align mt">
+        <a (click)="forgotPassword()">Forgotten Password?</a>
+
+        <div class="flex-spacer"></div>
+
+        <button id="login-btn" class="button" background="primary" type="submit" [disabled]="form.invalid || form.disabled">
+            Login <i class="icon far fa-sign-in"></i>
+        </button>
+    </div>
+</form>

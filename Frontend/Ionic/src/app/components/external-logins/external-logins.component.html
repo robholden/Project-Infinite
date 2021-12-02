@@ -1,0 +1,8 @@
+<ng-container *ngIf="providers.length > 0">
+    <div *ngFor="let provider of providers" class="mt-s">
+        <ion-button type="button" class="{{ provider | lowercase }}" color="light" expand="block" (click)="loginWithProvider(provider)">
+            <ion-icon name="logo-{{ provider | lowercase }}"></ion-icon>
+            <span class="provider-text">{{ type === 'login' ? 'Sign in' : 'Sign up' }} with {{ provider | titlecase }}</span>
+        </ion-button>
+    </div>
+</ng-container>

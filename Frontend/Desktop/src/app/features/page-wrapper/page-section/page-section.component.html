@@ -1,0 +1,21 @@
+<div class="container flex-row-align" [class.no-image]="!img">
+    <ng-container *ngTemplateOutlet="align === 'left' ? textRef : imageRef"></ng-container>
+    <ng-container *ngTemplateOutlet="align === 'right' ? textRef : imageRef"></ng-container>
+</div>
+
+<ng-template #textRef>
+    <div class="section-item text-content" [class.pr]="img && align === 'left'" [class.pl]="img && align === 'right'">
+        <ng-content></ng-content>
+    </div>
+</ng-template>
+
+<ng-template #imageRef>
+    <div
+        *ngIf="img"
+        class="section-item section-image flex-row flex-centre"
+        [style.background-image]="img.type === 'bg' ? 'url(' + img.src + ')' : null"
+        [title]="img.type === 'bg' ? img.alt : null"
+    >
+        <img [src]="img.src" *ngIf="img.type === 'img'" [alt]="img.alt" />
+    </div>
+</ng-template>

@@ -1,0 +1,111 @@
+@import './colours';
+
+.transition {
+    transition: 0.25s ease;
+}
+
+.br {
+    border-radius: var(--sc-br) !important;
+}
+
+.card-shadow {
+    border-radius: var(--sc-br);
+    box-shadow: 0 2px 4px rgba(var(--sc-colour-dark-rgb), 0.05);
+
+    &.dark-shadow {
+        box-shadow: 0px 3px 1px rgba(var(--sc-colour-dark-rgb), 0.2);
+    }
+}
+
+.card {
+    @extend .background-default;
+    @extend .p;
+    @extend .card-shadow;
+
+    &.small {
+        font-size: 12px;
+        @extend .p-s;
+    }
+
+    > label,
+    .label {
+        display: block;
+        font-weight: 600;
+        font-size: 1.1em;
+    }
+
+    > label {
+        margin-bottom: 5px;
+    }
+
+    small {
+        display: block;
+    }
+
+    p {
+        @extend .mb-s;
+
+        &:last-child {
+            @extend .mb-0;
+        }
+    }
+}
+
+a.card {
+    text-align: center;
+
+    i,
+    svg {
+        font-size: 2.5em;
+        margin: 1.25rem auto;
+    }
+}
+
+.has-lazy-img {
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        vertical-align: bottom;
+
+        opacity: 0;
+        transition: linear 0.25s;
+
+        &.ng-lazyloaded {
+            opacity: 1;
+
+            & + .loader {
+                display: none;
+            }
+        }
+    }
+
+    .loader {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 50%;
+        left: 0;
+        margin-top: -25px;
+        text-align: center;
+        font-size: 22px;
+        color: var(--sc-colour-primary);
+
+        .spinner {
+            transition: linear 0.25s;
+            opacity: 1;
+        }
+    }
+}
+
+.sc-loading {
+    > span {
+        transform: scale(1);
+        transition: ease 0.5s;
+    }
+
+    &.waiting {
+        span {
+            transform: scale(1.25);
+        }
+    }
+}

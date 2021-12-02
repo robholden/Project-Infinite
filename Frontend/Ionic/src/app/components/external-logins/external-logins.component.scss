@@ -1,0 +1,30 @@
+:host {
+    display: block;
+    width: 100%;
+    text-align: center;
+
+    .apple {
+        --ion-color-base: black !important;
+        --ion-color-contrast: white !important;
+    }
+
+    .google {
+        --ion-color-base: white !important;
+        --ion-color-contrast: black !important;
+    }
+
+    .facebook {
+        --ion-color-base: #3b5998 !important;
+        --ion-color-contrast: white !important;
+    }
+
+    ion-icon {
+        font-size: 1.75rem;
+        margin-right: 0.5em;
+    }
+
+    .provider-text {
+        width: 160px;
+        text-align: left;
+    }
+}

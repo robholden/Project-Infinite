@@ -1,0 +1,25 @@
+<sc-page-content *ngIf="!getting else loadingRef">
+    <div class="full-content" *ngIf="!result?.totalRows">
+        <p>Nothing to approve</p>
+        <button type="button" class="button icon-only mt-s" (click)="reload()"><i class="far fa-redo"></i></button>
+    </div>
+
+    <div class="container flex-col" *ngIf="result?.totalRows">
+        <div class="grid mb" cols="3">
+            <div class="approval flex-col card-shadow" *ngFor="let mod of result.rows; let $i = index">
+                <sc-show-picture [picture]="mod.picture"></sc-show-picture>
+            </div>
+        </div>
+
+        <div class="mt-a">
+            <sc-paging [rows]="result.totalRows" [pageSize]="pager.pageSize" [page]="pager.page" (pageChange)="changePage($event)"></sc-paging>
+        </div>
+    </div>
+</sc-page-content>
+
+<ng-template #loadingRef>
+    <div class="full-content">
+        <p>Loading</p>
+        <p><i class="fas fa-spinner-third fa-spin"></i></p>
+    </div>
+</ng-template>

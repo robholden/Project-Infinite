@@ -1,0 +1,55 @@
+<sc-page-content *ngIf="!getting else loadingRef">
+    <div class="full-content" *ngIf="!result?.totalRows">
+        <p>Nothing to report</p>
+        <button type="button" class="button icon-only mt-s" (click)="reload()"><i class="far fa-redo"></i></button>
+    </div>
+
+    <div class="container flex-col" *ngIf="result?.totalRows">
+        <div class="grid mb" cols="3">
+            <div class="user-report card-shadow" *ngFor="let report of result.rows">
+                <div class="user-info p-s">
+                    <sc-avatar [name]="report.username" size="28" bg="var(--sc-colour-primary)" fg="var(--sc-colour-primary-contrast)"></sc-avatar>
+                    <div>
+                        <h4>{{ report.name }}</h4>
+                        <small colour="medium">@{{ report.username }}</small>
+                    </div>
+
+                    <button type="button" class="button ml-a" background="light" (click)="action(report)">
+                        Review <i class="fad fa-shield icon"></i>
+                    </button>
+
+                    <a [routerLink]="'/user/' + report.username" target="_blank" rel="noopener" class="button icon-only ml-s">
+                        <i class="far fa-external-link icon"></i>
+                    </a>
+                </div>
+
+                <div class="p-s pb-0">
+                    <div class="flex-row-align">
+                        <h6>Reports</h6>
+                        <span class="button small ml-a">
+                            <i class="far fa-clock icon" position="left"></i> {{ report.date | utc: 'dd/MM/yyyy HH:mm:ss' }}
+                        </span>
+                    </div>
+                    <div class="mb-s" *ngFor="let r of report.stats" [ngSwitch]="r.reason">
+                        <span class="button" background="light">
+                            <ng-container *ngSwitchCase="ReportReason.Offensive">({{ r.total }}) Offensive content</ng-container>
+                            <ng-container *ngSwitchCase="ReportReason.Impersonation">({{ r.total }}) Copying or impersonating someone else</ng-container>
+                            <ng-container *ngSwitchDefault>({{ r.total }}) Unknown reason</ng-container>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-a">
+            <sc-paging [rows]="result.totalRows" [pageSize]="pager.pageSize" [page]="pager.page" (pageChange)="changePage($event)"></sc-paging>
+        </div>
+    </div>
+</sc-page-content>
+
+<ng-template #loadingRef>
+    <div class="full-content">
+        <p>Loading</p>
+        <p><i class="fas fa-spinner-third fa-spin"></i></p>
+    </div>
+</ng-template>

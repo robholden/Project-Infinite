@@ -1,0 +1,70 @@
+<form (submit)="submit()" [formGroup]="form" class="form-content card">
+    <h2 *ngIf="title">{{ title }}</h2>
+    <div class="message mb" [innerHtml]="message" *ngIf="message"></div>
+
+    <div class="form-section mb" *ngFor="let input of inputs; let i = index">
+        <label [for]="'input-' + i" *ngIf="input.text" [innerHTML]="input.text | trx"> </label>
+
+        <div class="flex-row">
+            <input [id]="'input-' + i" class="{{ input.className }}" type="checkbox" [formControlName]="input.name" *ngIf="input.type === 'checkbox'" />
+            <input
+                [id]="'input-' + i"
+                class="{{ input.className }}"
+                type="radio"
+                [formControlName]="input.name"
+                [value]="input.value"
+                *ngIf="input.type === 'radio'"
+            />
+
+            <label [for]="'input-' + i" *ngIf="input.label" class="small-label" [innerHTML]="input.label | trx"> </label>
+        </div>
+
+        <ng-container *ngIf="errors(input.name) as myErrors">
+            <input
+                [id]="'input-' + i"
+                class="input {{ input.className }}"
+                [class.has-error]="myErrors.length > 0 && (form.get(input.name).dirty || form.get(input.name).touched)"
+                [autocomplete]="input.autocomplete || input.type"
+                [attr.inputmode]="input.mode"
+                [type]="input.type"
+                [formControlName]="input.name"
+                [attr.placeholder]="input.placeholder"
+                *ngIf="['text', 'number', 'email', 'password'].includes(input.type)"
+            />
+
+            <textarea
+                [id]="'input-' + i"
+                class="input {{ input.className }}"
+                [class.has-error]="myErrors.length > 0 && (form.get(input.name).dirty || form.get(input.name).touched)"
+                [formControlName]="input.name"
+                [attr.placeholder]="input.placeholder"
+                *ngIf="input.type === 'textarea'"
+            ></textarea>
+
+            <ng-container *ngFor="let error of myErrors">
+                <small class="mt-s" colour="danger" *ngIf="error.fallback !== 'Required' && (form.get(input.name).dirty || form.get(input.name).touched)">
+                    {{ error | trx }}
+                </small>
+            </ng-container>
+
+            <ng-container *ngFor="let msg of myErrors.length ? [] : displayMessages[input.name] || []">
+                <small class="mt-s" [attr.colour]="msg.colour" *ngIf="form.get(input.name).dirty || form.get(input.name).touched">
+                    {{ msg.text | trx }}
+                </small>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="buttons flex-row-align">
+        <button
+            *ngFor="let btn of buttons"
+            class="button {{ btn.className || '' }}"
+            [attr.background]="btn.colour || 'light'"
+            [type]="btn.role === 'cancel' ? 'button' : 'submit'"
+            [disabled]="btn.role === 'submit' && form.invalid"
+            (click)="btn.role === 'cancel' ? cancel() : null"
+        >
+            {{ btn.text | trx }}
+        </button>
+    </div>
+</form>

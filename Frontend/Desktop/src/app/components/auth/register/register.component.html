@@ -1,0 +1,69 @@
+<form (submit)="register()" [formGroup]="form" novalidate="novalidate">
+    <div class="form-section mb">
+        <label for="name">Name</label>
+        <input id="name" class="input" type="text" autocomplete="name" formControlName="name" />
+
+        <small *ngIf="form.get('name').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+    </div>
+
+    <div class="form-section mb">
+        <label for="email">Email</label>
+        <input id="email" class="input" type="email" autocomplete="email" formControlName="email" />
+
+        <small *ngIf="form.get('email').hasError('minlength')" class="mt-s" colour="danger"> {{ 'form_errors.minlength' | trx }} </small>
+    </div>
+
+    <div class="form-section mb">
+        <label for="username">Choose a username</label>
+        <input id="username" class="input" type="text" autocomplete="username" formControlName="username" />
+
+        <small *ngIf="form.get('username').hasError('minlength')" class="mt-s" colour="danger"> {{ 'form_errors.minlength' | trx }} </small>
+        <small *ngIf="form.get('username').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+        <small *ngIf="form.get('username').hasError('pattern')" class="mt-s" colour="danger">{{ 'form_errors.username' | trx }}</small>
+    </div>
+
+    <div class="form-section mb">
+        <label for="password">Password</label>
+        <input id="password" class="input" type="password" autocomplete="new-password" formControlName="password" />
+
+        <small
+            *ngIf="pwStrength && !form.get('password').hasError('minlength') && !form.get('password').hasError('maxlength')"
+            class="mt-s"
+            [attr.colour]="pwStrength.colour"
+        >
+            {{ pwStrength.message }}
+        </small>
+        <small *ngIf="form.get('password').hasError('minlength')" class="mt-s" colour="danger"> {{ 'form_errors.minlength' | trx }} </small>
+        <small *ngIf="form.get('password').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+    </div>
+
+    <div class="form-section mb">
+        <label for="c-password">Confirm Password</label>
+        <input id="c-password" class="input" type="password" autocomplete="new-password" formControlName="confirmPassword" />
+
+        <small *ngIf="form.get('confirmPassword').hasError('mismatch')" class="mt-s" colour="danger">
+            {{ 'form_errors.mismatch' | trx: { name: 'Passwords' } }}
+        </small>
+    </div>
+
+    <label for="terms">
+        <input id="terms" type="checkbox" formControlName="terms" /> I have read, understood and agreed to our
+        <a routerLink="/policies/terms" target="_blank" rel="noopener">Terms & Conditions</a> and
+        <a routerLink="/policies/privacy" target="_blank" rel="noopener">Privacy</a>
+        polices.
+    </label>
+
+    <div class="br p-s mt" background="danger" *ngIf="regError">{{ regError | trx }}</div>
+
+    <ng-container *ngIf="loginError">
+        <div class="br p-s mt" background="success">Your account has been created successfully</div>
+        <div class="br p-s mt" background="danger">{{ loginError | trx }}</div>
+    </ng-container>
+
+    <div class="flex-row mt">
+        <button id="register-btn" class="button ml-a" background="primary" type="submit" [disabled]="form.invalid">
+            Create Account
+            <i class="icon far fa-arrow-right"></i>
+        </button>
+    </div>
+</form>

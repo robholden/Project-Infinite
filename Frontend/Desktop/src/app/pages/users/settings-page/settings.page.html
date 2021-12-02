@@ -1,0 +1,16 @@
+<sc-page>
+    <sc-page-header
+        [pageLinks]="[
+            { url: 'details', name: 'My Information' },
+            { url: 'security', name: 'Security' },
+            { url: 'preferences', name: 'Preferences' },
+            { url: 'sessions', name: 'Sessions' }
+        ]"
+    >
+        <h2>Settings</h2>
+    </sc-page-header>
+
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+</sc-page>

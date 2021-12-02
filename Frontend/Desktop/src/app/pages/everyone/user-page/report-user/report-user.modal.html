@@ -1,0 +1,26 @@
+<sc-modal-wrapper (closed)="dismiss()">
+    <div class="mb">
+        <h2>Report User</h2>
+        <p>Help us understand the problem. Why are you reporting this user?</p>
+    </div>
+
+    <form class="form" (submit)="submit()" [formGroup]="form" novalidate="novalidate">
+        <div class="flex-col">
+            <label class="mb-s" for="reason-1">
+                <input id="reason-1" type="radio" [value]="ReportReason.Offensive" formControlName="reason" /> This user is displaying offensive content
+            </label>
+
+            <label for="reason-2">
+                <input id="reason-2" type="radio" [value]="ReportReason.Impersonation" formControlName="reason" /> is copying or impersonating someone else
+            </label>
+        </div>
+
+        <div class="flex-row-align mt">
+            <button type="button" class="button" background="light" (click)="dismiss()">Cancel</button>
+
+            <div class="flex-spacer"></div>
+
+            <button type="submit" id="submit-report-btn" class="button" background="danger" [disabled]="form.invalid">Report User</button>
+        </div>
+    </form>
+</sc-modal-wrapper>

@@ -1,0 +1,24 @@
+{
+    "name": "sc-shared",
+    "devDependencies": {
+        "@angular/cli": "~13.0.3",
+        "@angular/common": "~13.0.3",
+        "@angular/core": "~13.0.3",
+        "@angular/forms": "~13.0.3",
+        "@angular/platform-browser": "~13.0.3",
+        "@angular/router": "~13.0.3",
+        "@ionic/storage": "^3.0.6",
+        "@microsoft/signalr": "^3.1.8",
+        "@ngx-translate/core": "^14.0.0",
+        "@ngx-translate/http-loader": "^7.0.0",
+        "date-fns": "^2.22.1",
+        "js-sha256": "^0.9.0",
+        "jwt-decode": "^3.1.2",
+        "lodash.merge": "^4.6.2",
+        "rxjs": "^6.6.3",
+        "tslib": "^2.0.0",
+        "tslint": "^6.1.3",
+        "typescript": "^4.4.4",
+        "zxcvbn": "^4.4.2"
+    }
+}

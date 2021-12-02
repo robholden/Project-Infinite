@@ -1,0 +1,12 @@
+<sc-page-content *ngIf="'privacy' | remoteContent: 'policy' | async as html else loadingRef">
+    <div class="container">
+        <div class="text-content" [innerHTML]="html | markdown"></div>
+    </div>
+</sc-page-content>
+
+<ng-template #loadingRef>
+    <div class="full-content">
+        <p>Loading</p>
+        <p><i class="fas fa-spinner-third fa-spin"></i></p>
+    </div>
+</ng-template>

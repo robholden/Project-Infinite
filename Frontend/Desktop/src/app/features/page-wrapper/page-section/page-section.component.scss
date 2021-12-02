@@ -1,0 +1,37 @@
+:host {
+    position: relative;
+    display: block;
+
+    width: 100%;
+}
+
+.section-item {
+    &.text-content {
+        width: 55%;
+    }
+
+    &.section-image {
+        height: 100%;
+        width: 45%;
+        background: no-repeat center;
+        background-size: contain;
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        &:empty {
+            min-height: 30vh;
+        }
+
+        &:empty,
+        img {
+            border-radius: var(--sc-br);
+        }
+    }
+}
+
+.no-image .section-item {
+    width: 100%;
+}

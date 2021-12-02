@@ -1,0 +1,41 @@
+.table {
+    width: 100%;
+    text-align: left;
+    overflow: hidden;
+
+    th,
+    td {
+        padding: 10px 7px;
+
+        &:first-child {
+            padding-left: 1rem;
+        }
+
+        &:last-child {
+            padding-right: 1rem;
+        }
+    }
+
+    th {
+        background-color: var(--sc-colour-primary-shade);
+        color: var(--sc-colour-primary-contrast);
+        font-weight: normal;
+    }
+
+    td {
+    }
+
+    tr:nth-child(odd) td {
+        background-color: var(--sc-colour-default);
+    }
+
+    &.sm {
+        width: auto;
+        max-width: 100%;
+
+        th,
+        td {
+            padding: 5px 10px;
+        }
+    }
+}

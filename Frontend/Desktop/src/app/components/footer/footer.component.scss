@@ -1,0 +1,36 @@
+:host {
+    display: block;
+    position: relative;
+    margin-top: auto;
+
+    background-color: var(--sc-colour-default);
+    color: var(--sc-colour-default-contrast);
+    border-top: 10px solid var(--sc-colour-light);
+}
+
+.footer-links {
+    > a {
+        margin-bottom: 0.5rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.locales {
+    margin-top: 1rem;
+    text-align: center;
+
+    button {
+        margin: 0 5px;
+        opacity: 0.5;
+
+        &.active {
+            opacity: 1;
+        }
+    }
+
+    img {
+    }
+}

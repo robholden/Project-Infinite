@@ -1,0 +1,17 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title class="logo-text">{{ env.appTitle }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="ion-padding">
+        <div class="ion-margin-bottom">
+            <ion-badge color="{{ siteLoader.healthy ? 'success' : 'danger' }}">{{ env.gateway }}</ion-badge>
+        </div>
+
+        <div>
+            <ion-badge color="{{ !env.production ? 'success' : 'danger' }}">{{ env.production ? 'prod' : 'dev' }}</ion-badge>
+        </div>
+    </div>
+</ion-content>

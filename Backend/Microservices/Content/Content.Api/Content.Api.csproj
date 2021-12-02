@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<UserSecretsId>d727c8ff-581d-41cb-9542-5824d3ad6f93</UserSecretsId>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(RunConfiguration)' == 'IIS Express' " />
+	<ItemGroup>
+		<Compile Remove="Logs\**" />
+		<Compile Remove="uploads\**" />
+		<Content Remove="Logs\**" />
+		<Content Remove="uploads\**" />
+		<EmbeddedResource Remove="Logs\**" />
+		<EmbeddedResource Remove="uploads\**" />
+		<None Remove="Logs\**" />
+		<None Remove="uploads\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Markdig" Version="0.25.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.7.21378.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Libraries\Library.Service\Library.Service.csproj" />
+		<ProjectReference Include="..\Content.Core\Content.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Templates\policy.privacy.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Templates\policy.terms.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
+</Project>

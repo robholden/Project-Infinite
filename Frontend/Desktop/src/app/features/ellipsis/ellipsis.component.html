@@ -1,0 +1,3 @@
+<span *ngIf="value !== output; else showRealValue" [title]="value">{{ output }}</span>
+
+<ng-template #showRealValue>{{ value }}</ng-template>

@@ -1,0 +1,13 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.user-report {
+    background-color: var(--sc-colour-default);
+}
+
+.user-info {
+    border-bottom: 1px solid var(--sc-colour-light);
+}

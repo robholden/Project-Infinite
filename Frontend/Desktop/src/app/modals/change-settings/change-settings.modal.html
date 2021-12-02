@@ -1,0 +1,47 @@
+<sc-modal-wrapper (closed)="dismiss()">
+    <div class="mb">
+        <h2>Update Settings</h2>
+        <p>Change the settings for this user</p>
+    </div>
+
+    <form class="form" (submit)="submit()" [formGroup]="form" novalidate="novalidate" *ngIf="form else loadingRef">
+        <div class="form-section mb">
+            <label for="maxPictureSize">Max Picture Size (mb)</label>
+            <input id="maxPictureSize" class="input" type="number" formControlName="maxPictureSize" />
+        </div>
+
+        <div class="form-section mb">
+            <label for="minPictureResolutionX">Min Picture Resolution X</label>
+            <input id="minPictureResolutionX" class="input" type="number" formControlName="minPictureResolutionX" />
+        </div>
+
+        <div class="form-section mb">
+            <label for="minPictureResolutionY">Min Picture Resolution Y</label>
+            <input id="minPictureResolutionY" class="input" type="number" formControlName="minPictureResolutionY" />
+        </div>
+
+        <div class="form-section mb">
+            <label for="uploadLimit">Upload Limit</label>
+            <input id="uploadLimit" class="input" type="number" formControlName="uploadLimit" />
+        </div>
+
+        <div class="form-section mb">
+            <label for="uploadEnabled">Upload Enabled</label>
+            <sc-toggle-switch name="uploadEnabled" [small]="true" [parent]="form"></sc-toggle-switch>
+        </div>
+
+        <div class="flex-row-align mt">
+            <button type="button" class="button" background="light" (click)="dismiss()">Cancel</button>
+
+            <div class="flex-spacer"></div>
+
+            <button type="submit" id="save-settings-btn" class="button" background="primary" [disabled]="form.invalid">Save Settings</button>
+        </div>
+    </form>
+</sc-modal-wrapper>
+
+<ng-template #loadingRef>
+    <div class="p-l my">
+        <i class="fas fa-spinner-third fa-spin"></i>
+    </div>
+</ng-template>

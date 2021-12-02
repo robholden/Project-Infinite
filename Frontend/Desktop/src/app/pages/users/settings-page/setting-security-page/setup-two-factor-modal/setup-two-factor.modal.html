@@ -1,0 +1,69 @@
+<sc-modal-wrapper (closed)="closeWarn()" background="light">
+    <h2>{{ !recoveryCodes ? 'Setup Two-Factor Authentication' : 'Setup Completed' }}</h2>
+
+    <ng-container *ngIf="!recoveryCodes">
+        <ng-container *ngIf="qrcode">
+            <div class="card mt">
+                <label>Download App</label>
+                <small>Download and install an Authenitcator App</small>
+            </div>
+
+            <div class="card mt">
+                <label>Setup</label>
+                <small>Scan the QR Code or enter the following key into your two factor authenticator app:</small>
+                <div class="pill small mt" background="light">{{ data.secret }}</div>
+                <div><img [src]="qrcode" /></div>
+            </div>
+        </ng-container>
+
+        <form (submit)="complete()" [formGroup]="form" novalidate>
+            <div class="form-box mt">
+                <label>Enter the code</label>
+                <small [ngSwitch]="type">
+                    <ng-container *ngSwitchCase="TwoFactorType.App"> Your two factor authenticator app will provide you with a unique code </ng-container>
+
+                    <ng-container *ngSwitchCase="TwoFactorType.Email">
+                        An email has been sent to your registered email address which contains a verification code
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="TwoFactorType.Sms">
+                        An sms has been sent to your registered mobile number which contains a verification code
+                    </ng-container>
+                </small>
+
+                <input class="input mt" type="text" inputmode="tel" formControlName="code" placeholder="Code" />
+            </div>
+
+            <div class="flex-row mt">
+                <button class="button" type="button" (click)="closeWarn()">Cancel Setup</button>
+
+                <div class="flex-spacer"></div>
+
+                <button id="complete-btn" class="button" background="primary" type="submit" [disabled]="form.invalid">Complete Setup</button>
+            </div>
+        </form>
+    </ng-container>
+
+    <ng-container *ngIf="recoveryCodes">
+        <p class="mt-s" colour="success">You have successfully enabled two-factor authentication.</p>
+
+        <div class="card mt">
+            <label>Account Recovery Codes</label>
+
+            <p>
+                If you lose {{ type === TwoFactorType.Email ? 'access to your email' : 'your device' }} and don't have the recovery codes you will lose
+                access to your account.
+            </p>
+
+            <p colour="danger">You <strong>WILL NOT</strong> be able to view these codes again &mdash; store them in a safe place</p>
+
+            <div class="mt-s" *ngFor="let code of recoveryCodes || []">
+                <div class="pill small" background="danger">{{ code.value }}</div>
+            </div>
+        </div>
+
+        <div class="flex-row mt">
+            <button class="button mx-a" background="primary" (click)="closeWarn()">Close Setup</button>
+        </div>
+    </ng-container>
+</sc-modal-wrapper>

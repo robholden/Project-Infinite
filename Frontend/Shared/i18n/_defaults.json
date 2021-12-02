@@ -1,0 +1,113 @@
+{
+    "locales": {
+        "en-gb": "English (United Kingdom)",
+        "en-us": "English (United States of America)",
+        "es": "Español",
+        "fr": "Français",
+        "de": "Deutsche"
+    },
+    "pictures": {
+        "order_by": {
+            "date_taken": "Date Taken",
+            "upload_date": "Upload Date",
+            "name": "Name"
+        }
+    },
+    "collections": {
+        "order_by": { "name": "Name" }
+    },
+    "locations": {
+        "order_by": { "name": "Name" }
+    },
+    "settings": {
+        "preferences": {
+            "marketing": {
+                "title": "Marketing Emails",
+                "subtitle": "Keep up to date on the latest news from us"
+            },
+            "picture_approved": {
+                "title": "Picture Approved",
+                "subtitle": "Whether your picture has been approved or not"
+            },
+            "picture_unapproved": {
+                "title": "Picture Rejected",
+                "subtitle": "Whether your picture has been rejected or not"
+            },
+            "picture_liked": {
+                "title": "Picture Liked",
+                "subtitle": "When your picture has been liked by another user"
+            }
+        }
+    },
+    "paging": {
+        "results": "Showing {{ start }}-{{ end }} of {{ total }}"
+    },
+    "form_errors": {
+        "required": "Required",
+        "minlength": "Too short",
+        "maxlength": "Too long",
+        "email": "Invalid",
+        "mismatch": "{{ name }} do not match",
+        "username": "Letters, numbers or underscores only"
+    },
+    "error_codes": {
+        "http_error": "Something went wrong ({0})",
+        "http_unauthorized": "You are not allowed to make this request",
+        "http_forbidden": "You must be logged in to do this",
+        "http_notfound": "It looks like this resource could not be found",
+        "api_offline": "Cannot connect to the server :'(",
+        "default": "An unexpected error has occurred",
+        "missing_entity": "Some data is missing",
+        "incorrect_username_or_password": "Either your username or password is incorrect",
+        "incorrect_password": "Your password is incorrect",
+        "account_disabled": "Your account has been disabled",
+        "account_locked": "Your account has been locked",
+        "session_has_expired": "Your session has expired or been revoked",
+        "email_confirmation_required": "Your email must be confirmed to do this",
+        "two_factor_attempt_failed": "Two-factor verification failed",
+        "provided_code_invalid": "The provided code is invalid",
+        "provided_key_invalid": "The provided key has been used, expired or is invalid",
+        "key_expired_or_invalid": "The provided key has been used, expired or is invalid",
+        "cannot_re_use_code": "A code can only be used once",
+        "two_factor_already_enabled": "This account has Two Factor authentication already enabled",
+        "email_in_use": "This email address is already in use",
+        "username_taken": "This username has been taken",
+        "invalid_username": "This username is invalid",
+        "two_factor_type_unset": "The given two factor type is unset",
+        "email_registered_by_external_provider": "This email address has already been register by an external provider",
+        "invalid_user_claims": "Invalid 'UserIdentifier' claims",
+        "missing_permissions": "You do not have permission to perform this action",
+        "invalid_model_request": "The given request model is invalid",
+        "re_captcha_failed": "ReCaptcha validation failed",
+        "entity_not_found": "Cannot not find entity",
+        "entities_are_not_the_same": "Cannot update entity with another one",
+        "upload_not_allowed": "You are not permitted to upload any picture at this time",
+        "upload_limit_reached": "You have reached the daily upload limit",
+        "duplicate_picture": "Duplicate picture detected",
+        "dangerous_picture": "Dangerous picture detected",
+        "no_location_found": "Failed to find location",
+        "picture_modified": "Picture has been modified. Refresh to get the latest version",
+        "picture_already_submitted": "Picture has already been submitted",
+        "picture_already_live": "Picture has already been published",
+        "picture_already_processed": "Picture has already been processed",
+        "path_not_found": "The given path does not exist",
+        "draft_limit_reached": "Draft limit reached",
+        "upload_would_exceed_draft_limit": "You only have {0} draft uploads remaining",
+        "picture_required": "Please upload a picture",
+        "failed_to_decode_json": "Failed to read geodata",
+        "failed_to_lookup_coords": "Failed to read geodata",
+        "failed_to_get_country": "Failed to read geodata",
+        "sms_already_sent": "An SMS has already been sent",
+        "sms_failed_to_send": "Failed to send SMS: {0}",
+        "report_already_actioned": "Report already actioned",
+        "invalid_picture_extension": "Picture extension is invalid",
+        "picture_too_big": "Picture size must not exceed 10mb",
+        "picture_dimensions_too_small": "Picture dimensions are too small",
+        "missing_exif_location": "No location could found in picture metadata",
+        "missing_exif_timestamp": "No timestamp could found in picture metadata",
+        "token_invalid": "Token invalid, access not available",
+        "wrong_external_provider": "An account exists with another provider",
+        "external_provider_login_failed": "Failed to login with {0}",
+        "external_provider_unverified_email": "A verified email is required"
+    }
+}

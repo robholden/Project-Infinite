@@ -1,0 +1,87 @@
+<div class="empty" *ngIf="loading">
+    <i class="fas fa-spinner-third fa-spin"></i>
+</div>
+
+<div class="empty" *ngIf="!loading && !results?.totalRows">No Notifications</div>
+
+<ng-container *ngIf="!loading && results?.totalRows > 0">
+    <div class="notification-header flex-row-align">
+        <div class="mr-a">{{ mod ? 'Moderator ' : '' }}Notifications</div>
+
+        <span
+            role="button"
+            background="default"
+            hover="light"
+            class="button as-link less-pad icon-only"
+            tippy="Mark {{ unread }} as read"
+            placement="bottom"
+            (click)="markAllAsRead()"
+            *ngIf="unread"
+        >
+            <i class="far fa-envelope-open icon"></i>
+        </span>
+
+        <!-- &nbsp;
+
+        <span role="button" background="default" hover="light" class="button as-link less-pad icon-only" tippy="Settings" placement="bottom">
+            <i class="far fa-cogs icon"></i>
+        </span> -->
+    </div>
+
+    <div class="notifications">
+        <div class="notification" *ngFor="let notif of results.rows" [class.unread]="!notif.read" [ngSwitch]="notif.type" (click)="markAsRead(notif)">
+            <div class="unread-bar" *ngIf="!notif.isGlobal"></div>
+
+            <a class="inner-notif" [routerLink]="'/picture/' + notif.contentKey" *ngSwitchCase="NotificationType.PictureApproved">
+                <div class="img" [style.background-image]="'url(' + (notif.contentImage | imgUrl) + ')'"></div>
+                <div class="notif-text">
+                    <sc-ellipsis [value]="notif.contentMessage" [charLimit]="15"></sc-ellipsis> has been published
+                    <div class="timestamp">{{ notif.date | timeago }}</div>
+                </div>
+            </a>
+
+            <div class="inner-notif" *ngSwitchCase="NotificationType.PictureUnapproved">
+                <div class="img-icon" colour="danger"><i class="far fa-map-marker-times"></i></div>
+                <div class="notif-text" [ngSwitch]="notif.contentMessage">
+                    <sc-ellipsis [value]="notif.contentKey" [charLimit]="15"></sc-ellipsis>
+                    has been rejected
+
+                    <ng-container *ngSwitchCase="'0'"> &#8211; inappropriate</ng-container>
+                    <ng-container *ngSwitchCase="'1'"> &#8211; duplicate</ng-container>
+                    <ng-container *ngSwitchCase="'2'"> &#8211; not snow related</ng-container>
+                    <ng-container *ngSwitchDefault>
+                        <ng-container *ngIf="notif.contentMessage"> &#8211; {{ notif.contentMessage }}</ng-container>
+                    </ng-container>
+
+                    <div class="timestamp">{{ notif.date | timeago }}</div>
+                </div>
+            </div>
+
+            <a class="inner-notif" [routerLink]="'/picture/' + notif.contentKey" *ngSwitchCase="NotificationType.NewLike">
+                <div class="img" [style.background-image]="'url(' + (notif.contentImage | imgUrl) + ')'"></div>
+                <div class="notif-text">
+                    <ng-container *ngIf="notif.users <= 1">Someone has liked your picture </ng-container>
+                    <ng-container *ngIf="notif.users > 2">{{ notif.users }} have liked your picture </ng-container>
+
+                    <sc-ellipsis [value]="notif.contentMessage" [charLimit]="15"></sc-ellipsis>
+
+                    <div class="timestamp">{{ notif.date | timeago }}</div>
+                </div>
+            </a>
+
+            <a class="inner-notif" [routerLink]="'/picture/' + notif.contentKey" *ngSwitchCase="NotificationType.NewPictureApproval">
+                <div class="img" [style.background-image]="'url(' + (notif.contentImage | imgUrl) + ')'"></div>
+                <div class="notif-text">
+                    New picture <sc-ellipsis [value]="notif.contentMessage" [charLimit]="15"></sc-ellipsis> requires approval
+                    <div class="timestamp">{{ notif.date | timeago }}</div>
+                </div>
+
+                <div class="global-dot"></div>
+            </a>
+        </div>
+
+        <div class="ta-c mb-s" *ngIf="results.hasNextPage">
+            <span role="button" id="load-more-btn" class="button small as-link" background="light" (click)="loadMore()">Load More</span>
+        </div>
+    </div>
+</ng-container>

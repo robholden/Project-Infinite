@@ -1,0 +1,7 @@
+<button type="button" class="close-modal" (click)="closed.emit()" *ngIf="showClose">
+    <i class="icon far fa-times"></i>
+</button>
+
+<div class="card" [attr.background]="background">
+    <ng-content></ng-content>
+</div>

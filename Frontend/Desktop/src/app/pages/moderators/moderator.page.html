@@ -1,0 +1,15 @@
+<sc-page>
+    <sc-page-header
+        [pageLinks]="[
+            { url: 'approvals', name: 'Approvals' },
+            { url: 'reports', name: 'User Reports' },
+            { url: 'reports/pictures', name: 'Picture Reports' },
+            { url: 'locations', name: 'Locations', visible: authState.is_admin },
+            { url: 'tags', name: 'Tags', visible: authState.is_admin }
+        ]"
+    >
+        <h2>Moderator Dashboard</h2>
+    </sc-page-header>
+
+    <router-outlet></router-outlet>
+</sc-page>

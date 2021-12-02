@@ -1,0 +1,12 @@
+<ion-label>
+    <label>{{ label }}</label>
+
+    <div class="custom-errors ml-a">
+        <ng-content select="[custom-errors]"></ng-content>
+
+        <ng-container *ngFor="let err of errors">
+            <ion-text *ngIf="field?.hasError(err)" color="danger" @fade>{{ 'form_errors.' + errorKey(err) | trx: trxParams[err] }}</ion-text>
+        </ng-container>
+    </div>
+</ion-label>
+<ng-content></ng-content>

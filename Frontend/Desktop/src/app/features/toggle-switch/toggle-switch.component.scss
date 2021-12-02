@@ -1,0 +1,80 @@
+$w: 50px;
+$h: 28px;
+
+$br: 34px;
+$b_wh: 20px;
+$b_lb: 4px;
+
+$i_x: 22px;
+$r: 0.6;
+
+:host {
+    position: relative;
+    display: inline-block;
+    height: $h;
+
+    &.sm {
+        height: $h * $r;
+
+        .switch {
+            width: $w * $r;
+
+            .slider:before {
+                height: $b_wh * $r;
+                width: $b_wh * $r;
+                left: $b_lb * $r;
+                bottom: $b_lb * $r;
+            }
+
+            input:checked + .slider:before {
+                transform: translateX($i_x * $r);
+            }
+        }
+    }
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: $w;
+    height: 100%;
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--sc-colour-medium);
+        transition: 0.25s;
+        border-radius: $br;
+
+        &:before {
+            position: absolute;
+            content: '';
+            height: $b_wh;
+            width: $b_wh;
+            left: $b_lb;
+            bottom: $b_lb;
+            background-color: var(--sc-colour-medium-contrast);
+            transition: 0.25s;
+            border-radius: 50%;
+        }
+    }
+
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked + .slider {
+            background-color: var(--sc-colour-primary);
+
+            &:before {
+                transform: translateX($i_x);
+                background-color: var(--sc-colour-primary-contrast);
+            }
+        }
+    }
+}

@@ -1,0 +1,49 @@
+:host {
+    position: relative;
+    display: block;
+    background: linear-gradient(to right, var(--sc-colour-light) 0%, var(--sc-colour-light-shade) 50%, var(--sc-colour-light) 100%);
+    border-radius: var(--sc-br);
+
+    &.light {
+        background: linear-gradient(
+            to right,
+            var(--sc-colour-default) 0%,
+            var(--sc-colour-light) 25%,
+            var(--sc-colour-light-shade) 50%,
+            var(--sc-colour-light) 75%,
+            var(--sc-colour-default) 100%
+        );
+    }
+
+    &.animated {
+        background-size: 200% 100% !important;
+        animation-duration: 4s;
+        animation-fill-mode: forwards;
+        animation-iteration-count: infinite;
+        animation-name: shimmer;
+        animation-timing-function: linear;
+    }
+
+    &.light {
+        background: linear-gradient(
+            to right,
+            var(--sc-colour-default) 0%,
+            var(--sc-colour-light) 25%,
+            var(--sc-colour-light-shade) 50%,
+            var(--sc-colour-light) 75%,
+            var(--sc-colour-default) 100%
+        );
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 100% 100%;
+    }
+    50% {
+        background-position: 0 100%;
+    }
+    100% {
+        background-position: -100% 100%;
+    }
+}

@@ -1,0 +1,11 @@
+<a class="picture-popup-link" [routerLink]="'/picture/' + picture.pictureId">
+    <img [src]="picture.path | imgUrl" [alt]="picture.name" />
+
+    <div class="picture-popup-details">
+        <p class="pill link" background="light" *ngIf="picture.location">
+            <i class="far fa-map-marker-alt"></i> {{ 'locations.' + picture.location.name | trx: {}:picture.location.name }}
+        </p>
+        <p class="pill link" background="light"><i class="far fa-at"></i> {{ picture.username }}</p>
+        <p class="pill link" background="light"><i class="far fa-calendar-alt icon" position="left"></i> {{ picture.dateTaken | date }}</p>
+    </div>
+</a>

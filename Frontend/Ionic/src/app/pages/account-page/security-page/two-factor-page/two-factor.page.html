@@ -1,0 +1,78 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button text="" defaultHref="/account"></ion-back-button>
+        </ion-buttons>
+
+        <ion-title> {{ !usingAny ? 'Setup 2FA' : 'Manage 2FA' }} </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list *ngIf="!usingAny else showCurrent">
+        <ion-item lines="full" button detail>
+            <ion-label class="ion-text-wrap" (click)="setupApp()">
+                <h3>Authenticator App</h3>
+                <p>When you sign in you'll be required to use the security code provided by your Authenticator App</p>
+            </ion-label>
+        </ion-item>
+
+        <ion-item lines="full" button detail>
+            <ion-label class="ion-text-wrap" (click)="setupEmail()">
+                <h3>Email Authentication</h3>
+                <p>When you sign in you'll be required to use the security code provided in your email</p>
+            </ion-label>
+        </ion-item>
+
+        <ion-item lines="full" button detail>
+            <ion-label class="ion-text-wrap" (click)="setupSms()">
+                <h3>SMS Authentication</h3>
+                <p>When you sign in you'll be required to use the security code provided via an SMS</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ng-template #showCurrent>
+    <ion-card *ngIf=" usingApp">
+        <ion-card-header class="ion-margin-bottom" color="success">
+            <ion-card-title>Authenticator App</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <p>When you sign in you'll be required to use the security code provided by your Authenticator App</p>
+
+            <div class="ion-margin-top">
+                <ion-button size="small" color="danger" (click)="remove()">Remove</ion-button>
+            </div>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf=" usingEmail">
+        <ion-card-header class="ion-margin-bottom" color="success">
+            <ion-card-title>Email Authentication</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <p>When you sign in you'll be required to use the security code provided in your email</p>
+
+            <div class="ion-margin-top">
+                <ion-button size="small" color="danger" (click)="remove()">Remove</ion-button>
+            </div>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf=" usingSms">
+        <ion-card-header class="ion-margin-bottom" color="success">
+            <ion-card-title>Sms Authentication</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <p>When you sign in you'll be required to use the security code provided via an SMS</p>
+
+            <div class="ion-margin-top">
+                <ion-button size="small" color="danger" (click)="remove()">Remove</ion-button>
+            </div>
+        </ion-card-content>
+    </ion-card>
+</ng-template>

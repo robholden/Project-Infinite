@@ -1,0 +1,36 @@
+<sc-page>
+    <sc-page-header *ngIf="collection || loading">
+        <div class="flex-row-align" *ngIf="collection" @fade>
+            <h2><span colour="primary-shade">Collection &nbsp;</span> {{ collection.name | titlecase }}</h2>
+
+            <div class="flex-spacer"></div>
+
+            <button id="delete-btn" class="button icon-only mx-s" background="danger" (click)="delete()" tippy="Delete Collection">
+                <i class="far fa-trash"></i>
+            </button>
+
+            <button class="button" background="light" (click)="edit()" tippy="Edit Collection">Edit <i class="icon far fa-pencil"></i></button>
+        </div>
+
+        <div class="flex-row-align" *ngIf="loading">
+            <sc-skeleton-text height="35px" width="35px" radius="50%" [animated]="true"></sc-skeleton-text>
+            <sc-skeleton-text height="25px" width="200px" [animated]="true" class="ml"></sc-skeleton-text>
+        </div>
+    </sc-page-header>
+
+    <sc-page-content>
+        <div class="container flex-col" *ngIf="collection else loadingRef" @fade>
+            <sc-show-pictures [fixedParams]="{ username: collection.username, collection:collection.collectionId }" (resultChange)="result=$event">
+                <ng-container empty>{{ author ? 'You haven\'t added any pictures yet' : 'This collection is empty, too empty...' }}</ng-container>
+            </sc-show-pictures>
+        </div>
+    </sc-page-content>
+</sc-page>
+
+<ng-template #loadingRef>
+    <div *ngIf="!loading" class="full-content">hmm, we couldn't find this collection</div>
+
+    <div *ngIf="loading" class="container flex-row">
+        <sc-skeleton-text height="25px" width="200px" [animated]="true" class="mt"></sc-skeleton-text>
+    </div>
+</ng-template>

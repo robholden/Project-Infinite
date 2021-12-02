@@ -1,0 +1,110 @@
+<ion-header>
+    <ion-toolbar color="light">
+        <ng-container *ngIf="!recoveryCodes">
+            <ion-buttons slot="start">
+                <ion-button (click)="dismiss()">
+                    <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+
+            <ion-title>{{ type === TwoFactorType.App ? 'Setup App 2FA' : 'Setup Email 2FA' }}</ion-title>
+        </ng-container>
+
+        <ng-container *ngIf="!!recoveryCodes">
+            <ion-title>Recovery Codes</ion-title>
+        </ng-container>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ng-container *ngIf="!recoveryCodes; else recoveryCodesRef">
+        <ion-card *ngIf="!!qrcode">
+            <ion-card-header>
+                <ion-card-title>Download App</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <p>Download and install an Authenitcator App.</p>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-card class="ion-margin-top" *ngIf="!!qrcode">
+            <ion-card-header>
+                <ion-card-title>Setup</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <p>Scan the QR Code or enter the follwoing key into your two factor authenticator app:</p>
+
+                <ion-chip color="primary" (click)="copyToClipboard(data.secret)">
+                    <small>{{ data.secret }}</small>
+                </ion-chip>
+
+                <div>
+                    <img [src]="qrcode" />
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-card [class.ion-margin-top]="!!qrcode">
+            <ion-card-header>
+                <ion-card-title>Enter Code</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <p [ngSwitch]="type">
+                    <ng-container *ngSwitchCase="TwoFactorType.App">
+                        Your two factor authenticator app will provide you with a unique code. Enter the code in the confirmation box below.
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="TwoFactorType.Email">
+                        An email has been sent to your registered email address which contains a verification code. Enter the code in the confirmation box
+                        below.
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="TwoFactorType.Sms">
+                        An sms has been sent to your registered mobile number which contains a verification code. Enter the code in the confirmation box
+                        below.
+                    </ng-container>
+                </p>
+
+                <form (submit)="complete()" [formGroup]="form" novalidate>
+                    <sc-custom-field [field]="code">
+                        <ion-input type="text" inputmode="tel" formControlName="code" placeholder="Code"></ion-input>
+                    </sc-custom-field>
+
+                    <ion-button class="ion-margin-top" type="submit" expand="block" [disabled]="form.invalid"> Complete Setup </ion-button>
+                </form>
+            </ion-card-content>
+        </ion-card>
+    </ng-container>
+</ion-content>
+
+<ng-template #recoveryCodesRef>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>2FA Enabled</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <p>You have successfully enabled two-factor authentication.</p>
+
+            <p class="ion-padding-top">
+                If you lose {{ type === TwoFactorType.Email ? 'access to your email' : 'your device' }} and don't have the recovery codes you will lose
+                access to your account.
+            </p>
+
+            <p class="ion-padding-top">
+                <ion-text color="danger"> You <strong>WILL NOT</strong> be able to view these codes again &mdash; store them in a safe place. </ion-text>
+            </p>
+
+            <div>
+                <ion-chip *ngFor="let code of recoveryCodes" color="danger" (click)="copyToClipboard(code.value)">
+                    <ion-label>{{ code.value }}</ion-label>
+                </ion-chip>
+            </div>
+
+            <ion-button class="ion-margin-top" expand="block" (click)="dismiss()">Close Setup</ion-button>
+        </ion-card-content>
+    </ion-card>
+</ng-template>

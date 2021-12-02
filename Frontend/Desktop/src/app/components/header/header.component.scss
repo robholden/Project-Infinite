@@ -1,0 +1,117 @@
+:host {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    height: var(--sc-header-height);
+
+    // border-bottom: 2px solid var(--sc-colour-light);
+    box-shadow: 0 2px 4px rgba(var(--sc-colour-dark-rgb), 0.05);
+
+    background-color: var(--sc-colour-default);
+    color: var(--sc-colour-default-contrast);
+
+    &.with-shadow {
+        box-shadow: 0 2px 4px rgba(var(--sc-colour-dark-rgb), 0.05);
+        border-bottom: none;
+    }
+
+    .container {
+        padding: 0;
+        margin: auto;
+    }
+
+    .logo {
+        a {
+            font-size: 24px;
+        }
+    }
+
+    .header-link {
+        display: flex;
+        align-items: center;
+        color: var(--sc-colour-default-contrast);
+        margin: 0 0.75rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 16px;
+
+        &:disabled {
+            color: var(--sc-colour-default-shade);
+            cursor: not-allowed;
+        }
+
+        &:hover,
+        &:focus,
+        &.active {
+            color: var(--sc-colour-primary);
+            opacity: 1;
+        }
+
+        > i,
+        svg {
+            margin-left: 0.25rem;
+        }
+    }
+
+    .notif {
+        position: relative;
+
+        > i {
+            transform: rotate(0);
+
+            &.alerted {
+                animation-name: bell;
+                animation-duration: 750ms;
+                animation-timing-function: cubic-bezier(1, 1, 1, 1);
+
+                @keyframes bell {
+                    0% {
+                        transform: rotate(0) scale(1);
+                    }
+
+                    20% {
+                        transform: rotate(45deg);
+                    }
+
+                    40% {
+                        transform: rotate(-45deg) scale(1.4);
+                    }
+
+                    60% {
+                        transform: rotate(45deg);
+                    }
+
+                    80% {
+                        transform: rotate(-45deg);
+                    }
+
+                    100% {
+                        transform: rotate(0) scale(1);
+                    }
+                }
+            }
+        }
+
+        > span {
+            position: absolute;
+            right: -2px;
+            top: 0px;
+            min-width: 15px;
+            background: var(--sc-colour-secondary);
+            color: var(--sc-colour-danger-contrast);
+            font-weight: bold;
+            font-size: 10px;
+            padding: 1px 3px;
+            border-radius: 15px;
+            text-align: center;
+        }
+    }
+}

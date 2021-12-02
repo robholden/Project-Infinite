@@ -1,0 +1,12 @@
+.close-modal {
+    position: absolute;
+    right: -1.5rem;
+    top: 0;
+    font-size: 18px;
+    color: var(--sc-colour-default);
+    opacity: 0.8;
+
+    &:hover {
+        opacity: 1;
+    }
+}

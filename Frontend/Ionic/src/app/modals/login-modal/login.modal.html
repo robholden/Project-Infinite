@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-toolbar color="light">
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss(true)">
+                <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-title></ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form class="flex-col h-100" (submit)="login()" [formGroup]="form" novalidate="novalidate">
+        <div class="ion-padding">
+            <ion-card-title color="primary">Login</ion-card-title>
+            <ion-text>Welcome back to our snowy catalogue</ion-text>
+
+            <sc-custom-field class="ion-margin-vertical" label="Username" [field]="username" [errors]="['maxlength']">
+                <ion-input type="email" formControlName="username" placeholder="..."></ion-input>
+            </sc-custom-field>
+
+            <sc-custom-field label="Password" [field]="password" [errors]="['maxlength']">
+                <ion-input type="password" [clearInput]="true" formControlName="password" placeholder="..."></ion-input>
+            </sc-custom-field>
+
+            <div class="ion-margin-top">
+                <ion-button type="submit" expand="block" [disabled]="form.invalid"> Login </ion-button>
+
+                <sc-external-logins class="ion-margin-top" type="login" [ref]="ref" [presentingElement]="presentingElement"></sc-external-logins>
+            </div>
+        </div>
+
+        <div class="flex-between ion-padding mt-a">
+            <ion-text (click)="forgotPassword()"><small>Forgot Password</small></ion-text>
+
+            <ion-text color="primary" (click)="events.trigger(CustomEvent.Register, { presentingElement: presentingElement })">
+                <small>Register →</small>
+            </ion-text>
+        </div>
+    </form>
+</ion-content>

@@ -1,0 +1,33 @@
+<sc-page-content *ngIf="!getting else loadingRef">
+    <div class="container flex-col">
+        <div class="flex-row">
+            <button type="button" class="button" (click)="add()">Add Tag <i class="far fa-plus icon"></i></button>
+
+            <ng-container *ngIf="has_changes">
+                <button type="button" class="button ml-a" (click)="reset()">Reset</button>
+                <button id="btn-save-tags" type="button" class="button ml-s" background="success" (click)="save()" [disabled]="!valid_changes">
+                    Save
+                </button>
+            </ng-container>
+        </div>
+
+        <div class="tag-list" [sortablejs]="tags" [sortablejsOptions]="{handle: '.dragger'}">
+            <div class="tag card-shadow mt mr" *ngFor="let tag of tags; let $i = index">
+                <div class="dragger"></div>
+
+                <input [id]="'tag-' + $i" [name]="'tag-' + $i" type="text" [(ngModel)]="tag.value" required />
+
+                <button id="delete-tag-{{ $i }}" type="button" colour="danger" (click)="delete($i)">
+                    <i class="fas fa-trash fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</sc-page-content>
+
+<ng-template #loadingRef>
+    <div class="full-content">
+        <p>Loading</p>
+        <p><i class="fas fa-spinner-third fa-spin"></i></p>
+    </div>
+</ng-template>

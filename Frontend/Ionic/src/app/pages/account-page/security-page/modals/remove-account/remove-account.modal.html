@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-toolbar color="light">
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+                <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-title></ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form class="flex-col h-100 ion-padding-horizontal" (submit)="confirm()" [formGroup]="form" novalidate="novalidate">
+        <div class="ion-padding-vertical">
+            <ion-card-title color="primary">Delete Account</ion-card-title>
+            <ion-text color="danger">When we delete your account all data is permanently deleted immediately and cannot be recovered</ion-text>
+
+            <sc-custom-field
+                class="ion-margin-vertical"
+                label="Password"
+                [field]="password"
+                [errors]="['minlength', 'maxlength']"
+                *ngIf="password.enabled"
+            >
+                <ion-input type="password" formControlName="password" autocomplete="password"></ion-input>
+            </sc-custom-field>
+        </div>
+
+        <div class="flex-row-align flex-shrink-0 mt-a">
+            <ion-label class="toggle-text text-wrap flex-grow-1"> Check this box to confirm you have read the warning above </ion-label>
+
+            <div class="flex-shrink-0">
+                <ion-toggle formControlName="confirmed"></ion-toggle>
+            </div>
+        </div>
+
+        <div class="ion-padding-vertical">
+            <ion-button color="danger" type="submit" expand="block" [disabled]="form.invalid"> Permanently Delete Account </ion-button>
+        </div>
+    </form>
+</ion-content>

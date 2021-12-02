@@ -1,0 +1,83 @@
+<sc-modal-wrapper (closed)="dismiss()" *ngIf="authState.contentSettings">
+    <h2>Upload your pictures</h2>
+
+    <div class="upload-boxes mt">
+        <div class="upload-box-container" *ngFor="let upload of uploads; let $i = index">
+            <label
+                [for]="'upload-input-' + upload.id"
+                class="upload-box"
+                [class.drop]="drop_index !== null && !upload.file"
+                [class.uploading]="upload.progress >= 0"
+                [style.background-image]="upload.file && upload.url ? 'url(' + upload.url + ')' : null"
+            >
+                <input
+                    [id]="'upload-input-' + upload.id"
+                    [style.display]="'none'"
+                    type="file"
+                    multiple
+                    (change)="change($event, $i)"
+                    accept=".png,.jpg,.jpeg"
+                />
+
+                <div class="upload-progress" *ngIf="upload.progress >= 0">
+                    <div>Uploading</div>
+                    <div class="progress">{{ (upload.progress > 100 ? 100 : upload.progress) + '%' }}</div>
+                </div>
+
+                <div class="upload-state" [class.has-error]="upload.errors.length" *ngIf="upload.file">
+                    <div class="button circular icon-only mt-a ml-a" background="danger" [tippy]="errorRef" *ngIf="upload.errors.length > 0; else okRef">
+                        <i class="fas fa-exclamation"></i>
+                    </div>
+
+                    <ng-template #okRef>
+                        <!-- <div class="button circular icon-only mt-a ml-a" background="success">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div> -->
+                    </ng-template>
+
+                    <ng-template #errorRef>
+                        <ul class="upload-errors">
+                            <li *ngFor="let error of upload.errors">{{ error | trx }}</li>
+                        </ul>
+                    </ng-template>
+                </div>
+
+                <div class="drop-content" *ngIf="upload.progress < 0 && !upload.url">
+                    <p>{{ drop_index === $i ? 'Drop your picture' : 'Drag & drop a picture' }}</p>
+                    <div class="button as-link mt-s" *ngIf="drop_index !== $i">Browse</div>
+
+                    <div *ngIf="drop_index === $i"><i class="fas fa-hand-paper"></i></div>
+                </div>
+            </label>
+
+            <button
+                class="button small icon-only circular remove-upload"
+                tippy="Remove"
+                (click)="upload.file = null; upload.url = ''; upload.errors = []; $event.stopPropagation()"
+                *ngIf="upload.file && upload.progress < 0"
+            >
+                <i class="far fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="buttons flex-row mt">
+        <div class="flex-spacer">
+            <h3>Picture Requirements</h3>
+            <ul>
+                <li>Geo location metadata <i class="far fa-check-circle" colour="success" *ngIf="!has_errors && has_file"></i></li>
+                <li>
+                    Less than {{ authState.contentSettings.maxPictureSize }}mb
+                    <i class="far fa-check-circle" colour="success" *ngIf="!has_errors && has_file"></i>
+                </li>
+                <li>
+                    {{ authState.contentSettings.minPictureResolutionX }}x{{ authState.contentSettings.minPictureResolutionY }} minimum resolution
+                    <i class="far fa-check-circle" colour="success" *ngIf="!has_errors && has_file"></i>
+                </li>
+                <li>Adhere to our terms of content use described in our <a routerLink="/policies/terms" target="_blank" rel="noopener">policy</a></li>
+            </ul>
+        </div>
+
+        <button id="upload-btn" class="button mt-a ml-s" background="primary" (click)="upload()" [disabled]="has_errors || !has_file">Upload</button>
+    </div>
+</sc-modal-wrapper>

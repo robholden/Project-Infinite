@@ -1,0 +1,13 @@
+<ng-container *ngIf="show">
+    <div
+        class="search-results"
+        infinite-scroll
+        [infiniteScrollDistance]="scrollDistance"
+        [infiniteScrollUpDistance]="scrollUpDistance"
+        [infiniteScrollThrottle]="throttle"
+        (scrolled)="onScrollDown($event)"
+        (scrolledUp)="onUp($event)"
+    >
+        <p *ngFor="let i of array">{{ i }}</p>
+    </div>
+</ng-container>

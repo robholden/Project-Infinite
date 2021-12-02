@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar color="light">
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+                <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-title></ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button (click)="userField.save()" [color]="userField?.valid ? 'primary' : null" [disabled]="!userField?.valid"> Save </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <sc-update-user-field #userField field="name" (saved)="saved()">
+        <ion-card-title color="primary">Display Name</ion-card-title>
+        <ion-text>This is kept privately by us and how we will address you in any communications</ion-text>
+    </sc-update-user-field>
+</ion-content>

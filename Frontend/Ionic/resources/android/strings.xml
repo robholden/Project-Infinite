@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Snow Capture</string>
+    <string name="title_activity_main">Snow Capture</string>
+    <string name="package_name">com.snowcapture</string>
+    <string name="custom_url_scheme">com.snowcapture</string>
+    <string name="fb_app_id">1111781849247647</string>
+    <string name="fb_app_name">Snow Capture</string>
+    <bool name="fb_auto_log_app_events_enabled">false</bool>
+    <bool name="fb_advertiser_id_collection_enabled">false</bool>
+</resources>

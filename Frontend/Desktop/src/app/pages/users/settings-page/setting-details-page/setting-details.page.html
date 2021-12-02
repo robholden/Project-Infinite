@@ -1,0 +1,69 @@
+<div class="form-box">
+    <label>Your Name</label>
+    <div class="form-section button-attached mb-s">
+        <div class="input readonly">{{ user?.name }}</div>
+        <button id="btn-name" class="button affix icon-only" background="primary" (click)="editField('name')" tippy="Edit your name" placement="right">
+            <i class="icon far fa-pencil"></i>
+        </button>
+    </div>
+    <small colour="medium">This is kept privately by us and how we will address you in any communications</small>
+</div>
+
+<div class="form-box mt">
+    <label>Your Email</label>
+    <div class="form-section button-attached mb-s">
+        <div class="input readonly">{{ email }}</div>
+        <button
+            id="btn-email"
+            class="button affix icon-only"
+            background="primary"
+            (click)="editField('email')"
+            tippy="Edit your email"
+            placement="right"
+            *ngIf="!authState.provider"
+        >
+            <i class="icon far fa-pencil"></i>
+        </button>
+
+        <button
+            class="button affix icon-only"
+            background="primary"
+            (click)="maskEmail = !maskEmail"
+            tippy="Show email"
+            placement="right"
+            *ngIf="!!authState.provider"
+        >
+            <i class="icon far fa-eye"></i>
+        </button>
+    </div>
+
+    <div colour="medium">
+        <small>Used for logging in, password recovery and communication purposes</small>
+        <ng-container *ngIf="!authState.provider">
+            <small *ngIf="user?.emailConfirmed" class="mt-s"><strong colour="success">Email Verified</strong></small>
+            <small *ngIf="!user?.emailConfirmed" class="mt-s">
+                <strong colour="danger">Unverified</strong> &#8212; please verify your email
+                <button id="resend-btn" *ngIf="!sent" class="button small ml-s" background="danger" (click)="resend()">Resend Email</button>
+                <strong colour="success" *ngIf="sent"> &nbsp; &bull; &nbsp; a confirmation email has been resent </strong>
+            </small>
+        </ng-container>
+    </div>
+</div>
+
+<div class="form-box mt">
+    <label>Your Username</label>
+    <div class="form-section button-attached mb-s">
+        <div class="input readonly">{{ user?.username }}</div>
+        <button
+            id="btn-username"
+            class="button affix icon-only"
+            background="primary"
+            (click)="editField('username')"
+            tippy="Edit your username"
+            placement="right"
+        >
+            <i class="icon far fa-pencil"></i>
+        </button>
+    </div>
+    <small colour="medium">Used for logging in, and how we identify yourself to other users</small>
+</div>

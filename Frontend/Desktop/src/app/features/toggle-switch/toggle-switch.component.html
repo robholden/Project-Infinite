@@ -1,0 +1,9 @@
+<label *ngIf="!parent" class="switch">
+    <input [id]="name" [name]="name" type="checkbox" [(ngModel)]="checked" (ngModelChange)="checkedChange.emit($event)" />
+    <span class="slider round"></span>
+</label>
+
+<label *ngIf="parent" class="switch" [formGroup]="parent">
+    <input [id]="name" type="checkbox" [formControlName]="name" />
+    <span class="slider round"></span>
+</label>

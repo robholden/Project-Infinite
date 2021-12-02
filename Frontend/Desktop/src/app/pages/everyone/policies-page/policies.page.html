@@ -1,0 +1,13 @@
+<sc-page background="default">
+    <sc-page-header
+        [pageLinks]="[
+            { url: 'terms', name: 'Terms & Conditions' },
+            { url: 'privacy', name: 'Privacy' },
+            { url: 'cookies', name: 'Cookies' }
+        ]"
+    >
+        <h2>Policies</h2>
+    </sc-page-header>
+
+    <router-outlet></router-outlet>
+</sc-page>

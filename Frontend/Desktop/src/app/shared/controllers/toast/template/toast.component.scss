@@ -1,0 +1,48 @@
+:host {
+    display: block;
+    position: fixed;
+    max-width: 450px;
+    left: 0;
+    right: 0;
+    width: 95%;
+    margin: auto;
+    padding: 1rem;
+    border-radius: var(--sc-br);
+    overflow: hidden;
+    cursor: default;
+    z-index: 1001;
+
+    bottom: 20px;
+    opacity: 1;
+    transition: 0.25s ease;
+
+    &.preloaded {
+        bottom: -50px;
+        opacity: 0;
+    }
+
+    &.dismissed {
+        opacity: 0;
+    }
+
+    button {
+        border: none;
+        cursor: pointer;
+        outline: none;
+        background: none !important;
+        opacity: 0.75;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .timer-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        width: 0px;
+        opacity: 0.25;
+    }
+}

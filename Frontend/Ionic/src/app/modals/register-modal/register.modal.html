@@ -1,0 +1,82 @@
+<ion-header>
+    <ion-toolbar color="light">
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+                <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-title></ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form class="flex-col h-100" (submit)="register()" [formGroup]="form" novalidate="novalidate">
+        <div class="ion-padding">
+            <ion-card-title color="primary">Register</ion-card-title>
+            <ion-text>Join our snowy catalogue</ion-text>
+
+            <sc-custom-field class="ion-margin-vertical" label="Your Name" [field]="name" [errors]="['maxlength']">
+                <ion-input type="text" formControlName="name" placeholder="..."></ion-input>
+            </sc-custom-field>
+
+            <sc-custom-field class="ion-margin-bottom" label="Your Email" [field]="email" [errors]="['maxlength', 'email']">
+                <ion-input type="email" formControlName="email" placeholder="..."></ion-input>
+            </sc-custom-field>
+
+            <sc-custom-field
+                class="ion-margin-bottom"
+                label="Your Username"
+                [field]="username"
+                [errors]="['minlength', 'maxlength', 'pattern']"
+                [trxParams]="{ pattern: 'username' }"
+            >
+                <ion-input type="text" formControlName="username" placeholder="..."></ion-input>
+            </sc-custom-field>
+
+            <sc-custom-field class="ion-margin-bottom" label="Your Password" [field]="password" [errors]="['minlength', 'maxlength']">
+                <ion-input type="password" [clearInput]="true" formControlName="password" placeholder="..."></ion-input>
+
+                <ng-container *ngIf="pwStrength" custom-errors>
+                    <ion-text [color]="pwStrength.colour">{{ pwStrength.message }}</ion-text>
+                </ng-container>
+            </sc-custom-field>
+
+            <sc-custom-field
+                class="ion-margin-bottom"
+                label="Confirm Password"
+                [field]="confirmPassword"
+                [errors]="['minlength', 'maxlength', 'mismatch']"
+                [trxParams]="{ 'mismatch': { name: 'Passwords' } }"
+            >
+                <ion-input type="password" [clearInput]="true" formControlName="confirmPassword" placeholder="..."></ion-input>
+            </sc-custom-field>
+
+            <div class="flex-row-align flex-shrink-0">
+                <ion-label class="toggle-text text-wrap flex-grow-1">
+                    By registering you are agreeing to our
+                    <a href="#" (click)="$event.preventDefault(); events.trigger(CustomEvent.TermsPolicy)"> Terms & Conditions</a>
+                    &
+                    <a href="#" (click)="$event.preventDefault(); events.trigger(CustomEvent.PrivacyPolicy)"> Privacy</a>
+                    polices.
+                </ion-label>
+
+                <div class="flex-shrink-0">
+                    <ion-toggle formControlName="terms"></ion-toggle>
+                </div>
+            </div>
+
+            <div class="ion-padding-top">
+                <ion-button type="submit" expand="block" [disabled]="form.invalid"> Create Account </ion-button>
+
+                <sc-external-logins class="ion-margin-top" type="register" [ref]="ref" [presentingElement]="presentingElement"></sc-external-logins>
+            </div>
+        </div>
+
+        <div class="ion-padding mt-a ta-r">
+            <ion-text color="primary" (click)="events.trigger(CustomEvent.Login, { presentingElement: presentingElement })">
+                <small>Login →</small>
+            </ion-text>
+        </div>
+    </form>
+</ion-content>

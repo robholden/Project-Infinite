@@ -1,0 +1,14 @@
+<div
+    class="timer-bar"
+    [style.transition]="'width linear ' + duration + 'ms'"
+    [style.width]="duration ? '100%' : null"
+    [attr.contrast-background]="colour"
+></div>
+
+<div class="toast-content flex-row-align">
+    <div [innerHTML]="message | trx"></div>
+    <div class="flex-spacer"></div>
+    <button class="flex-row flex-centre ml" [attr.background]="colour" (click)="dismiss()">
+        <i class="fas fa-times-circle"></i>
+    </button>
+</div>

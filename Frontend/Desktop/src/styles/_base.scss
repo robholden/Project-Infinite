@@ -1,0 +1,116 @@
+html,
+body {
+    display: block;
+    position: relative;
+    height: 100%;
+}
+
+body {
+    line-height: 1.4;
+}
+
+sc-root {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+    font-family: var(--sc-font-family);
+    font-size: var(--sc-font-size);
+    color: var(--sc-colour-default-contrast);
+    background-color: var(--sc-colour-default);
+    box-shadow: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img:not([src]) {
+    visibility: hidden;
+}
+
+.no-pe {
+    pointer-events: none !important;
+}
+
+a,
+button {
+    transition: opacity 0.25s ease, background 0.25s ease, color 0.25s ease, right 0.25s ease, left 0.25s ease, box-shadow 0.25s ease;
+    border: none;
+    outline: none;
+    background: none;
+    appearance: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+a,
+.anchor {
+    text-decoration: none;
+    color: var(--sc-colour-primary);
+    cursor: pointer;
+
+    &:hover,
+    &.active {
+        opacity: 0.75;
+    }
+
+    &.active {
+        cursor: default;
+    }
+
+    &.disabled {
+        pointer-events: none;
+        cursor: default;
+        opacity: 0.75;
+    }
+
+    &:focus {
+        outline: 1px dotted currentColor;
+    }
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h2 {
+    color: var(--sc-colour-primary);
+    font-size: 1.4rem;
+}
+
+h3 {
+    color: var(--sc-colour-primary);
+    font-size: 1.25rem;
+}
+
+h4 {
+    font-size: 1.1rem;
+}
+
+h5 {
+    font-size: 1rem;
+}
+
+h6 {
+    font-size: 0.88rem;
+}
+
+small {
+    font-size: 0.9em;
+}
+
+.fa-spinner-third[data-prefix='fad'] {
+    color: var(--sc-colour-primary);
+}

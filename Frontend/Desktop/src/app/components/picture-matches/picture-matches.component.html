@@ -1,0 +1,19 @@
+<div class="empty" *ngIf="loading">
+    <i class="fas fa-spinner-third fa-spin"></i>
+</div>
+
+<div class="empty" *ngIf="!loading && !matches?.length">No Matches</div>
+
+<div class="p-s" *ngIf="!loading && matches?.length > 0">
+    <h4>Matches</h4>
+
+    <div class="matches mt-s">
+        <a
+            class="card-shadow"
+            [routerLink]="'/picture/' + img.pictureId"
+            *ngFor="let img of matches"
+            [style.background-image]="'url(' + (img.path | imgUrl) + ')'"
+        >
+        </a>
+    </div>
+</div>

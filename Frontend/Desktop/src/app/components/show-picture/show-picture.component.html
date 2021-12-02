@@ -1,0 +1,151 @@
+<div class="p" *ngIf="!picture; else pictureRef" @fade>
+    <sc-skeleton-text height="400px" [animated]="true"></sc-skeleton-text>
+
+    <div class="flex-row mt">
+        <sc-skeleton-text height="20px" width="250px" [animated]="true"></sc-skeleton-text>
+
+        <sc-skeleton-text height="25px" width="35px" [animated]="true" class="ml-a"></sc-skeleton-text>
+    </div>
+
+    <div class="flex-row mt-s">
+        <sc-skeleton-text height="35px" width="125px" [animated]="true"></sc-skeleton-text>
+        <sc-skeleton-text height="35px" width="125px" [animated]="true" class="ml-s"></sc-skeleton-text>
+        <sc-skeleton-text height="35px" width="125px" [animated]="true" class="ml-s"></sc-skeleton-text>
+    </div>
+</div>
+
+<ng-template #pictureRef>
+    <div *ngIf="picture.status === Status.Draft && dedicated" class="card small ta-c" background="secondary">This picture is a draft</div>
+
+    <div class="card small ta-c" background="tertiary" *ngIf="picture.status === Status.PendingApproval">
+        This picture is pending approval
+
+        <div class="mt-s" *ngIf="authState.is_mod">
+            <sc-approval [picture]="picture" (acted)="$event ? (picture.status = Status.Published) : null" [redirect]="redirectApproval"></sc-approval>
+        </div>
+    </div>
+
+    <div class="picture-img">
+        <img id="img" [src]="picture.path | imgUrl: false" />
+    </div>
+
+    <div class="picture-info p">
+        <div class="meta-bar flex-row-align mb">
+            <h3 [attr.colour]="!picture.name ? 'danger' : null">{{ picture.name || 'Missing title' }}</h3>
+
+            <div class="flex-spacer"></div>
+
+            <button
+                class="button icon-only ml-s dropdown-toggle"
+                background="light"
+                tippy="View matches"
+                placement="top"
+                [hideOnFocus]="true"
+                *ngIf="authState.is_mod"
+            >
+                <i class="far fa-microchip icon"></i>
+
+                <sc-drop-down position="topleft" [width]="350" (opened)="pics.fetch()">
+                    <sc-picture-matches [pictureId]="picture.pictureId" #pics></sc-picture-matches>
+                </sc-drop-down>
+            </button>
+
+            <ng-container *ngIf="picture.status === Status.Draft">
+                <button type="button" class="button icon-only ml-s" background="light" tippy="Edit" placement="top" (click)="edit()">
+                    <i class="icon far fa-pencil"></i>
+                </button>
+
+                <button
+                    type="button"
+                    id="submit-btn"
+                    class="button ml-s"
+                    background="primary"
+                    (click)="publish()"
+                    [disabled]="!picture.name || !picture.location"
+                >
+                    Publish <i class="icon far fa-atom-alt"></i>
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="published && authState.loggedIn">
+                <button
+                    type="button"
+                    id="add-to-collection-btn"
+                    class="button icon-only dropdown-toggle ml-s"
+                    background="primary"
+                    tippy="Add To Collection"
+                    placement="top"
+                    [hideOnFocus]="true"
+                >
+                    <span class="icon"><i class="far fa-layer-group"></i></span>
+                    <sc-drop-down position="topleft" [width]="215" (opened)="collection.fetch()">
+                        <div>
+                            <sc-select-collection
+                                #collection
+                                btnId="add-to-collection-btn"
+                                [pictureId]="picture.pictureId"
+                                [search]="{ username: authState.user.username }"
+                            ></sc-select-collection>
+                        </div>
+                    </sc-drop-down>
+                </button>
+
+                <button
+                    type="button"
+                    id="btn-like"
+                    class="button no-w ml-s"
+                    background="secondary"
+                    (click)="like()"
+                    [tippy]="picture.liked ? 'Remove from Likes' : 'Add to Likes'"
+                    placement="top"
+                    [disabled]="liking"
+                >
+                    <i class="icon {{ picture.liked ? 'fas' : 'far' }} fa-heart"></i> &nbsp; {{ picture.likesTotal }}
+                </button>
+
+                <button type="button" class="button icon-only dropdown-toggle ml-s" hover="light" *ngIf="author || !reported">
+                    <i class="icon far fa-ellipsis-vertical"></i>
+
+                    <sc-drop-down position="bottomleft" [width]="100">
+                        <div class="link-section">
+                            <button type="button" colour="danger" (click)="delete()" *ngIf="author">
+                                Delete
+                                <i class="far fa-trash"></i>
+                            </button>
+
+                            <button type="button" colour="danger" (click)="report()" *ngIf="!author">
+                                Report
+                                <i class="far fa-pencil"></i>
+                            </button>
+                        </div>
+                    </sc-drop-down>
+                </button>
+            </ng-container>
+        </div>
+
+        <div class="picture-meta flex-row mt-s">
+            <div class="button" background="light" tippy="When it was taken" placement="top">
+                <i class="far fa-calendar-alt icon" position="left"></i> {{ picture.dateTaken | date }}
+            </div>
+
+            <a class="button ml-s" background="light" [routerLink]="'/user/' + picture.username" tippy="Who uploaded it" placement="top">
+                <i class="far fa-at icon" position="left"></i>{{ picture.username | titlecase }}
+            </a>
+
+            <div class="button ml-s" background="light" tippy="Where it was taken" placement="top">
+                <i class="far fa-map-marker-alt icon" position="left"></i>
+
+                <ng-container *ngIf="picture.location">
+                    {{ 'locations.' + picture.location.name | trx: {}:picture.location.name }},
+                    {{ 'countries.' + picture.location.country.code | trx: {}:picture.location.country.name }}
+                </ng-container>
+
+                <i class="fas fa-spinner-third fa-spin mx" position="left" *ngIf="!picture.location"></i>
+            </div>
+        </div>
+
+        <div *ngIf="picture.tags?.length" class="flex-row mt-s">
+            <div class="pill card-shadow mr-s mt-s outline" background="dark" *ngFor="let tag of picture.tags || []">{{ tag }}</div>
+        </div>
+    </div>
+</ng-template>

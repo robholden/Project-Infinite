@@ -1,0 +1,46 @@
+<ion-header>
+    <ion-toolbar color="light">
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+                <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-title></ion-title>
+
+        <ion-buttons slot="end" *ngIf="!authState.provider">
+            <ion-button (click)="userField.save()" [color]="userField?.valid ? 'primary' : null" [disabled]="!userField?.valid"> Save </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <sc-update-user-field #userField field="email" type="email" [requestPw]="true" [readonly]="!!authState.provider" (saved)="saved()">
+        <ion-card-title color="primary">Email</ion-card-title>
+        <ion-text>Used for logging in, password recovery and communication purposes</ion-text>
+    </sc-update-user-field>
+
+    <div class="mt-s" *ngIf="userField?.hasChange; else showEmailStatus">
+        <ion-text color="danger"><small>You will need to re-confirm any new email address</small></ion-text>
+    </div>
+
+    <div class="mt-s" *ngIf="!!authState.provider">
+        <ion-text color="medium">Your email is connected with an external provider and can't be changed</ion-text>
+    </div>
+</ion-content>
+
+<ng-template #showEmailStatus>
+    <div class="flex-row-align mt-s" *ngIf="!authState.provider">
+        <small *ngIf="authState.user?.emailConfirmed">
+            <ion-text color="success"><strong>Email Verified</strong></ion-text>
+        </small>
+        <ng-container *ngIf="!authState.user?.emailConfirmed">
+            <small>
+                <ion-text color="danger"><strong>Unverified</strong></ion-text> &#8212; please verify your email
+                <ion-text color="success" *ngIf="sent"><strong> &nbsp; &bull; &nbsp; a confirmation email has been resent </strong></ion-text>
+            </small>
+
+            <ion-button class="ml-a" size="small" fill="outline" color="danger" (click)="resend()" *ngIf="!sent">Resend Email</ion-button>
+        </ng-container>
+    </div>
+</ng-template>

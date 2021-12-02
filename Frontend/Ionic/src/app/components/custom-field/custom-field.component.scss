@@ -1,0 +1,65 @@
+:host {
+    position: relative;
+    display: block;
+
+    --border-radius: 10px;
+
+    ion-label {
+        display: flex;
+        align-items: flex-end;
+
+        label {
+            color: var(--ion-color-dark-tint);
+            font-size: 0.9em;
+            flex-shrink: 0;
+            margin-right: 15px;
+        }
+    }
+
+    .custom-errors {
+        text-align: right;
+
+        ::ng-deep {
+            ion-text {
+                display: none;
+                font-size: 0.8em;
+                margin-right: 5px;
+
+                &:last-of-type {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    ::ng-deep {
+        ion-input {
+            --padding-bottom: 0.75rem;
+            --padding-top: 0.75rem;
+            --padding-start: 0.75rem;
+            --padding-end: 0.75rem;
+            --background: var(--ion-color-light);
+            --border-color: var(--ion-color-light-tint);
+
+            margin-top: 0.25rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+
+            &[readonly] {
+                --background: var(--ion-color-light-shade);
+            }
+
+            &:not([readonly]) {
+                &.has-focus {
+                    box-shadow: 0 0 5px rgba(var(--ion-color-light-contrast-rgb), 0.05);
+                }
+
+                &.has-error,
+                &.ng-invalid:not(.ng-untouched) {
+                    --background: rgba(var(--ion-color-danger-rgb), 0.1);
+                    border: 1px solid var(--background);
+                }
+            }
+        }
+    }
+}

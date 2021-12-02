@@ -1,0 +1,62 @@
+<ion-header>
+    <ion-toolbar color="light">
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+                <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-title>2FA Verification</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form class="flex-col h-100 ion-padding-horizontal" (submit)="verify()" [formGroup]="form" novalidate="novalidate">
+        <div class="ion-padding-top">
+            <ion-card-title color="primary">Two-Factor Verification</ion-card-title>
+
+            <ion-text [ngSwitch]="type">
+                <ng-container *ngSwitchCase="TwoFactorType.App">
+                    Your two factor authenticator app will provide you with a unique code. Enter the code in the confirmation box below.
+                </ng-container>
+
+                <ng-container *ngSwitchCase="TwoFactorType.Email">
+                    An email has been sent to your registered email address which contains a verification code. Enter the code in the confirmation box
+                    below.
+                </ng-container>
+
+                <ng-container *ngSwitchCase="TwoFactorType.Sms">
+                    An SMS has been sent to your registered phone number which contains a verification code. Enter the code in the confirmation box below.
+                </ng-container>
+            </ion-text>
+
+            <sc-custom-field class="ion-margin-vertical" [field]="code">
+                <ion-input type="text" inputmode="tel" formControlName="code" placeholder="Code"></ion-input>
+            </sc-custom-field>
+            <!--
+            <div class="flex-row-align flex-shrink-0">
+                <ion-label class="toggle-text text-wrap flex-grow-1">Do not ask again for this location</ion-label>
+
+                <div class="flex-shrink-0">
+                    <ion-toggle formControlName="doNotAskAgain"></ion-toggle>
+                </div>
+            </div> -->
+        </div>
+
+        <div class="ion-padding-vertical mt-a">
+            <ion-button type="submit" expand="block" [disabled]="form.invalid"> Continue </ion-button>
+
+            <div class="flex-row ion-margin-top">
+                <div class="flex-spacer" *ngIf="type === TwoFactorType.App"></div>
+
+                <small>
+                    <ion-text color="danger" (click)="recover()"> Recover Account </ion-text>
+                </small>
+
+                <div class="flex-spacer"></div>
+
+                <small (click)="resend()" *ngIf="type !== TwoFactorType.App"> Resend Code </small>
+            </div>
+        </div>
+    </form>
+</ion-content>

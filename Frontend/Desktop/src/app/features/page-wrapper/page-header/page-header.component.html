@@ -1,0 +1,17 @@
+<div class="container">
+    <ng-content></ng-content>
+
+    <div class="page-links mt-s" *ngIf="pageLinks?.length">
+        <ng-container *ngFor="let link of pageLinks">
+            <a
+                *ngIf="link.visible !== false"
+                [routerLink]="link.url"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="$event.target.blur()"
+            >
+                {{ link.name }}
+            </a>
+        </ng-container>
+    </div>
+</div>

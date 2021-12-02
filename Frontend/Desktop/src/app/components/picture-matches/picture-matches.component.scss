@@ -1,0 +1,35 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+
+    &:hover {
+        cursor: default;
+    }
+}
+
+.empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--sc-colour-medium);
+    height: 200px;
+}
+
+.matches {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 0.5rem;
+    padding-right: 0.5rem;
+
+    a {
+        display: block;
+        background: var(--sc-colour-dark) no-repeat center;
+        background-size: contain;
+        height: 97.5px;
+    }
+}

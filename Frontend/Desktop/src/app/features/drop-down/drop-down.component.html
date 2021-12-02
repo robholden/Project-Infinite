@@ -1,0 +1,16 @@
+<div
+    class="dropdown"
+    [class.small]="small"
+    [style.width.px]="width > 0 ? width : null"
+    [class.pos-top]="position === 'topleft' || position === 'topright'"
+    [class.pos-bottom]="position === 'bottomleft' || position === 'bottomright'"
+    [class.pos-left]="position === 'bottomleft' || position === 'topleft'"
+    [class.pos-right]="position === 'bottomright' || position === 'topright'"
+    [style.margin-top.px]="position === 'bottomleft' || position === 'bottomright' ? y + 10 : null"
+    [style.margin-bottom.px]="position === 'topleft' || position === 'topright' ? y + 10 : null"
+    [style.margin-left.px]="position === 'bottomright' || position === 'topright' ? x : null"
+    [style.margin-right.px]="position === 'bottomleft' || position === 'topleft' ? x : null"
+    [style.max-height.px]="maxHeight"
+>
+    <ng-content></ng-content>
+</div>
