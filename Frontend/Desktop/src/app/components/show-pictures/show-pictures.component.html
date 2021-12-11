@@ -8,7 +8,7 @@
             <sc-drop-down position="bottomright" [width]="250">
                 <div class="link-search">
                     <div class="form-section button-attached flex-row">
-                        <input class="input" type="text" #locationInput placeholder="Search for a location" [disabled]="getting" />
+                        <input class="input" type="text" #locationInput placeholder="Search for a location" [disabled]="getting.init" />
                         <label class="button affix icon-only" background="primary"><i class="fas fa-search"></i></label>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
             <sc-drop-down position="bottomright" [width]="250">
                 <div class="link-search">
                     <div class="form-section button-attached flex-row">
-                        <input class="input" type="text" #tagInput placeholder="Search for a tag" [disabled]="getting" />
+                        <input class="input" type="text" #tagInput placeholder="Search for a tag" [disabled]="getting.init" />
                         <label class="button affix icon-only" background="primary"><i class="fas fa-search"></i></label>
                     </div>
                 </div>

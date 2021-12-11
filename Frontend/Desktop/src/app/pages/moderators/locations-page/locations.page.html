@@ -3,7 +3,10 @@
         <div class="container pb-0 flex-row-align">
             <div class="form-section button-attached flex-row">
                 <input class="input" type="text" #searchInput placeholder="Search for a location" [disabled]="getting" />
-                <label class="button affix icon-only" background="primary"><i class="fas fa-search"></i></label>
+                <label class="button affix icon-only" background="primary">
+                    <i class="fas fa-search" *ngIf="!getting"></i>
+                    <i class="fas fa-spinner-third fa-spin" *ngIf="getting"></i>
+                </label>
             </div>
 
             <div class="flex-spacer"></div>

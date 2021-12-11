@@ -1,18 +1,20 @@
 import { Component, HostBinding, HostListener, Injector, Input, OnInit } from '@angular/core';
-import { DesktopStore } from '@app/storage/desktop.store';
 
 import { BehaviorSubject } from 'rxjs';
+
+import { DesktopStore } from '@app/storage/desktop.store';
 
 import { ControllersService, IControllerComponent } from '../controllers.service';
 
 export interface IModalComponent<T> extends IControllerComponent {
     present(options?: ModalOptions): Promise<T>;
-    dismiss(): void;
+    dismiss(): Promise<void>;
 }
 
 export interface ModalOptions {
     canDismiss?: boolean;
     dismissOnEscape?: boolean;
+    dismissWhen?: (result?: any) => Promise<boolean>;
 }
 
 @Component({
@@ -25,6 +27,7 @@ export class ModalComponent<T> implements IModalComponent<T>, OnInit {
         canDismiss: true,
         dismissOnEscape: true,
     };
+    dismissing: boolean;
 
     protected desktopStore: DesktopStore;
     protected ctrl: ControllersService;
@@ -74,8 +77,15 @@ export class ModalComponent<T> implements IModalComponent<T>, OnInit {
         });
     }
 
-    dismiss() {
+    async dismiss() {
         if (this.options.canDismiss === false) return;
+
+        if (this.options.dismissWhen) {
+            this.dismissing = true;
+            const canDismiss = await this.options.dismissWhen(this.result.value);
+            this.dismissing = false;
+            if (!canDismiss) return;
+        }
 
         this.ctrl.destroy(this.id);
         this.result.complete();
@@ -86,8 +96,8 @@ export class ModalComponent<T> implements IModalComponent<T>, OnInit {
         if (this.options?.dismissOnEscape) this.dismiss();
     }
 
-    preventClosing(yes: boolean) {
-        this.desktopStore.preventRefresh(yes);
-        this.options.canDismiss = yes;
+    preventClosing(prevent: boolean) {
+        this.desktopStore.preventRefresh(prevent);
+        this.options.canDismiss = !prevent;
     }
 }

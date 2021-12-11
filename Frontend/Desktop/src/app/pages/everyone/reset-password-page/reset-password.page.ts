@@ -21,6 +21,7 @@ export class ResetPasswordPage implements OnInit {
     form: FormGroup;
     pwStrength: PasswordStrength;
     valid: boolean = null;
+    success: boolean;
 
     private _key: string;
 
@@ -86,6 +87,7 @@ export class ResetPasswordPage implements OnInit {
         const toast = this.toastCtrl.add('Password changed successfully', 'success');
         toast.present(5000);
 
+        this.success = true;
         this.events.trigger(CustomEvent.Login);
     }
 

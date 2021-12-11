@@ -1,4 +1,4 @@
-<form (submit)="submit()" [formGroup]="form" class="form-content card">
+<form (submit)="submit()" [formGroup]="form" class="form-content card" [attr.disabled]="dismissing">
     <h2 *ngIf="title">{{ title }}</h2>
     <div class="message mb" [innerHtml]="message" *ngIf="message"></div>
 
@@ -57,14 +57,17 @@
 
     <div class="buttons flex-row-align">
         <button
-            *ngFor="let btn of buttons"
             class="button {{ btn.className || '' }}"
             [attr.background]="btn.colour || 'light'"
             [type]="btn.role === 'cancel' ? 'button' : 'submit'"
-            [disabled]="btn.role === 'submit' && form.invalid"
+            [disabled]="(btn.role === 'submit' && form.invalid) || dismissing"
             (click)="btn.role === 'cancel' ? cancel() : null"
+            *ngFor="let btn of buttons; let $i = index"
         >
-            {{ btn.text | trx }}
+            <ng-container *ngIf="!dismissing || btn.role !== 'submit'; else btnLoading">{{ btn.text | trx }}</ng-container>
         </button>
+        <ng-template #btnLoading>
+            <span><i class="fas fa-spinner-third fa-spin icon" position="middle"></i></span>
+        </ng-template>
     </div>
 </form>

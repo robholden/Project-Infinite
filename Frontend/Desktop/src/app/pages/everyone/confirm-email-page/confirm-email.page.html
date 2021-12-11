@@ -1,5 +1,5 @@
 <sc-page [small]="true">
-    <sc-page-header>
+    <sc-page-header [attr.background]="valid === true ? 'success' : null">
         <h2>Confirm Email</h2>
     </sc-page-header>
 
@@ -12,6 +12,6 @@
 
         <div colour="danger" *ngIf="valid === false && error">{{ error | trx }}</div>
 
-        <div colour="success" *ngIf="valid === true">Your email has been confirmed successfully</div>
+        <div *ngIf="valid === true">Your email has been confirmed successfully</div>
     </sc-page-content>
 </sc-page>

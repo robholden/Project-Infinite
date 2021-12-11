@@ -5,20 +5,21 @@ import { Trx } from '@shared/models';
 import { ModalController } from '../modal/modal.controller';
 import { AlertComponent, Button, Input } from './template/alert.component';
 
-export interface AlertOptions {
+export interface SharedAlertOptions {
     title?: string | Trx;
     message?: string | Trx;
-    buttons?: Button[];
-    inputs?: Input[];
     focusFirst?: boolean;
+    handler?: (result?: any) => Promise<boolean>;
 }
 
-export interface ConfirmOptions {
-    title?: string | Trx;
-    message?: string | Trx;
+export interface AlertOptions extends SharedAlertOptions {
+    buttons?: Button[];
+    inputs?: Input[];
+}
+
+export interface ConfirmOptions extends SharedAlertOptions {
     confirmBtn?: Button;
     cancelBtn?: Button;
-    focusFirst?: boolean;
 }
 
 @Injectable({
@@ -71,6 +72,7 @@ export class AlertController {
                 },
             ],
             focusFirst: options.focusFirst,
+            handler: options.handler,
         });
 
         return result !== null;
@@ -85,6 +87,6 @@ export class AlertController {
             focusFirst: options.focusFirst,
         });
 
-        return modal.present();
+        return modal.present({ dismissWhen: options.handler });
     }
 }

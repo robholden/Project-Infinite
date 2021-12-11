@@ -38,12 +38,11 @@ export class SiteLoaderService {
         this.healthy = null;
 
         // Load site keys
-        const healthy = await this.gateway.healthy();
-        if (!healthy) return;
+        this.healthy = await this.gateway.healthy();
+        if (!this.healthy) return;
 
         // Load recaptcha
         await this.recaptcha.load();
-        this.healthy = healthy;
 
         // All good, start connections
         await this.connected();

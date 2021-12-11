@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
 
     async forgotPassword() {
         // Show prompt
-        const inputs = await this.alertCtrl.create({
+        await this.alertCtrl.create({
             title: 'Forgotten Password',
             message: 'Enter your email address for a password reset link',
             inputs: [
@@ -96,26 +96,21 @@ export class LoginComponent implements OnInit {
                     className: 'primary',
                 },
             ],
+            handler: async (inputs: any) => {
+                // Call service
+                const resp = await this.passwordService.forgot(inputs.email);
+
+                // Stop if response is an exception
+                if (resp instanceof CustomError) {
+                    return false;
+                }
+
+                const toast = this.toastCtrl.add('An email has been sent on how to reset your password', 'success');
+                toast.present(5000);
+
+                return true;
+            },
         });
-        if (!inputs) return;
-
-        // Tell ui we're loading
-        const loading = this.loadingCtrl.add('Sending request');
-        loading.present();
-
-        // Call service
-        const resp = await this.passwordService.forgot(inputs.email);
-
-        // Hide loading
-        await loading.dismiss();
-
-        // Stop if response is an exception
-        if (resp instanceof CustomError) {
-            return;
-        }
-
-        const toast = this.toastCtrl.add('An email has been sent on how to reset your password', 'success');
-        toast.present(5000);
     }
 
     private setForm() {

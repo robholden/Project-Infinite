@@ -64,6 +64,7 @@ export class PictureEditModal extends ModalComponent<Picture | false> implements
         const loading = this.loadingCtrl.addBtn('save-btn');
         loading.present();
         this.preventClosing(true);
+        this.form.disable();
 
         const resp = await this.pictureService.update(this.picture.pictureId, {
             name: this.name.value,
@@ -72,17 +73,18 @@ export class PictureEditModal extends ModalComponent<Picture | false> implements
             seed: this.picture.seed,
         });
 
-        // loading.dismiss();
-        // this.preventClosing(false);
+        loading.dismiss();
+        this.preventClosing(false);
+        this.form.enable();
 
-        // if (resp instanceof CustomError) {
-        //     return;
-        // }
+        if (resp instanceof CustomError) {
+            return;
+        }
 
-        // const toast = this.toastCtrl.add('Picture has been updated successfully', 'success');
-        // toast.present(5000);
+        const toast = this.toastCtrl.add('Picture has been updated successfully', 'success');
+        toast.present(5000);
 
-        // this.result.next(resp);
+        this.result.next(resp);
     }
 
     async delete() {

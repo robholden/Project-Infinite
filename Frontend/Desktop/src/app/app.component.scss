@@ -52,12 +52,11 @@ main {
         font-family: var(--sc-logo-font);
         font-size: 28px;
         color: var(--sc-colour-default-contrast);
-        // animation: pulse 1s infinite;
-        // transform: scale(1);
     }
 
-    svg[class*='--fa'] {
+    i {
         font-size: 18px;
+        margin-top: 5px;
     }
 }
 

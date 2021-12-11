@@ -14,7 +14,7 @@ export function maskText(text: string, opts: { start: number; end: number }, ski
     let value: string = '';
     for (let i = 0; i < text.length; i++) {
         if (skip.includes(text[i]) || i < opts.start || i > opts.end) value += text[i];
-        else value += '*';
+        else value += '•';
     }
 
     return value;

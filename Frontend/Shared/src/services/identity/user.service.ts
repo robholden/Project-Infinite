@@ -37,14 +37,11 @@ export class UserService {
      * @param passwordRequest Password request details
      */
     async update<T>(field: UserField, value: T, passwordRequest: PasswordRequest = null): Promise<void | CustomError> {
-        // Build body
-        const command = !field ? value : {};
-        if (field) command[field] = value;
-
         // Go to api
+        const command = { [field]: value };
         const user = await this.api.put<void>(
             '/identity/user/update/' + (field ? field : ''),
-            { ...(passwordRequest || {}), command },
+            passwordRequest?.password ? { ...passwordRequest, command } : command,
             {
                 recaptchaAction: 'user_update_' + field,
             }

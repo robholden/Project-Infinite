@@ -121,7 +121,8 @@ export class SettingDetailsPage implements OnInit {
         }
 
         // Call api
-        await this.loadingCtrl.addBtnWithApi(`btn-${field}`, this.userService.update(field, value, { password }));
+        const resp = await this.loadingCtrl.addBtnWithApi(`btn-${field}`, this.userService.update(field, value, { password }));
+        if (!(resp instanceof CustomError) && field === 'email') this.user.emailConfirmed = false;
     }
 
     // Checks change in field
