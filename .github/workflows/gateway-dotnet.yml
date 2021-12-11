@@ -2,30 +2,35 @@ name: Gateway .NET CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
     paths:
-    - 'snow-capture/backend/gateway/**.cs'
-    - 'snow-capture/backend/gateway/**.csproj'
+      - "./Backend/Gateway/**.cs"
+      - "./Backend/Gateway/**.csproj"
   workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ./Backend/Gateway
 
 jobs:
   build:
-
+    name: Build & Test
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0.x'
-        include-prerelease: true
-    - name: Restore dependencies
-      run: dotnet restore
-      working-directory: backend/gateway
-    - name: Build
-      run: dotnet build --no-restore
-      working-directory: backend/gateway
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      working-directory: backend/gateway
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+          include-prerelease: true
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
