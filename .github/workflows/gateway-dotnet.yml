@@ -22,7 +22,10 @@ jobs:
         include-prerelease: true
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: backend/gateway
     - name: Build
       run: dotnet build --no-restore
+      working-directory: backend/gateway
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: backend/gateway
