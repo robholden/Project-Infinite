@@ -62,7 +62,7 @@
 
         <button class="header-link dropdown-toggle">
             <div class="user-info">
-                <sc-avatar [name]="authState.user.username" size="28" bg="var(--sc-colour-primary)" fg="var(--sc-colour-primary-contrast)"></sc-avatar>
+                <sc-avatar [name]="authState.user.username" [size]="28" bg="var(--sc-colour-primary)" fg="var(--sc-colour-primary-contrast)"></sc-avatar>
             </div>
 
             <sc-drop-down position="bottomleft" [y]="10" [x]="-5">
@@ -70,7 +70,7 @@
                     <div class="user-info">
                         <sc-avatar
                             [name]="authState.user.username"
-                            size="28"
+                            [size]="28"
                             bg="var(--sc-colour-primary)"
                             fg="var(--sc-colour-primary-contrast)"
                         ></sc-avatar>

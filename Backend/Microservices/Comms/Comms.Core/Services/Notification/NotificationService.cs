@@ -111,7 +111,7 @@ public class NotificationService : INotificationService
         var emailSubject = string.Empty;
         var emailContent = string.Empty;
 
-        if (notification.Type == NotificationType.NewLike && preferences.PictureLiked)
+        if (notification.Type == NotificationType.NewLike && preferences.PictureLikedEmail)
         {
             if (totalEntries > 1)
             {
@@ -124,12 +124,12 @@ public class NotificationService : INotificationService
                 emailContent = $"<b>{ notification.Entries.FirstOrDefault()?.Username ?? "Someone" }</b> has liked your picture <a href='{ _emailSettings.WebUrl }/picture/{ notification.ContentKey }'>{ notification.ContentMessage }</a>!";
             }
         }
-        else if (notification.Type == NotificationType.PictureApproved && preferences.PictureApproved)
+        else if (notification.Type == NotificationType.PictureApproved && preferences.PictureApprovedEmail)
         {
             emailSubject = "Your picture is live!";
             emailContent = $"<a href='{ _emailSettings.WebUrl }/picture/{ notification.ContentKey }'>{ notification.ContentMessage }</a> has been approved by our team and is now live";
         }
-        else if (notification.Type == NotificationType.PictureUnapproved && preferences.PictureUnapproved)
+        else if (notification.Type == NotificationType.PictureUnapproved && preferences.PictureUnapprovedEmail)
         {
             emailSubject = "Sorry, we couldn't accept your picture";
             emailContent = $"<b>{ notification.ContentMessage }</b> did not meet our standards or criteria";

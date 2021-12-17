@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { LoadingBtn, LoadingController } from '@app/shared/controllers/loading';
-
 import { CustomEvent } from '@shared/enums';
 import { Collection, CollectionSearch, CustomError, PagedList, PageRequest, SMap } from '@shared/models';
 import { EventService } from '@shared/services';
 import { CollectionService } from '@shared/services/content';
+
+import { LoadingBtn, LoadingController } from '@app/shared/controllers/loading';
 
 @Component({
     selector: 'sc-select-collection',
@@ -34,6 +34,8 @@ export class SelectCollectionComponent implements OnInit {
     }
 
     async fetch(next: boolean = false) {
+        if (!next && this.collections.length > 0) return;
+
         this.loading = !next;
         if (next) this.pager.page++;
 

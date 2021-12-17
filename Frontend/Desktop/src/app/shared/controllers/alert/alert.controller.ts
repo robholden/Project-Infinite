@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 
 import { Trx } from '@shared/models';
 
+import { ModalOptions } from '../modal';
 import { ModalController } from '../modal/modal.controller';
-import { AlertComponent, Button, Input } from './template/alert.component';
+import { AlertComponent, Button, DismissAction, Input } from './template/alert.component';
 
-export interface SharedAlertOptions {
+export interface SharedAlertOptions<T = {}> extends ModalOptions<T> {
     title?: string | Trx;
     message?: string | Trx;
     focusFirst?: boolean;
-    handler?: (result?: any) => Promise<boolean>;
 }
 
-export interface AlertOptions extends SharedAlertOptions {
+export interface AlertOptions extends SharedAlertOptions<DismissAction> {
     buttons?: Button[];
     inputs?: Input[];
 }
@@ -72,7 +72,7 @@ export class AlertController {
                 },
             ],
             focusFirst: options.focusFirst,
-            handler: options.handler,
+            dismissWhen: options.dismissWhen,
         });
 
         return result !== null;
@@ -87,6 +87,6 @@ export class AlertController {
             focusFirst: options.focusFirst,
         });
 
-        return modal.present({ dismissWhen: options.handler });
+        return modal.present({ dismissWhen: options.dismissWhen, dimissAction: modal });
     }
 }

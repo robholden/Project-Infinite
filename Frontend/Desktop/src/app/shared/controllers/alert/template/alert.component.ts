@@ -6,6 +6,10 @@ import { AppColour } from '@shared/types';
 
 import { ModalComponent } from '../../modal/modal.component';
 
+export interface DismissAction {
+    clearInput(name: string): void;
+}
+
 export interface Button {
     text: string | Trx;
     role?: 'cancel' | 'submit';
@@ -39,7 +43,7 @@ export interface Input {
     templateUrl: 'alert.component.html',
     styleUrls: ['alert.component.scss'],
 })
-export class AlertComponent extends ModalComponent<any> implements OnInit {
+export class AlertComponent extends ModalComponent<any> implements OnInit, DismissAction {
     @NgInput() title: string | Trx;
     @NgInput() message: string | Trx;
     @NgInput() buttons: Button[] = [];
@@ -110,6 +114,11 @@ export class AlertComponent extends ModalComponent<any> implements OnInit {
 
             return acc;
         }, []);
+    }
+
+    clearInput(name: string) {
+        const field = this.form.get(name);
+        if (field) field.patchValue('');
     }
 
     private findTag(startTag: Element, tagName: string, breakOnFirst: boolean): any {

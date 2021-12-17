@@ -30,8 +30,8 @@ export class PictureEditModal extends ModalComponent<Picture | false> implements
         return this.form.get('name');
     }
 
-    get concealCoords() {
-        return this.form.get('concealCoords');
+    get useRealCoords() {
+        return this.form.get('useRealCoords');
     }
 
     get tags() {
@@ -68,7 +68,7 @@ export class PictureEditModal extends ModalComponent<Picture | false> implements
 
         const resp = await this.pictureService.update(this.picture.pictureId, {
             name: this.name.value,
-            concealCoords: this.concealCoords.value,
+            concealCoords: !this.useRealCoords.value,
             tags: this.tags.value,
             seed: this.picture.seed,
         });
@@ -116,7 +116,7 @@ export class PictureEditModal extends ModalComponent<Picture | false> implements
 
         this.form = this.fb.group({
             name: [resp.name, [Validators.required, Validators.minLength(4), Validators.maxLength(100)]],
-            concealCoords: [resp.concealCoords],
+            useRealCoords: [!resp.concealCoords],
             tags: [resp.tags || []],
         });
         this.picture = resp;

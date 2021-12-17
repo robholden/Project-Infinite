@@ -77,7 +77,6 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
     async reload() {
         await wait(0);
 
-        this.result = null;
         this.pages = [];
 
         this.search();

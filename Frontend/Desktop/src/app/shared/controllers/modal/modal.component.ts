@@ -11,10 +11,11 @@ export interface IModalComponent<T> extends IControllerComponent {
     dismiss(): Promise<void>;
 }
 
-export interface ModalOptions {
+export interface ModalOptions<T = {}> {
     canDismiss?: boolean;
     dismissOnEscape?: boolean;
-    dismissWhen?: (result?: any) => Promise<boolean>;
+    dimissAction?: T;
+    dismissWhen?: (result: any, dismissAction?: T) => Promise<boolean>;
 }
 
 @Component({
@@ -82,7 +83,7 @@ export class ModalComponent<T> implements IModalComponent<T>, OnInit {
 
         if (this.options.dismissWhen) {
             this.dismissing = true;
-            const canDismiss = await this.options.dismissWhen(this.result.value);
+            const canDismiss = await this.options.dismissWhen(this.result.value, this.options.dimissAction);
             this.dismissing = false;
             if (!canDismiss) return;
         }

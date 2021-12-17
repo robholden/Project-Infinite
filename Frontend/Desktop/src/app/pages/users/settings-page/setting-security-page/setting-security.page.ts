@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AlertController, Input } from '@app/shared/controllers/alert';
-import { LoadingController } from '@app/shared/controllers/loading';
-import { ModalController } from '@app/shared/controllers/modal';
-import { ToastController } from '@app/shared/controllers/toast';
-
 import { TwoFactorType } from '@shared/enums';
 import { zxcvbn } from '@shared/functions';
 import { CustomError, Trx } from '@shared/models';
 import { AuthService, PasswordService, UserService } from '@shared/services/identity';
 import { AuthState } from '@shared/storage';
+
+import { AlertController, DismissAction, Input } from '@app/shared/controllers/alert';
+import { LoadingController } from '@app/shared/controllers/loading';
+import { ModalController } from '@app/shared/controllers/modal';
+import { ToastController } from '@app/shared/controllers/toast';
 
 import { SetupTwoFactorModal } from './setup-two-factor-modal/setup-two-factor.modal';
 
@@ -172,7 +172,7 @@ export class SettingSecurityPage implements OnInit {
             });
         }
 
-        const result = await this.alertCtrl.create({
+        await this.alertCtrl.create({
             title: 'Two-Factor Authentication Setup',
             inputs,
             buttons: [
@@ -188,38 +188,40 @@ export class SettingSecurityPage implements OnInit {
                     className: 'ml-a',
                 },
             ],
+            dismissWhen: async (result, di?: DismissAction) => {
+                if (!result || !result.password) return true;
+                const success = await this.setup(type, result.password, result.mobile);
+                if (!success) {
+                    di?.clearInput('password');
+                    return false;
+                }
+
+                return true;
+            },
         });
-
-        if (!result || !result.password) return;
-
-        await this.setup(type, result.password, result.mobile);
     }
 
     private async setup(type: TwoFactorType, password: string, mobile: string) {
-        // Quit if password is empty
-        if (!password) return;
-
         // Tell ui we're loading
         const btnLoading = this.loadingCtrl.addBtn(`enable-${type}-btn`);
-        const uiLoading = this.loadingCtrl.add('Initialising 2FA');
 
         btnLoading.present();
-        uiLoading.present();
 
         // Call api
         const resp = await this.authService.setup2FA(type, { password }, mobile);
 
         // Hide loading
         btnLoading.dismiss();
-        await uiLoading.dismiss();
 
         // Stop if response is an exception
         if (resp instanceof CustomError) {
-            return;
+            return false;
         }
 
         const modal = this.modalCtrl.add('2fa', SetupTwoFactorModal, { type, data: resp, email: this.authState.user.email });
-        await modal.present();
+        modal.present();
+
+        return true;
     }
 
     async remove() {

@@ -49,7 +49,7 @@ public class SendEmailsTask : BackgroundTask<SendEmailsTask>
                         (x.Email == null && x.Type != EmailType.Instant) ||
                         (x.Email != null && !x.Email.DateSent.HasValue)
                     )
-                    && (x.Type != EmailType.Marketing || x.User.Marketing)
+                    && (x.Type != EmailType.Marketing || x.User.MarketingEmail)
                 )
                 .OrderBy(x => (int)x.Type)
                 .Take(50)

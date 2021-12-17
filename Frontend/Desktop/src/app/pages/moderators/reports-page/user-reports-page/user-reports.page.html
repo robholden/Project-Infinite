@@ -8,7 +8,7 @@
         <div class="grid mb" cols="3">
             <div class="user-report card-shadow" *ngFor="let report of result.rows">
                 <div class="user-info p-s">
-                    <sc-avatar [name]="report.username" size="28" bg="var(--sc-colour-primary)" fg="var(--sc-colour-primary-contrast)"></sc-avatar>
+                    <sc-avatar [name]="report.username" [size]="28" bg="var(--sc-colour-primary)" fg="var(--sc-colour-primary-contrast)"></sc-avatar>
                     <div>
                         <h4>{{ report.name }}</h4>
                         <small colour="medium">@{{ report.username }}</small>

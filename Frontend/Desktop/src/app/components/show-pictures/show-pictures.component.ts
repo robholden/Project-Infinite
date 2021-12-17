@@ -94,7 +94,7 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
         this.params.locations = locations.length > 0 ? locations : null;
         this.params.tags = tags.length > 0 ? tags : null;
 
-        this.search();
+        this.reload();
     }
 
     async edit(index: number) {

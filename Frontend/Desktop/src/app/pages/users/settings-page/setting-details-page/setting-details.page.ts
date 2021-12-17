@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
-import { AlertController } from '@app/shared/controllers/alert';
-import { LoadingController } from '@app/shared/controllers/loading';
-
 import { maskEmail, toTitleCase } from '@shared/functions';
 import { CustomError, Trx, User, UserField, userValidators } from '@shared/models';
 import { UserService } from '@shared/services/identity';
 import { AuthState } from '@shared/storage';
+
+import { AlertController } from '@app/shared/controllers/alert';
+import { LoadingController } from '@app/shared/controllers/loading';
 
 @Component({
     selector: 'sc-setting-details',
@@ -128,7 +128,15 @@ export class SettingDetailsPage implements OnInit {
     // Checks change in field
     //
     private hasChanged(field: UserField, value: string) {
-        return (this.user[field] || '').toLowerCase() !== (value || '').toLowerCase();
+        let oldValue = this.user[field] || '';
+        let newValue = value || '';
+
+        if (field !== 'name') {
+            oldValue = oldValue.toLowerCase();
+            newValue = newValue.toLowerCase();
+        }
+
+        return newValue !== oldValue;
     }
 
     // Resends a user their email confirmation

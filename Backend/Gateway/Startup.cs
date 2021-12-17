@@ -15,8 +15,6 @@ namespace Gateway;
 
 public class Startup
 {
-    private static readonly string HeaderRecaptchaToken = "x-recaptcha-token";
-
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
@@ -67,9 +65,6 @@ public class Startup
                     var tokens = antiforgery.GetAndStoreTokens(context);
                     context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions() { HttpOnly = false });
                 }
-
-                context.Response.Headers.Add("Access-Control-Expose-Headers", HeaderRecaptchaToken);
-                context.Response.Headers.Add(HeaderRecaptchaToken, sharedOptions.Value.ReCaptchaClientKey);
             }),
             useDefaultHealthCheck: false
         );

@@ -20,7 +20,7 @@ public class UserSettingService : IUserSettingService
         var user = await _ctx.UserSettings.FindAsync(x => x.MarketingOptOutKey == key, ErrorCode.ProvidedKeyInvalid);
 
         // Unset values
-        user.Marketing = false;
+        user.MarketingEmail = false;
         user.MarketingOptOutKey = null;
 
         // Update
@@ -37,14 +37,14 @@ public class UserSettingService : IUserSettingService
         }
 
         // Update values
-        if (user.Marketing != userData.Marketing)
+        if (user.MarketingEmail != userData.MarketingEmail)
         {
-            user.Marketing = userData.Marketing;
-            user.MarketingOptOutKey = user.Marketing ? Guid.NewGuid() : null;
+            user.MarketingEmail = userData.MarketingEmail;
+            user.MarketingOptOutKey = user.MarketingEmail ? Guid.NewGuid() : null;
         }
-        user.PictureApproved = userData.PictureApproved;
-        user.PictureLiked = userData.PictureLiked;
-        user.PictureUnapproved = userData.PictureUnapproved;
+        user.PictureApprovedEmail = userData.PictureApprovedEmail;
+        user.PictureLikedEmail = userData.PictureLikedEmail;
+        user.PictureUnapprovedEmail = userData.PictureUnapprovedEmail;
 
         // Update
         await _ctx.Put(user);

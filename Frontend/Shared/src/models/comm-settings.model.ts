@@ -1,6 +1,6 @@
 export interface CommSettings {
-    marketing: boolean;
-    pictureApproved: boolean;
-    pictureUnapproved: boolean;
-    pictureLiked: boolean;
+    marketingEmail: boolean;
+    pictureApprovedEmail: boolean;
+    pictureUnapprovedEmail: boolean;
+    pictureLikedEmail: boolean;
 }

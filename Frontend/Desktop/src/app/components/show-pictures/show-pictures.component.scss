@@ -91,6 +91,14 @@
     }
 }
 
+.picture-applied-filters {
+    .pill {
+        i {
+            top: 1px;
+        }
+    }
+}
+
 ::ng-deep {
     .popup-picture {
         text-align: left;

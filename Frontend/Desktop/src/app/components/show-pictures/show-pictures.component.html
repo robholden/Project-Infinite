@@ -62,7 +62,14 @@
 
     <ng-container *ngIf="result?.totalRows || filtered">
         <button class="button dropdown-toggle ml-a">
-            <button class="remove-ico mr-s" (click)="removeOrderBy(); search()" tippy="Remove filter" placement="left" *ngIf="!sameOrderBy()">
+            <button
+                type="button"
+                class="remove-ico mr-s"
+                (click)="removeOrderBy(); reload(); $event.stopPropagation()"
+                tippy="Remove filter"
+                placement="left"
+                *ngIf="!sameOrderBy()"
+            >
                 <i class="far fa-times"></i>
             </button>
 
@@ -74,7 +81,13 @@
 
             <sc-drop-down position="bottomleft">
                 <div class="link-section">
-                    <button *ngFor="let o of enum_values" (click)="pager.orderBy = o; search()" [class.active]="pager.orderBy === o" data-dropdown-link>
+                    <button
+                        type="button"
+                        *ngFor="let o of enum_values"
+                        (click)="pager.orderBy = o; reload()"
+                        [class.active]="pager.orderBy === o"
+                        data-dropdown-link
+                    >
                         {{ 'pictures.order_by.' + o | trx }}
                     </button>
                 </div>
@@ -83,7 +96,7 @@
 
         <button
             class="ml-s"
-            (click)="pager.orderDir = 'desc'; search()"
+            (click)="pager.orderDir = 'desc'; reload()"
             tippy="Sort by descending"
             placement="bottom-start"
             *ngIf="pager.orderBy && pager.orderDir === 'asc'"
@@ -92,7 +105,7 @@
         </button>
         <button
             class="ml-s"
-            (click)="pager.orderDir = 'asc'; search()"
+            (click)="pager.orderDir = 'asc'; reload()"
             tippy="Sort by ascending"
             placement="bottom-start"
             *ngIf="pager.orderBy && pager.orderDir === 'desc'"
@@ -103,19 +116,31 @@
 </div>
 
 <div class="picture-applied-filters flex-row-align mb" *ngIf="params.countries?.length || params.locations?.length || params.tags?.length">
-    <button class="pill mr-s" *ngFor="let name of params.locations">
+    <button type="button" class="pill mr-s" *ngFor="let name of params.locations" (click)="filter.locations[name] = false; setFilters()">
         {{ 'locations.' + name | trx: {}:name }}
-
         <i class="fas fa-times ml-s"></i>
     </button>
-    <button class="pill mr-s" [class.not-seen]="!countryMap[code]" *ngFor="let code of params.countries">
+
+    <button
+        type="button"
+        class="pill mr-s"
+        [class.not-seen]="!countryMap[code]"
+        *ngFor="let code of params.countries"
+        (click)="filter.countries[code] = !filter.countries[code]; setFilters()"
+    >
         {{ 'countries.' + code | trx: {}:countryMap[code] }}
+        <i class="fas fa-times ml-s"></i>
+    </button>
+
+    <button type="button" class="pill mr-s" *ngFor="let tag of params.tags" (click)="filter.tags[tag] = !filter.tags[tag]; setFilters()">
+        {{ 'tags.' + tag | trx: {}:tag }}
+        <i class="fas fa-times ml-s"></i>
     </button>
 </div>
 
 <div
     class="card-shadow mb"
-    style="height: 300px; width: 100%; z-index: 1"
+    style="height: 20vh; width: 100%; z-index: 1"
     leaflet
     [leafletOptions]="mapData?.options"
     [leafletFitBounds]="mapData?.bounds"

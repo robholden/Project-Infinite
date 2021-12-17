@@ -1,14 +1,14 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { AlertController } from '@app/shared/controllers/alert';
-import { LoadingController } from '@app/shared/controllers/loading';
-import { ToastController } from '@app/shared/controllers/toast';
-
 import { TwoFactorType } from '@shared/enums';
 import { CustomError, ErrorCode, Trx } from '@shared/models';
 import { EventService } from '@shared/services';
 import { AuthService, PasswordService } from '@shared/services/identity';
+
+import { AlertController } from '@app/shared/controllers/alert';
+import { LoadingController } from '@app/shared/controllers/loading';
+import { ToastController } from '@app/shared/controllers/toast';
 
 @Component({
     selector: 'sc-login',
@@ -96,7 +96,9 @@ export class LoginComponent implements OnInit {
                     className: 'primary',
                 },
             ],
-            handler: async (inputs: any) => {
+            dismissWhen: async (inputs: any) => {
+                if (!inputs?.email) return true;
+
                 // Call service
                 const resp = await this.passwordService.forgot(inputs.email);
 

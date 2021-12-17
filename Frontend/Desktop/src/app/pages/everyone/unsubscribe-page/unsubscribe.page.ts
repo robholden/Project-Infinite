@@ -43,7 +43,7 @@ export class UnsubscribePage implements OnInit {
 
         // Update comms setting state
         if (this.authState.commSettings) {
-            this.authState.commSettings = { ...this.authState.commSettings, marketing: false };
+            this.authState.commSettings = { ...this.authState.commSettings, marketingEmail: false };
         }
 
         this.valid = true;

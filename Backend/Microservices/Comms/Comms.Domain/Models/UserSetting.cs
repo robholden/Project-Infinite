@@ -29,13 +29,13 @@ public class UserSetting : IUser
 
     public Guid? MarketingOptOutKey { get; set; }
 
-    public bool Marketing { get; set; }
+    public bool MarketingEmail { get; set; }
 
-    public bool PictureApproved { get; set; }
+    public bool PictureApprovedEmail { get; set; }
 
-    public bool PictureUnapproved { get; set; }
+    public bool PictureUnapprovedEmail { get; set; }
 
-    public bool PictureLiked { get; set; }
+    public bool PictureLikedEmail { get; set; }
 
     public virtual ICollection<NotificationEntry> NotificationEntries { get; set; }
 }

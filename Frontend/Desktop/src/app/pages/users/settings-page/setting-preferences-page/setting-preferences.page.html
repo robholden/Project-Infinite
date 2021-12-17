@@ -1,12 +1,13 @@
 <div class="form-box flex-row-align mb" background="danger" *ngIf="errored === true">An unexpected error occurred, please try again later</div>
 
-<div class="form-box flex-row-align mb" *ngFor="let pref of prefs">
+<h2 class="mb">Email Preferences</h2>
+<div class="form-box flex-row-align mb" *ngFor="let key of emailPrefs">
     <div>
-        <span class="label">{{ "settings.preferences." + pref.key + ".title" | trx }}</span>
-        <small>{{ "settings.preferences." + pref.key + ".subtitle" | trx }}</small>
+        <span class="label">{{ "settings.preferences." + key + ".title" | trx }}</span>
+        <small>{{ "settings.preferences." + key + ".subtitle" | trx }}</small>
     </div>
 
-    <sc-toggle-switch class="ml-a" [checked]="pref.value" (checkedChange)="toggle(pref.key, $event)"></sc-toggle-switch>
+    <sc-toggle-switch class="ml-a" [checked]="settings[key]" (checkedChange)="toggle(key, $event)"></sc-toggle-switch>
 </div>
 
 <ng-container *ngIf="errored === null">

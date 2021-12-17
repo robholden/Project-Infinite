@@ -8,6 +8,7 @@ export function executeReCaptcha(reCaptchaKey: string, action: string): Promise<
                 .then((token: string) => res(token))
                 .catch(() => res(null));
         } catch (err) {
+            console.log(err);
             res(null);
         }
     });

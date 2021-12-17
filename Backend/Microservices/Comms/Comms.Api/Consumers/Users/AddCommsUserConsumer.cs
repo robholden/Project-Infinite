@@ -34,7 +34,7 @@ public class AddCommsUserConsumer : ISnowConsumer, IConsumer<AddCommsUserRq>
                 UserId = request.User.UserId,
                 Name = request.Name,
                 Email = request.Email,
-                Marketing = request.Marketing,
+                MarketingEmail = request.Marketing,
                 MarketingOptOutKey = request.Marketing ? Guid.NewGuid() : null
             };
 

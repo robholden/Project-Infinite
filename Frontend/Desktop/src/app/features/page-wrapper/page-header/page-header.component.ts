@@ -15,4 +15,8 @@ export class PageHeaderComponent {
     @Input() pageLinks: PageLink[] = [];
 
     constructor() {}
+
+    linkClicked(evt: any) {
+        evt.target.blur();
+    }
 }

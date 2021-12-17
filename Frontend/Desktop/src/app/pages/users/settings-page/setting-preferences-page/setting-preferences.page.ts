@@ -11,7 +11,8 @@ import { CommsService } from '@shared/services/comms';
 export class SettingPreferencesPage implements OnInit {
     errored: boolean = null;
     settings: CommSettings;
-    prefs: { key: string; value: boolean }[] = [];
+
+    emailPrefs: string[] = [];
 
     constructor(private commsService: CommsService) {}
 
@@ -25,22 +26,15 @@ export class SettingPreferencesPage implements OnInit {
         else {
             this.settings = settings;
             this.errored = false;
-            this.prefs = Object.keys(settings).map((key) => ({ key, value: settings[key] }));
+
+            const prefKeys = Object.keys(settings);
+            this.emailPrefs = prefKeys.filter((key) => key.toLowerCase().includes('email'));
         }
     }
 
     async toggle(key: string, state: boolean) {
-        // Toggle ui
-        this.prefs[key] = state;
-
-        // Create prefs model
-        const prefs = this.settings;
-        prefs[key] = state;
-
-        // Go to api
-        const resp = await this.commsService.updateSettings(prefs);
-
-        // Revert back when there's an error
-        this.prefs[key] = resp instanceof CustomError ? !state : state;
+        this.settings[key] = state;
+        const resp = await this.commsService.updateSettings(this.settings);
+        this.settings[key] = resp instanceof CustomError ? !state : state;
     }
 }

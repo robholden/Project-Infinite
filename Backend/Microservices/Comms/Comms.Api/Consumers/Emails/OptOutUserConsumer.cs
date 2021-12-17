@@ -21,9 +21,9 @@ public class OptOutUserConsumer: ISnowConsumer, IConsumer<OptOutUserRq>
     public async Task Consume(ConsumeContext<OptOutUserRq> context)
     {
         var user = await _ctx.UserSettings.FirstOrDefaultAsync(x => x.UserId == context.Message.UserId);
-        if (user?.Marketing != true) return;
+        if (user?.MarketingEmail != true) return;
 
-        user.Marketing = false;
+        user.MarketingEmail = false;
         user.MarketingOptOutKey = null;
 
         await _ctx.Put(user);

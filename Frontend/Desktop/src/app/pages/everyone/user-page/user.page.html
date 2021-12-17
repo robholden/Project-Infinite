@@ -3,7 +3,7 @@
         <div *ngIf="user" @fade>
             <div class="flex-row-align">
                 <div class="flex-row-align">
-                    <sc-avatar [name]="user.username" size="38" bg="var(--sc-colour-primary-contrast)" fg="var(--sc-colour-primary)"></sc-avatar>
+                    <sc-avatar [name]="user.username" [size]="38" bg="var(--sc-colour-primary-contrast)" fg="var(--sc-colour-primary)"></sc-avatar>
                     <div class="ml-s">
                         <h2>{{ user.username | titlecase }}</h2>
                     </div>

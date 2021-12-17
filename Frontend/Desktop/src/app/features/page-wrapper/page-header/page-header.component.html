@@ -8,7 +8,7 @@
                 [routerLink]="link.url"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"
-                (click)="$event.target.blur()"
+                (click)="linkClicked($event)"
             >
                 {{ link.name }}
             </a>
