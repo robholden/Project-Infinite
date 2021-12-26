@@ -3,7 +3,13 @@
 
     <ng-container *ngIf="result?.totalRows || filtered">
         <button class="button dropdown-toggle">
-            <button class="remove-ico mr-s" (click)="removeOrderBy(); search()" tippy="Remove filter" placement="left" *ngIf="!sameOrderBy()">
+            <button
+                class="remove-ico mr-s"
+                (click)="removeOrderBy(); search(); $event.stopPropagation()"
+                tippy="Remove filter"
+                placement="left"
+                *ngIf="!sameOrderBy()"
+            >
                 <i class="far fa-times"></i>
             </button>
 
@@ -15,7 +21,7 @@
 
             <sc-drop-down position="bottomleft" [y]="-5" [x]="5">
                 <div class="link-section">
-                    <button *ngFor="let o of enum_values" (click)="pager.orderBy = o; search()" [class.active]="pager.orderBy === o">
+                    <button type="button" *ngFor="let o of enum_values" (click)="pager.orderBy = o; search()" [class.active]="pager.orderBy === o">
                         {{ 'collections.order_by.' + o | trx }}
                     </button>
                 </div>
@@ -23,6 +29,7 @@
         </button>
 
         <button
+            type="button"
             class="ml-s"
             (click)="pager.orderDir = 'desc'; search()"
             tippy="Sort by descending"
@@ -32,6 +39,7 @@
             <i class="far fa-sort-amount-down-alt"></i>
         </button>
         <button
+            type="button"
             class="ml-s"
             (click)="pager.orderDir = 'asc'; search()"
             tippy="Sort by ascending"

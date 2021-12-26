@@ -1,16 +1,19 @@
 import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injector } from '@angular/core';
 
-import { PicturePopupComponent } from '@app/components/picture-popup/picture-popup.component';
-
 import { environment } from '@env/environment';
 
-import { getPictureCoords, Picture } from '@shared/models';
+import { Boundry, getPictureCoords, Picture } from '@shared/models';
 
-import { FeatureGroup, featureGroup, icon, latLng, LatLngBounds, Layer, MapOptions, marker, tileLayer } from 'leaflet';
+import { PicturePopupComponent } from '@app/components/picture-popup/picture-popup.component';
 
-export interface MapData {
-    bounds: LatLngBounds;
-    options: MapOptions;
+import { FeatureGroup, featureGroup, icon, latLng, LatLngBounds, Layer, marker, tileLayer } from 'leaflet';
+import * as L from 'leaflet';
+
+export interface LeafletMapOptions {
+    fitBounds?: LatLngBounds;
+    layers?: L.Layer[];
+    zoom?: number;
+    minZoom?: number;
 }
 
 export function getTileLayer() {
@@ -20,7 +23,26 @@ export function getTileLayer() {
     });
 }
 
-export function pictureMarkers(injector: Injector, pictures: Picture[], source?: Picture): MapData {
+export function boundsToBoundry(bounds: L.LatLngBounds): Boundry {
+    const topRight = bounds.getNorthEast();
+    const bottomLeft = bounds.getSouthWest();
+
+    return {
+        minLat: bottomLeft.lat, // min lat / bottom-left Latitude
+        maxLat: topRight.lat, // max lat / top-right Latitude
+        minLng: bottomLeft.lng, // min lon / bottom-left Longitude
+        maxLng: topRight.lng, // max lon / top-right Longitude
+    };
+}
+
+export function boundryToBounds(boundry: Boundry): L.LatLngBounds {
+    const southWest = new L.LatLng(boundry.minLat, boundry.minLng);
+    const northEast = new L.LatLng(boundry.maxLat, boundry.maxLng);
+
+    return new L.LatLngBounds(southWest, northEast);
+}
+
+export function pictureMarkers(injector: Injector, pictures: Picture[], source?: Picture): LeafletMapOptions {
     if ((pictures || []).length === 0 && !source) return null;
 
     const fac = injector.get(ComponentFactoryResolver);
@@ -87,11 +109,9 @@ export function pictureMarkers(injector: Injector, pictures: Picture[], source?:
     if (sourceMarkerGroup) layers.push(sourceMarkerGroup);
 
     return {
-        bounds: sourceMarkerGroup ? sourceMarkerGroup.getBounds() : markersGroup.getBounds(),
-        options: {
-            layers,
-            zoom: 12,
-            minZoom: 3,
-        } as MapOptions,
+        fitBounds: sourceMarkerGroup ? sourceMarkerGroup.getBounds() : markersGroup.getBounds(),
+        layers,
+        zoom: 12,
+        minZoom: 3,
     };
 }

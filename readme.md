@@ -28,12 +28,9 @@
 `dotnet user-secrets set "Shared:ReCaptchaSecretKey" "your-key"`
 
 **Start**
-There are 2 tye configs for developing located at `Backend/.tye`
+Run tye config located at `Backend/.tye`
 
-1. **all**: All depedencies and microservices are ran
-2. **partial**: Project depedencies are ran (mssql, rabbitmq, etc.) and microservices are to be ran via VS debugger
-
-`cd Backend/.tye/all`
+`cd Backend/.tye`
 `tye run --watch`
 
 **Running a local SMTP server**

@@ -16,11 +16,14 @@ import { PageSectionComponent } from './page-wrapper/page-section/page-section.c
 import { PageWrapperComponent } from './page-wrapper/page-wrapper.component';
 import { PagingComponent } from './paging/paging.component';
 import { RememberMeComponent } from './remember-me/remember-me.component';
+import { ShowMapComponent } from './show-map/show-map.component';
 import { SkeletonTextComponent } from './skeleton-text/skeleton-text.component';
 import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+
 @NgModule({
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, PipesModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, PipesModule, LeafletModule],
     declarations: [
         ToggleSwitchComponent,
         DropDownComponent,
@@ -34,6 +37,7 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
         ModalWrapperComponent,
         AvatarComponent,
         RememberMeComponent,
+        ShowMapComponent,
         EllipsisComponent,
     ],
     exports: [
@@ -50,6 +54,7 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
         AvatarComponent,
         RememberMeComponent,
         EllipsisComponent,
+        ShowMapComponent,
     ],
 })
 export class FeaturesModule {}

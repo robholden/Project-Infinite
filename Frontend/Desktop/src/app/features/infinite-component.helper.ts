@@ -44,23 +44,20 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
         this.pager = deepCopy(this.pagerDefaults);
         this.params = pageOptions.def;
 
+        let params: S;
         if (pageOptions.queryString !== false) {
             const qparams = ar.snapshot.queryParams;
-            const params = buildQueryString<S>(qparams, pageOptions.queryConfig || {});
-            this.pager = pageRequestFromQueryString(qparams, this.pager);
-
-            if (!componentOptions?.defer) {
-                // We only have @inputs at OnInit
-                setTimeout(async () => {
-                    this.setParams(params);
-
-                    const isNotFirstPage = this.pager.page > 1;
-                    await this.search();
-
-                    if (isNotFirstPage) await this.search({ prev: true, oneTime: true });
-                }, 0);
-            }
+            params = buildQueryString<S>(qparams, pageOptions.queryConfig || {});
+            this.pager = pageRequestFromQueryString(qparams, this.pager, pageOptions.queryConfig);
         }
+
+        // We only have @inputs at OnInit
+        setTimeout(async () => {
+            if (componentOptions?.defer) await componentOptions?.defer();
+
+            this.setParams(params);
+            this.search();
+        }, 0);
     }
 
     ngOnChanges(changes: SimpleChanges) {

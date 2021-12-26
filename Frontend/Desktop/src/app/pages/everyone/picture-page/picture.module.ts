@@ -10,9 +10,6 @@ import { SharedModule } from '@app/shared/shared.module';
 
 import { PicturePage } from './picture.page';
 
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { SortablejsModule } from 'ngx-sortablejs';
-
 const routes: Routes = [
     {
         path: ':pictureId',
@@ -22,7 +19,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [SharedModule, FormsModule, ComponentsModule, ModalsModule, RouterModule.forChild(routes), LeafletModule, ApprovalsPageModule],
+    imports: [SharedModule, FormsModule, ComponentsModule, ModalsModule, RouterModule.forChild(routes), ApprovalsPageModule],
     declarations: [PicturePage],
 })
 export class PicturePageModule {}

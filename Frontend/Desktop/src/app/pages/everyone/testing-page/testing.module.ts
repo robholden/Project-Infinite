@@ -6,8 +6,6 @@ import { SharedModule } from '@app/shared/shared.module';
 
 import { TestPage } from './testing.page';
 
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
 const routes: Routes = [
     {
         path: '',
@@ -17,7 +15,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [SharedModule, ComponentsModule, RouterModule.forChild(routes), InfiniteScrollModule],
+    imports: [SharedModule, ComponentsModule, RouterModule.forChild(routes)],
     declarations: [TestPage],
     entryComponents: [],
 })

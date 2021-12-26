@@ -24,7 +24,7 @@ export interface LookupService<T, S> {
 
 export interface PagedComponentOptions {
     route?: string;
-    defer?: boolean;
+    defer?: () => Promise<any>;
     cache?: boolean;
     routeChanged?: (route?: string) => any;
 }
@@ -65,19 +65,20 @@ export class PagedComponent<T, S extends Object> {
         this.pager = deepCopy(this.pagerDefaults);
         this.params = pageOptions.def;
 
+        let params: S;
         if (pageOptions.queryString !== false) {
             const qparams = ar.snapshot.queryParams;
-            const params = buildQueryString<S>(qparams, pageOptions.queryConfig || {});
-            this.pager = pageRequestFromQueryString(qparams, this.pager);
-
-            if (!componentOptions?.defer) {
-                // We only have @inputs at OnInit
-                setTimeout(() => {
-                    this.setParams(params);
-                    this.search();
-                }, 0);
-            }
+            params = buildQueryString<S>(qparams, pageOptions.queryConfig || {});
+            this.pager = pageRequestFromQueryString(qparams, this.pager, pageOptions.queryConfig);
         }
+
+        // We only have @inputs at OnInit
+        setTimeout(async () => {
+            if (componentOptions?.defer) await componentOptions?.defer();
+
+            this.setParams(params);
+            this.search();
+        }, 0);
     }
 
     async nextPage() {

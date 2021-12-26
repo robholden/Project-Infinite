@@ -1,4 +1,4 @@
-<div class="picture-filters flex-row-align mb">
+<div class="picture-filters flex-row-align">
     <ng-content *ngIf="result"></ng-content>
 
     <ng-container *ngIf="allFilters?.locations.length > 0 || filters?.tags.length > 0">
@@ -136,16 +136,21 @@
         {{ 'tags.' + tag | trx: {}:tag }}
         <i class="fas fa-times ml-s"></i>
     </button>
+
+    <button type="button" class="pill mr-s" *ngIf="params.bounds" (click)="filter.bounds = null; setFilters()">
+        Within Map Bounds
+        <i class="fas fa-times ml-s"></i>
+    </button>
 </div>
 
-<div
+<sc-show-map
     class="card-shadow mb"
-    style="height: 20vh; width: 100%; z-index: 1"
-    leaflet
-    [leafletOptions]="mapData?.options"
-    [leafletFitBounds]="mapData?.bounds"
-    *ngIf="mapData"
-></div>
+    [options]="mapOptions"
+    [selectable]="true"
+    (selected)="filter.bounds = $event; setFilters()"
+    [height]="25"
+    *ngIf="mapOptions"
+></sc-show-map>
 
 <div class="flex-col flex-spacer" *ngIf="!getting.init; else loadingRef" @fade>
     <div
@@ -189,12 +194,9 @@
 </div>
 
 <ng-template #loadingRef>
-    <div class="skeleton-grid">
-        <sc-skeleton-text class="" height="300px" [animated]="true"></sc-skeleton-text>
-        <sc-skeleton-text class="" height="300px" [animated]="true"></sc-skeleton-text>
-        <sc-skeleton-text class="" height="300px" [animated]="true"></sc-skeleton-text>
-        <sc-skeleton-text class="" height="300px" [animated]="true"></sc-skeleton-text>
+    <sc-skeleton-text class="" height="25vh" [animated]="true"></sc-skeleton-text>
 
+    <div class="skeleton-grid mt">
         <sc-skeleton-text class="" height="300px" [animated]="true"></sc-skeleton-text>
         <sc-skeleton-text class="" height="300px" [animated]="true"></sc-skeleton-text>
         <sc-skeleton-text class="" height="300px" [animated]="true"></sc-skeleton-text>

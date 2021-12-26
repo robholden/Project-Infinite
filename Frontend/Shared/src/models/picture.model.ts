@@ -1,5 +1,6 @@
 import { PictureStatus } from '@shared/enums';
 
+import { Boundry } from './';
 import { Coords } from './coords.model';
 import { Location } from './location.model';
 
@@ -32,6 +33,7 @@ export interface PictureSearch {
     collection?: string;
     likes?: boolean;
     drafts?: boolean;
+    bounds?: Boundry;
 }
 
 export interface PictureModSearch {

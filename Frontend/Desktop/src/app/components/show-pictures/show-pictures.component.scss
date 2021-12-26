@@ -7,6 +7,10 @@
 .picture-filters {
     z-index: 5;
 
+    &:not(:empty) {
+        margin-bottom: 1rem;
+    }
+
     .button {
         text-transform: capitalize;
     }

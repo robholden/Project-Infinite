@@ -3,10 +3,6 @@ import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { fade } from '@app/functions/animations.fn';
-import { MapData, pictureMarkers } from '@app/functions/leaflet.fn';
-import { replaceLoadingTitle } from '@app/functions/routing-titles.fn';
-
 import { PictureStatus } from '@shared/enums';
 import { waitThen } from '@shared/functions';
 import { CustomError, Location, Picture } from '@shared/models';
@@ -14,7 +10,9 @@ import { SocketService } from '@shared/services';
 import { PictureService } from '@shared/services/content';
 import { AuthState } from '@shared/storage';
 
-import { LatLngBounds } from 'leaflet';
+import { fade } from '@app/functions/animations.fn';
+import { LeafletMapOptions, pictureMarkers } from '@app/functions/leaflet.fn';
+import { replaceLoadingTitle } from '@app/functions/routing-titles.fn';
 
 @Component({
     selector: 'sc-picture',
@@ -31,8 +29,7 @@ export class PicturePage implements OnInit, OnDestroy {
 
     nearby: Picture[];
 
-    mapData: MapData;
-    fitBounds: LatLngBounds;
+    mapOptions: LeafletMapOptions;
 
     constructor(
         private injector: Injector,
@@ -96,7 +93,7 @@ export class PicturePage implements OnInit, OnDestroy {
             this.nearby = await this.pictureService.nearby(this.picture.pictureId);
         }
 
-        await waitThen(0, () => (this.mapData = pictureMarkers(this.injector, this.nearby, this.picture)));
+        await waitThen(0, () => (this.mapOptions = pictureMarkers(this.injector, this.nearby, this.picture)));
     }
 
     deleted() {

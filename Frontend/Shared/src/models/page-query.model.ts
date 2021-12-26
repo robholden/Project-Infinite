@@ -1,4 +1,4 @@
-import { buildQueryString, pascalToScores } from '@shared/functions';
+import { buildQueryString, pascalToScores, QueryType } from '@shared/functions';
 import { SMap } from '@shared/models';
 
 export type OrderByDirection = 'asc' | 'desc';
@@ -18,9 +18,13 @@ export class PageRequest {
     }
 }
 
-export function pageRequestFromQueryString(qparams: SMap<string>, def?: PageRequest) {
+export function pageRequestFromQueryString(qparams: SMap<string>, def: PageRequest, config?: SMap<QueryType>) {
     def = def || new PageRequest();
-    const pager = buildQueryString<PageRequest>(qparams, { pageSize: 'number', page: 'number', orderDir: 'string', orderBy: 'string' }, def);
+    const pager = buildQueryString<PageRequest>(
+        qparams,
+        { pageSize: 'number', page: 'number', orderDir: 'string', orderBy: 'string', ...(config || {}) },
+        def
+    );
 
     if (!pager.orderBy) pager.orderDir = def.orderDir;
 

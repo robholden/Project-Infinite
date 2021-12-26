@@ -20,30 +20,34 @@ public class ServiceDiscoveryHostedService : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        if (_config == null)
+        if (string.IsNullOrEmpty(_config?.Name))
         {
-            return;
+            throw new ArgumentNullException(nameof(ServiceConfig));
         }
 
-        var registration = new AgentServiceRegistration
+        while (string.IsNullOrEmpty(_serviceId))
         {
-            ID = _config.Name,
-            Name = _config.Name,
-            Address = _config.Address.Host,
-            Port = _config.Address.Port
-        };
+            var registration = new AgentServiceRegistration
+            {
+                ID = _config.Name,
+                Name = _config.Name,
+                Address = _config.Address.Host,
+                Port = _config.Address.Port
+            };
 
-        try
-        {
-            await _client.Agent.ServiceDeregister(registration.ID, cancellationToken);
-            await _client.Agent.ServiceRegister(registration, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Could not register service with Consul => { ex.Message }");
-        }
+            try
+            {
+                await _client.Agent.ServiceDeregister(registration.ID, cancellationToken);
+                await _client.Agent.ServiceRegister(registration, cancellationToken);
 
-        _serviceId = registration.ID;
+                _serviceId = registration.ID;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Could not register service with Consul => { ex.Message }");
+                await Task.Delay(5000, cancellationToken);
+            }
+        }
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)

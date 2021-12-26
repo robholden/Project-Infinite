@@ -1,17 +1,17 @@
 import { Component, ElementRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
 
-import { InfiniteComponent } from '@app/features/infinite-component.helper';
-import { fade } from '@app/functions/animations.fn';
-import { MapData, pictureMarkers } from '@app/functions/leaflet.fn';
-import { PictureEditModal } from '@app/modals/picture-edit/picture-edit.modal';
-import { ModalController } from '@app/shared/controllers/modal';
-
 import { CustomEvent } from '@shared/enums';
-import { deepCopy, enumValues, inputWatcher, parseEnum, uniqueArray, wait, waitThen } from '@shared/functions';
-import { Country, CustomError, Location, PageRequest, Picture, PictureOrderBy, PictureSearch, SMap } from '@shared/models';
+import { deepCopy, enumValues, inputWatcher, parseEnum, uniqueArray, wait } from '@shared/functions';
+import { Boundry, Country, CustomError, Location, PageRequest, Picture, PictureOrderBy, PictureSearch, SMap } from '@shared/models';
 import { EventService } from '@shared/services';
 import { FiltersService, PictureService } from '@shared/services/content';
 import { AuthState } from '@shared/storage';
+
+import { InfiniteComponent } from '@app/features/infinite-component.helper';
+import { fade } from '@app/functions/animations.fn';
+import { boundryToBounds, LeafletMapOptions, pictureMarkers } from '@app/functions/leaflet.fn';
+import { PictureEditModal } from '@app/modals/picture-edit/picture-edit.modal';
+import { ModalController } from '@app/shared/controllers/modal';
 
 interface FilterLocation extends Country {
     locations: Location[];
@@ -21,6 +21,7 @@ interface Filter {
     countries: SMap<boolean>;
     locations: SMap<boolean>;
     tags: SMap<boolean>;
+    bounds: Boundry;
 }
 
 interface Filters {
@@ -43,11 +44,11 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
 
     allFilters: Filters;
     filters: Filters;
-    filter: Filter = { countries: {}, locations: {}, tags: {} };
+    filter: Filter = { countries: {}, locations: {}, tags: {}, bounds: null };
 
     countryMap: SMap<string> = {};
 
-    mapData: MapData;
+    mapOptions: LeafletMapOptions;
 
     constructor(
         service: PictureService,
@@ -57,16 +58,26 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
         private modalCtrl: ModalController,
         private filtersService: FiltersService
     ) {
-        super(injector, service, {
-            pager: new PageRequest(),
-            def: {},
-            filterParams: [],
-            queryConfig: { countries: 'array', locations: 'array', orderBy: (value: string) => parseEnum(value, PictureOrderBy) },
-            onResult: async () => {
-                this.mapData = null;
-                await waitThen(0, () => (this.mapData = pictureMarkers(this.injector, this.result.rows)));
+        super(
+            injector,
+            service,
+            {
+                pager: new PageRequest(),
+                def: {},
+                filterParams: [],
+                queryConfig: { countries: 'array', locations: 'array', orderBy: (value: string) => parseEnum(value, PictureOrderBy) },
+                onResult: async () => {
+                    this.mapOptions = null;
+                    await wait(0);
+
+                    const mapOptions = pictureMarkers(this.injector, this.result.rows);
+                    if (this.params.bounds) mapOptions.fitBounds = boundryToBounds(this.params.bounds);
+
+                    this.mapOptions = mapOptions;
+                },
             },
-        });
+            { defer: () => this.loadFilters() }
+        );
 
         events.register(
             CustomEvent.Uploaded,
@@ -78,9 +89,7 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
         );
     }
 
-    ngOnInit(): void {
-        this.loadFilters();
-    }
+    ngOnInit(): void {}
 
     setFilters() {
         const countries = Object.keys(this.filter.countries).filter((code) => this.filter.countries[code]);
@@ -147,6 +156,7 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
                     acc[value] = true;
                     return acc;
                 }, {}),
+            bounds: filters.bounds,
         };
         this.setFilters();
 

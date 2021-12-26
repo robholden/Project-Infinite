@@ -10,6 +10,7 @@ import { environment } from './environments/environment';
 
 import cssVars from 'css-vars-ponyfill';
 import tippy from 'tippy.js';
+import SelectArea from 'leaflet-area-select';
 
 cssVars();
 tippy('[data-tooltip]');

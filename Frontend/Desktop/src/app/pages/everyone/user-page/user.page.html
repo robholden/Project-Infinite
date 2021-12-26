@@ -1,6 +1,6 @@
 <sc-page>
     <sc-page-header *ngIf="user || loading">
-        <div *ngIf="user" @fade>
+        <div *ngIf="user && !loading" @fade>
             <div class="flex-row-align">
                 <div class="flex-row-align">
                     <sc-avatar [name]="user.username" [size]="38" bg="var(--sc-colour-primary-contrast)" fg="var(--sc-colour-primary)"></sc-avatar>

@@ -5,10 +5,10 @@ import { RouterModule } from '@angular/router';
 
 import { TranslateModule } from '@ngx-translate/core';
 
+import { PipesModule } from '@shared/pipes/pipes.module';
+
 import { DirectivesModule } from '@app/directives/directives.module';
 import { FeaturesModule } from '@app/features/features.module';
-
-import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { ApprovalComponent } from './approval-component/approval.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -24,7 +24,6 @@ import { SelectCollectionComponent } from './show-picture/select-collection/sele
 import { ShowPictureComponent } from './show-picture/show-picture.component';
 import { ShowPicturesComponent } from './show-pictures/show-pictures.component';
 
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
@@ -38,7 +37,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
         LazyLoadImageModule,
         PipesModule,
         DirectivesModule,
-        LeafletModule,
         InfiniteScrollModule,
     ],
     declarations: [
