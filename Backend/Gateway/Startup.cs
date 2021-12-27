@@ -1,23 +1,19 @@
 ﻿
-using System.Net;
-
-using Library.Service;
 using Library.Service.Api;
-
-using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.Extensions.Options;
 
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Provider.Consul;
 
 namespace Gateway;
 
 public class Startup
 {
+    private readonly bool _useProxy;
+
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
+        _useProxy = configuration.GetValue<bool>("ProxyEnabled");
     }
 
     public IConfiguration Configuration { get; }
@@ -28,15 +24,13 @@ public class Startup
         // Register shared services
         services.AddAutoMapper(typeof(Startup));
         services.RegisterServices(Configuration);
-
-        services.AddAntiforgery(options => options.HeaderName = "x-csrf-token");
-
         services.AddCors();
-        services.AddOcelot().AddConsul();
+
+        if (_useProxy) services.AddOcelot();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<SharedSettings> sharedOptions, IAntiforgery antiforgery)
+    public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevMode())
         {
@@ -55,43 +49,13 @@ public class Startup
             .AllowAnyHeader()
         );
 
-        app.ConfigureStartup(
-            withAuth: false,
-            routeBuilder: endpoints => endpoints.UseHealthChecks((HttpContext context) =>
-            {
-                // Only send forgery token for browser applications
-                if (!context.IsCapacitor())
-                {
-                    var tokens = antiforgery.GetAndStoreTokens(context);
-                    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions() { HttpOnly = false });
-                }
-            }),
-            useDefaultHealthCheck: false
-        );
-
-        // Header checker middleware
-        app.Use(async (context, next) =>
-        {
-            var path = context.Request.Path.Value ?? "";
-            if (path.StartsWith("/api"))
-            {
-                // Only verify forgery token for browser applications
-                if (!context.IsCapacitor() && !await antiforgery.IsRequestValidAsync(context))
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    await context.Response.WriteAsync("Danger! This is a potentially dangerous request.");
-                    return;
-                }
-            }
-
-            // Call the next delegate/middleware in the pipeline
-            await next();
-        });
-
-        // Enable web sockets
-        app.UseWebSockets();
+        app.ConfigureStartup(false);
 
         // Start ocelot
-        await app.UseOcelot();
+        if (_useProxy)
+        {
+            app.UseWebSockets();
+            await app.UseOcelot();
+        }
     }
 }

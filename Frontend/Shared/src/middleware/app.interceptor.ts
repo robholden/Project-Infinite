@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 
-import { forkJoin, from, Observable, pipe } from 'rxjs';
+import { forkJoin, from, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { INJ_DEVICE, INJ_ENV, INJ_PLATFORM } from '@shared/injectors';
@@ -27,7 +27,7 @@ export class AppInterceptor implements HttpInterceptor {
         return forkJoin({ token: tokenObs, uuid: uuidObs }).pipe(
             mergeMap((results) => {
                 // Add authorization header
-                if (!request.url.endsWith(this.env.refresh) && results.token) {
+                if (results.token) {
                     request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + results.token) });
                 }
 

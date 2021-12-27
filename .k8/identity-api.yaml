@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-api
+spec:
+  selector:
+    matchLabels:
+      app: identity
+      version: v1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: identity
+        version: v1
+    spec:
+      containers:
+        - name: identity-container
+          image: iamrobert/sc-api-identity:v0.0.1-alpha
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__Database
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-secrets
+                  key: IDENTITY_CONNECTION_STRING
+            - name: ConnectionStrings__Redis
+              valueFrom:
+                configMapKeyRef:
+                  name: site-config
+                  key: REDIS_CONNECTION_STRING
+            - name: Shared_ReCaptchaSecretKey
+              valueFrom:
+                secretKeyRef:
+                  name: site-secrets
+                  key: ReCaptchaSecretKey
+            - name: Shared_JwtIssuerKey
+              valueFrom:
+                secretKeyRef:
+                  name: site-secrets
+                  key: JwtIssuerKey
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-api
+  labels:
+    app: identity
+    service: identity-api
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    service: identity-api

@@ -1,5 +1,4 @@
-﻿
-using Content.Api.Templates;
+﻿using Content.Api.Templates;
 using Content.Core;
 using Content.Core.BackgroundTasks;
 using Content.Core.Queries;
@@ -7,7 +6,6 @@ using Content.Core.Services;
 using Content.Domain;
 
 using Library.Service.Api;
-using Library.Service.ServiceDiscovery;
 
 using Microsoft.Extensions.Caching.Memory;
 
@@ -43,13 +41,10 @@ public class Startup
         // Register shared services
         services.AddAutoMapper(typeof(Startup));
         services.RegisterServices(Configuration);
-        services.RegisterMassTransit(Configuration);
+        services.RegisterMassTransit("content", Configuration);
 
         // Add auth
         services.RegisterAuth(Configuration);
-
-        // Add caching
-        services.AddStackExchangeRedisCache(o => o.Configuration = Configuration.GetConnectionString("Redis"));
 
         // Inject settings
         services.Configure<ContentSettings>(Configuration.GetSection("ContentSettings"));
@@ -75,8 +70,5 @@ public class Startup
 
         // Register background tasks
         services.AddHostedService<CreateLocationsTask>();
-
-        // Register this service for discovery
-        services.DiscoverService(Configuration);
     }
 }

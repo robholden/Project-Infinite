@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,10 +25,6 @@ import { MarkdownModule } from 'ngx-markdown';
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        HttpClientXsrfModule.withOptions({
-            cookieName: 'XSRF-TOKEN',
-            headerName: 'x-csrf-token',
-        }),
         AppRoutingModule,
         SharedModule,
         ComponentsModule,

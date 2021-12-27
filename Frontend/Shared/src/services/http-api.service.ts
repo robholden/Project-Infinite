@@ -16,7 +16,6 @@ import { EventService } from './event.service';
 import { StorageService } from './storage.service';
 
 export interface ApiOptions<T> {
-    nonApi?: boolean;
     toastError?: boolean;
     recaptchaAction?: string;
     skipRefresh?: boolean;
@@ -179,7 +178,7 @@ export class HttpApiService {
 
         httpOptions['withCredentials'] = options.withCredentials !== false;
 
-        return { url: (url || '').startsWith('http') ? url : this.env.gateway + (options.nonApi ? '' : '/api') + url, options: httpOptions };
+        return { url: (url || '').startsWith('http') ? url : this.env.gateway + url, options: httpOptions };
     }
 
     private async handleResponse<T>(url: string, obs: Observable<HttpResponse<T>>, options?: ApiOptions<T>): Promise<T | CustomError> {

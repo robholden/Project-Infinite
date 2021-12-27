@@ -27,11 +27,8 @@
 `dotnet user-secrets set "Shared:JwtIssuerKey" "A000A0000000AA000A0AA0000AA0A"`
 `dotnet user-secrets set "Shared:ReCaptchaSecretKey" "your-key"`
 
-**Start**
-Run tye config located at `Backend/.tye`
-
-`cd Backend/.tye`
-`tye run --watch`
+**Running**
+Use `tye` to run dependencies locally with Docker -> `.dev/readme.md`
 
 **Running a local SMTP server**
 In order to send/receive emails you will need an smtp server

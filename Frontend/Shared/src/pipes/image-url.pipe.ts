@@ -14,6 +14,6 @@ export class ImageUrlPipe implements PipeTransform {
         if (!value) return '';
 
         const thumbQuery = thumbnail ? '/thumbnail' : '';
-        return `${this.env.gateway}/api/content/images${thumbQuery}?name=${value}`;
+        return `${this.env.gateway}/content/images${thumbQuery}?name=${value}`;
     }
 }

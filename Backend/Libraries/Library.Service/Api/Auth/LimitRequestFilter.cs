@@ -7,12 +7,17 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Library.Service.Api;
 
-public sealed class PreventDDOSAttribute : TypeFilterAttribute
+public sealed class LimitRequestAttribute : TypeFilterAttribute
 {
-    public PreventDDOSAttribute(params int[] values) : base(typeof(LimitRequestFilter))
+    public LimitRequestAttribute(int maxLimit = 5, int timeFrame = 2) : base(typeof(LimitRequestFilter))
     {
-        var maxLimit = 5;
-        var timeFrame = 2;
+        Arguments = new object[] { new LimitRequestOptions(maxLimit, timeFrame) };
+    }
+
+    public LimitRequestAttribute(params int[] values) : base(typeof(LimitRequestFilter))
+    {
+        var maxLimit = values?.Length > 0 ? values[0] : 30;
+        var timeFrame = values?.Length > 1 ? values[1] : 30;
 
         Arguments = new object[] { new LimitRequestOptions(maxLimit, timeFrame) };
     }
@@ -29,22 +34,6 @@ public class LimitRequestOptions
     public int MaxLimit { get; set; }
 
     public int TimeFrame { get; set; }
-}
-
-public sealed class LimitRequestAttribute : TypeFilterAttribute
-{
-    public LimitRequestAttribute(int maxLimit, int timeFrame) : base(typeof(LimitRequestFilter))
-    {
-        Arguments = new object[] { new LimitRequestOptions(maxLimit, timeFrame) };
-    }
-
-    public LimitRequestAttribute(params int[] values) : base(typeof(LimitRequestFilter))
-    {
-        var maxLimit = values?.Length > 0 ? values[0] : 30;
-        var timeFrame = values?.Length > 1 ? values[1] : 30;
-
-        Arguments = new object[] { new LimitRequestOptions(maxLimit, timeFrame) };
-    }
 }
 
 public class LimitRequestTracker
@@ -120,12 +109,7 @@ public class LimitRequestFilter : IAsyncAuthorizationFilter
 
     private static bool HasValidIdentity(HttpContext context, out string identity)
     {
-        if (context.TryGetHeader(StaticHeaders.IdentityKey, out identity))
-        {
-            return true;
-        }
-
-        return false;
+        return context.TryGetHeader(StaticHeaders.IdentityKey, out identity);
     }
 
     private class ApiRequest

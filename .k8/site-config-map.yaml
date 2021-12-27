@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: site-config
+data:
+  REDIS_CONNECTION_STRING: localhost:6379,abortConnect=False

@@ -80,7 +80,7 @@ export function pictureMarkers(injector: Injector, pictures: Picture[], source?:
     if (coords.length > 0) {
         markersGroup = featureGroup(
             coords.map((value) => {
-                const imageUrl = `${environment.gateway}/api/content/images/thumbnail?name=${value.picture.path}`;
+                const imageUrl = `${environment.gateway}/content/images/thumbnail?name=${value.picture.path}`;
                 const markerLayer = marker(latLng(value.coord.lat, value.coord.lng), {
                     autoPan: true,
                     icon: icon({

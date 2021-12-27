@@ -20,7 +20,7 @@ export class RemoteContentPipe implements PipeTransform {
     constructor(@Inject(INJ_ENV) private env: Environment, private http: HttpClient) {}
 
     transform(name: string, type: string): Observable<string> {
-        const url = `${this.env.gateway}/api/content/template/${type}/${name}`;
+        const url = `${this.env.gateway}/content/template/${type}/${name}`;
 
         if (HtmlCache.cache[url]) return of(HtmlCache.cache[url]);
         else if (HtmlCache.obs[url]) return HtmlCache.obs[url];
