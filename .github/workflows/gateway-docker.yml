@@ -1,4 +1,4 @@
-name: Gateway .NET CI
+name: Gateway Docker
 
 on:
   push:
