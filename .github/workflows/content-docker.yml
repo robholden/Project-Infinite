@@ -4,8 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - "./Backend/Content/**.cs"
-      - "./Backend/Content/**.csproj"
+      - "./Backend/Microservices/Content/**.cs"
+      - "./Backend/Microservices/Content/**.csproj"
   workflow_dispatch:
 
 jobs:
@@ -25,6 +25,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./Backend
-          file: ./Backend/Content/Dockerfile
+          file: ./Backend/Microservices/Content/Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/sc-api-content:latest
           push: true
