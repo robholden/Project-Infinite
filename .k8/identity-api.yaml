@@ -48,11 +48,9 @@ metadata:
   name: identity-api
   labels:
     app: identity
-    service: identity-api
 spec:
+  type: NodePort
   ports:
     - port: 80
-      targetPort: 80
-      protocol: TCP
   selector:
-    service: identity-api
+    app: identity

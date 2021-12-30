@@ -27,11 +27,9 @@ metadata:
   name: gateway-api
   labels:
     app: gateway
-    service: gateway-api
 spec:
+  type: NodePort
   ports:
     - port: 80
-      targetPort: 80
-      protocol: TCP
   selector:
-    service: gateway-api
+    app: gateway
