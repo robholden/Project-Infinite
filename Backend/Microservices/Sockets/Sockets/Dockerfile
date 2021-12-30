@@ -6,10 +6,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Microservices/Sockets/Sockets.csproj", "Microservices/Sockets/"]
+COPY ["Microservices/Sockets/Sockets/Sockets.csproj", "Microservices/Sockets/Sockets/"]
 COPY ["Libraries/Library.Core/Library.Core.csproj", "Libraries/Library.Core/"]
 COPY ["Libraries/Library.Service/Library.Service.csproj", "Libraries/Library.Service/"]
-RUN dotnet restore "Microservices/Sockets/Sockets.csproj"
+RUN dotnet restore "Microservices/Sockets/Sockets/Sockets.csproj"
 COPY . .
 WORKDIR "/src/Microservices/Sockets"
 RUN dotnet build "Sockets.csproj" -c Release -o /app/build
