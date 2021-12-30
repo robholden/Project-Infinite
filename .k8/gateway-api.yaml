@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: gateway-container
-          image: iamrobert/sc-api-gateway:v0.0.1-alpha
-          imagePullPolicy: IfNotPresent
+          image: iamrobert/sc-api-gateway:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
 ---
