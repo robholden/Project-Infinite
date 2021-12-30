@@ -17,7 +17,6 @@ const routes: Routes = [
 
 @NgModule({
     imports: [SharedModule, ComponentsModule, RouterModule.forChild(routes)],
-    declarations: [SettingSecurityPage, SetupTwoFactorModal],
-    entryComponents: [SetupTwoFactorModal],
+    declarations: [SettingSecurityPage, SetupTwoFactorModal]
 })
 export class SettingSecurityPageModule {}

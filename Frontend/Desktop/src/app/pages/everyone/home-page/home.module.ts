@@ -16,7 +16,6 @@ const routes: Routes = [
 
 @NgModule({
     imports: [SharedModule, ComponentsModule, RouterModule.forChild(routes)],
-    declarations: [HomePage],
-    entryComponents: [],
+    declarations: [HomePage]
 })
 export class HomePageModule {}

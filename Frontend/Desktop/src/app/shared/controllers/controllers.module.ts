@@ -14,8 +14,7 @@ import { ToastComponent } from './toast/template/toast.component';
 @NgModule({
     imports: [CommonModule, ReactiveFormsModule, PipesModule],
     declarations: [ModalComponent, ToastComponent, LoadingComponent, AlertComponent],
-    entryComponents: [ModalComponent, ToastComponent, LoadingComponent, AlertComponent],
     exports: [],
-    providers: [ControllersService, ModalController],
+    providers: [ControllersService, ModalController]
 })
 export class ControllersModule {}

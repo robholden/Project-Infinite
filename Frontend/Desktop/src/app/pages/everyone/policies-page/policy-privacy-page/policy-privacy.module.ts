@@ -17,7 +17,6 @@ const routes: Routes = [
 
 @NgModule({
     imports: [SharedModule, ComponentsModule, RouterModule.forChild(routes), MarkdownModule.forRoot()],
-    declarations: [PolicyPrivacyPage],
-    entryComponents: [],
+    declarations: [PolicyPrivacyPage]
 })
 export class PolicyPrivacyPageModule {}

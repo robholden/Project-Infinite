@@ -27,7 +27,6 @@ const routes: Routes = [
 
 @NgModule({
     imports: [SharedModule, ComponentsModule, RouterModule.forChild(routes)],
-    declarations: [ModeratorPage],
-    entryComponents: [],
+    declarations: [ModeratorPage]
 })
 export class ModeratorPageModule {}

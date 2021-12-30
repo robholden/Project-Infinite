@@ -18,7 +18,6 @@ const routes: Routes = [
 @NgModule({
     imports: [SharedModule, FormsModule, ComponentsModule, RouterModule.forChild(routes)],
     declarations: [ApprovalsPage],
-    entryComponents: [],
-    exports: [],
+    exports: []
 })
 export class ApprovalsPageModule {}

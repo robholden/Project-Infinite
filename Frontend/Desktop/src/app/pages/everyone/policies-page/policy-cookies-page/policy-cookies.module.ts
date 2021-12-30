@@ -15,7 +15,6 @@ const routes: Routes = [
 
 @NgModule({
     imports: [SharedModule, ComponentsModule, RouterModule.forChild(routes)],
-    declarations: [PolicyCookiesPage],
-    entryComponents: [],
+    declarations: [PolicyCookiesPage]
 })
 export class PolicyCookiesPageModule {}
