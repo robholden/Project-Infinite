@@ -11,7 +11,7 @@ COPY ["Libraries/Library.Core/Library.Core.csproj", "Libraries/Library.Core/"]
 COPY ["Libraries/Library.Service/Library.Service.csproj", "Libraries/Library.Service/"]
 RUN dotnet restore "Microservices/Sockets/Sockets/Sockets.csproj"
 COPY . .
-WORKDIR "/src/Microservices/Sockets"
+WORKDIR "/src/Microservices/Sockets/Sockets"
 RUN dotnet build "Sockets.csproj" -c Release -o /app/build
 
 FROM build AS publish
