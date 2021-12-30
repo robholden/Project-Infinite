@@ -25,6 +25,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./Backend
-          file: ./Backend/Microservices/Comms/Dockerfile
+          file: ./Backend/Microservices/Comms/Comms.Api/Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/sc-api-comms:latest
           push: true

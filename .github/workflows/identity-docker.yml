@@ -25,6 +25,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./Backend
-          file: ./Backend/Microservices/Identity/Dockerfile
+          file: ./Backend/Microservices/Identity/Identity.Api/Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/sc-api-identity:latest
           push: true
