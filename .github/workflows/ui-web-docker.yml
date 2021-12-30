@@ -29,5 +29,5 @@ jobs:
           file: ./Frontend/Desktop/Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/sc-ui-web:latest
           push: true
-          build-args:
-            FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
+          build-args: |
+            FONTAWESOME_NPM_AUTH_TOKEN=${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
