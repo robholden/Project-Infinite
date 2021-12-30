@@ -7,7 +7,6 @@ using Comms.Core.SMS;
 using Comms.Domain;
 
 using Library.Service.Api;
-using Library.Service.ServiceDiscovery;
 
 namespace Comms.Api;
 
@@ -38,7 +37,7 @@ public class Startup
         // Register shared services
         services.AddAutoMapper(typeof(Startup));
         services.RegisterServices(Configuration);
-        services.RegisterMassTransit(Configuration);
+        services.RegisterMassTransit("comms", Configuration);
 
         // Add auth
         services.RegisterAuth(Configuration);
@@ -64,8 +63,5 @@ public class Startup
 
         // Register background tasks
         services.AddHostedService<SendEmailsTask>();
-
-        // Register this service for discovery
-        services.DiscoverService(Configuration);
     }
 }

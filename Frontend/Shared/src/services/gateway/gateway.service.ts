@@ -19,7 +19,6 @@ export class GatewayService {
      */
     async healthy(): Promise<boolean> {
         const resp = await this.api.get<Health>('/health', {
-            nonApi: true,
             skipRefresh: true,
             toastError: isDevMode(),
         });

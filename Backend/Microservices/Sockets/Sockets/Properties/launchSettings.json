@@ -11,13 +11,9 @@
     "IIS Express": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__Redis": "localhost:6379,abortConnect=False",
-        "ServiceConfig__DiscoveryAddress": "http://localhost:8500",
-        "ServiceConfig__Address": "http://localhost:7006",
-        "ServiceConfig__Name": "sockets"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:7006"
+      "applicationUrl": "http://localhost:7005"
     }
   }
 }

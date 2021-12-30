@@ -9,7 +9,7 @@
 
 	<PropertyGroup Condition=" '$(RunConfiguration)' == 'IIS Express' " />
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.7.21378.4">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Library.Service.Api;
 
-[PreventDDOS]
+[LimitRequest]
 [Route("[controller]")]
 [ApiController]
 [ServiceFilter(typeof(ApiResponseFilter))]

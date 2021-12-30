@@ -9,7 +9,7 @@
 
     <div class="flex-spacer"></div>
 
-    <button id="end-all-btn" class="button ml" background="danger" (click)="triggerDelete()">End All Sessions</button>
+    <button id="btn-end-all" class="button ml" background="danger" (click)="triggerDelete()">End All Sessions</button>
 </div>
 
 <h2 class="mt pt">Your Sessions</h2>
@@ -34,7 +34,15 @@
 
             <div class="flex-spacer"></div>
 
-            <button class="button small ml" background="danger" (click)="triggerDelete($i)" *ngIf="session.authTokenId !== authToken">Remove</button>
+            <button
+                [id]="'btn-end-' + $i"
+                class="button small ml"
+                background="danger"
+                (click)="triggerDelete($i)"
+                *ngIf="session.authTokenId !== authToken"
+            >
+                Remove
+            </button>
 
             <div class="button small ml" *ngIf="session.authTokenId === authToken" background="success">Current</div>
         </div>

@@ -1,0 +1,31 @@
+name: snow-capture
+services:
+  - name: gateway
+    project: ..\backend\gateway\gateway.csproj
+    bindings:
+      - port: 7000
+
+  - name: comms
+    project: ..\backend\microservices\comms\comms.api\comms.api.csproj
+    bindings:
+      - port: 7001
+
+  - name: content
+    project: ..\backend\microservices\content\content.api\content.api.csproj
+    bindings:
+      - port: 7002
+
+  - name: identity
+    project: ..\backend\microservices\identity\identity.api\identity.api.csproj
+    bindings:
+      - port: 7003
+
+  - name: reports
+    project: ..\backend\microservices\reports\reports.api\reports.api.csproj
+    bindings:
+      - port: 7004
+
+  - name: sockets
+    project: ..\backend\microservices\sockets\sockets\sockets.csproj
+    bindings:
+      - port: 7005

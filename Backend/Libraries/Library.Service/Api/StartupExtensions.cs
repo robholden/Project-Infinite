@@ -29,7 +29,7 @@ namespace Library.Service.Api;
 
 public static class StartupExtensions
 {
-    public static void ConfigureStartup(this IApplicationBuilder app, bool withAuth, Action<IEndpointRouteBuilder> routeBuilder = null, bool useDefaultHealthCheck = true)
+    public static void ConfigureStartup(this IApplicationBuilder app, bool withAuth, Action<IEndpointRouteBuilder> routeBuilder = null)
     {
         app.UseRouting();
 
@@ -44,19 +44,17 @@ public static class StartupExtensions
             routeBuilder?.Invoke(endpoints);
             endpoints.MapControllers();
 
-            if (useDefaultHealthCheck) endpoints.UseHealthChecks();
+            endpoints.UseHealthChecks();
         });
     }
 
-    public static void UseHealthChecks(this IEndpointRouteBuilder endpoints, Action<HttpContext> contextAction = null)
+    public static void UseHealthChecks(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapHealthChecks("/health", new()
         {
             ResponseWriter = (HttpContext context, HealthReport result) =>
             {
                 context.Response.ContentType = "application/json; charset=utf-8";
-
-                contextAction?.Invoke(context);
 
                 using var stream = new MemoryStream();
                 using (var writer = new Utf8JsonWriter(stream, new() { Indented = true }))
@@ -205,14 +203,16 @@ public static class StartupExtensions
         // Shared keys
         services.Configure<SharedSettings>(configuration.GetSection("Shared"));
 
-        // Add controller middleware
+        // Add api protection
         services.AddTransient<ApiResponseFilter>();
 
+        // Add caching
         services.AddMemoryCache();
-        services.AddStackExchangeRedisCache(o => o.Configuration = configuration.GetConnectionString("Redis"));
+        var redisConn = configuration.GetConnectionString("Redis");
+        if (!string.IsNullOrEmpty(redisConn)) services.AddStackExchangeRedisCache(o => o.Configuration = redisConn);
     }
 
-    public static void RegisterMassTransit(this IServiceCollection services, IConfiguration configuration)
+    public static void RegisterMassTransit(this IServiceCollection services, string queueName, IConfiguration configuration)
     {
         services.AddMassTransit(x =>
         {
@@ -233,7 +233,6 @@ public static class StartupExtensions
                 }
 
                 // Get queue name from assembly
-                var queueName = configuration["ServiceConfig:Name"];
                 if (string.IsNullOrEmpty(queueName)) return;
 
                 // Map queues with consumers
@@ -266,7 +265,7 @@ public static class StartupExtensions
                      .AddJsonFile("appsettings.json", false, true)
                      .AddJsonFile($"appsettings.{ hostingContext.HostingEnvironment.EnvironmentName }.json", true, true)
                      .AddJsonFile("appsettings.local.json", true, true)
-                     .AddUserSecrets<T>()
+                     .AddUserSecrets<T>(optional: true)
                      .AddEnvironmentVariables();
 
                  onConfig?.Invoke(hostingContext, config);
@@ -304,57 +303,18 @@ public static class StartupExtensions
             return webHost;
         }
 
-        // Check connectability
-        var connectAttempts = 0;
-        var connectLimit = 15;
-        while (connectAttempts < connectLimit)
-        {
-            connectAttempts++;
-
-            var connectable = context.Database.CanConnect();
-            if (connectable) break;
-
-            logger.LogError($"({ connectAttempts}/{ connectLimit }) Database not connectable yet after { connectAttempts }s");
-            Thread.Sleep(1000);
-        }
-
-        var migrated = false;
-        var migrationError = "";
-        var migrateAttempts = 0;
-        var migrateLimit = 12;
-        while (migrateAttempts < migrateLimit)
-        {
-            migrateAttempts++;
-
-            try
-            {
-                context.Database.Migrate();
-                migrated = true;
-                break;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"({ migrateAttempts}/{ migrateLimit }) Could not migrate database after { migrateLimit * 5000 }s => { ex.Message }");
-                migrationError = ex.Message;
-            }
-
-            Thread.Sleep(5000);
-        }
-
-        // Throw exc when we cannot connect
-        if (!migrated)
-        {
-            throw new Exception($"Failed to migrate database => { migrationError }");
-        }
-
-        // Run seeder
         try
         {
+            // Apply migration
+            context.Database.Migrate();
+
+            // Run seeder
             seeder?.Invoke(context);
         }
-        catch (Exception ex)
+        catch
         {
-            logger.LogError($"Seeding failed: { ex.Message }");
+            logger.LogError("ConnString={0}", context.Database.GetConnectionString());
+            throw;
         }
 
         return webHost;

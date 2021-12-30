@@ -133,7 +133,7 @@ export class SettingSessionsPage implements OnInit, OnDestroy {
         }
 
         // Tell ui we're loading
-        const loading = this.loadingCtrl.add(kill_all ? 'Ending All Sessions' : 'Ending Session');
+        const loading = this.loadingCtrl.addBtn(kill_all ? 'btn-end-all' : 'btn-end-' + index);
         loading.present();
 
         // Now go to api

@@ -23,7 +23,7 @@ public class SocketHub : Hub
         await base.OnConnectedAsync();
     }
 
-    public override async Task OnDisconnectedAsync(Exception? exception)
+    public override async Task OnDisconnectedAsync(Exception exception)
     {
         foreach (var role in GroupLevels)
         {

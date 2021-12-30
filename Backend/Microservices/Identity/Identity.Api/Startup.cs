@@ -6,7 +6,6 @@ using Identity.Core.Services;
 using Identity.Domain;
 
 using Library.Service.Api;
-using Library.Service.ServiceDiscovery;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -39,14 +38,14 @@ public class Startup
         // Register shared services
         services.AddAutoMapper(typeof(Startup));
         services.RegisterServices(Configuration);
-        services.RegisterMassTransit(Configuration);
+        services.RegisterMassTransit("identity", Configuration);
 
         // Add auth
         services.AddTransient<IAuthorizationHandler, CheckUserAuthorizeHandler>();
         var policies = new Dictionary<string, Action<AuthorizationPolicyBuilder>>()
-            {
-                {  "CheckUser", (policy) => policy.Requirements.Add(new CheckUserRequirement()) }
-            };
+        {
+            {  "CheckUser", (policy) => policy.Requirements.Add(new CheckUserRequirement()) }
+        };
         services.RegisterAuth(Configuration, policies);
 
         // Inject settings
@@ -65,8 +64,5 @@ public class Startup
 
         // Add identity db
         services.AddDatabase<IdentityContext>(Configuration, typeof(Startup).Assembly.GetName().Name);
-
-        // Register this service for discovery
-        services.DiscoverService(Configuration);
     }
 }

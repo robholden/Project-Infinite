@@ -11,14 +11,11 @@
     "IIS Express": {
       "commandName": "Project",
       "launchUrl": "healthy",
-      "applicationUrl": "http://localhost:7004",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__Redis": "localhost:6379,abortConnect=False",
-        "ServiceConfig__DiscoveryAddress": "http://localhost:8500",
-        "ServiceConfig__Address": "http://localhost:7004",
-        "ServiceConfig__Name": "identity"
-      }
+        "ConnectionStrings__Redis": "localhost:6379,abortConnect=False"
+      },
+      "applicationUrl": "http://localhost:7003"
     }
   }
 }

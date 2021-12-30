@@ -1,6 +1,5 @@
 ﻿
 using Library.Service.Api;
-using Library.Service.ServiceDiscovery;
 
 using Reports.Core;
 using Reports.Core.Queries;
@@ -37,7 +36,7 @@ public class Startup
         // Register shared services
         services.AddAutoMapper(typeof(Startup));
         services.RegisterServices(Configuration);
-        services.RegisterMassTransit(Configuration);
+        services.RegisterMassTransit("reports", Configuration);
 
         // Add auth
         services.RegisterAuth(Configuration);
@@ -53,8 +52,5 @@ public class Startup
 
         // Add identity db
         services.AddDatabase<ReportContext>(Configuration, typeof(Startup).Assembly.GetName().Name);
-
-        // Register this service for discovery
-        services.DiscoverService(Configuration);
     }
 }

@@ -1,6 +1,4 @@
-
 using Library.Service.Api;
-using Library.Service.ServiceDiscovery;
 
 namespace Sockets;
 
@@ -36,7 +34,7 @@ public class Startup
     {
         // Register shared services
         services.RegisterServices(Configuration);
-        services.RegisterMassTransit(Configuration);
+        services.RegisterMassTransit("sockets", Configuration);
 
         // Enable cors (required for SignalR)
         services.AddCors();
@@ -44,11 +42,9 @@ public class Startup
         // Add auth
         services.RegisterAuth(Configuration);
 
+        // Setup SignalR 
         services.AddSignalR()
             .AddNewtonsoftJsonProtocol()
             .AddStackExchangeRedis(Configuration.GetConnectionString("Redis"), options => options.Configuration.ChannelPrefix = "SnowCapture");
-
-        // Register this service for discovery
-        services.DiscoverService(Configuration);
     }
 }

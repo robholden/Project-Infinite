@@ -1,0 +1,13 @@
+name: snow-capture
+services:
+  - name: rabbit
+    image: rabbitmq:3-management
+    bindings:
+      - port: 5672
+        protocol: rabbitmq
+
+  - name: redis
+    image: redis
+    bindings:
+      - port: 6379
+        connectionString: "${host}:${port}"
