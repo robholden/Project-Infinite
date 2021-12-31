@@ -1,19 +1,16 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: minimal-ingress
+  name: backend-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   tls:
     - hosts:
-        - snowcapture.dev
-      secretName: mkcert
-    - hosts:
-        - api.snowcapture.dev
+        - api.snowcapture.com
       secretName: mkcert
   rules:
-    - host: api.snowcapture.dev
+    - host: api.snowcapture.com
       http:
         paths:
           - path: /
@@ -58,7 +55,19 @@ spec:
                 name: sockets-api
                 port:
                   number: 80
-    - host: snowcapture.dev
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-ingress
+  annotations:
+spec:
+  tls:
+    - hosts:
+        - snowcapture.com
+      secretName: mkcert
+  rules:
+    - host: snowcapture.com
       http:
         paths:
           - path: /

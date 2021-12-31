@@ -23,18 +23,11 @@ COPY . .
 
 # Build the angular app in production mode and store the artifacts in dist folder
 WORKDIR /src/Desktop
-RUN $(npm bin)/ng build --configuration --output-path=dist
+RUN $(npm bin)/ng build --configuration=production --output-path=dist
 
 # Stage 2
 FROM nginx:1.17.1-alpine
-
-# Copy our default nginx config
-COPY Desktop/nginx-custom.conf /etc/nginx/conf.d/
-
-# Remove default nginx website
-RUN rm -rf /usr/share/nginx/html/*
-
-# From ‘builder’ stage copy over the artifacts in dist folder to default nginx public folder
+COPY Desktop/nginx-custom.conf /etc/nginx/nginx.conf
 COPY --from=builder /src/Desktop/dist /usr/share/nginx/html
 
 # docker build -t iamrobert/sc-ui-web:latest --build-arg FONTAWESOME_NPM_AUTH_TOKEN=${FONTAWESOME_NPM_AUTH_TOKEN} -f Desktop/Dockerfile .

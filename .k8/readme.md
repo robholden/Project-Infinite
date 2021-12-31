@@ -16,8 +16,8 @@ Apply manifests
 
 Add dev cert
 `choco install mkcert`
-`mkcert snowcapture.dev "*.snowcapture.dev" localhost 127.0.0.1 ::1`
-`kubectl -n kube-system create secret tls mkcert --key snowcapture.dev+4-key.pem --cert snowcapture.dev+4.pem`
+`mkcert snowcapture.com "*.snowcapture.com" localhost 127.0.0.1 ::1`
+`kubectl -n kube-system create secret tls mkcert --key snowcapture.com+4-key.pem --cert snowcapture.com+4.pem`
 
 Enable Ingress
 `minikube addons configure ingress` -> `kube-system/mkcert`
@@ -30,4 +30,13 @@ Start tunnel for access
 Browse [snowcapture.dev]`snowcapture.dev`
 
 Generating a secret
-`base64-string input:"YOUR-VALUE"`
+
+```
+base64-string input:"YOUR-VALUE"
+```
+
+Redeploy Pod
+
+```
+kubectl rollout restart deployment my-deployment
+```
