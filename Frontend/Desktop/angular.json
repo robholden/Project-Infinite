@@ -41,7 +41,7 @@
                         "tsConfig": "tsconfig.app.json",
                         "assets": [
                             "src/assets/images",
-                            "src/assets/plugins",
+                            "src/assets/scripts",
                             {
                                 "input": "../Shared/i18n/",
                                 "output": "assets/i18n/",
