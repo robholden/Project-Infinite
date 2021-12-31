@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "./Backend/Shared/Libraries/**.cs"
-      - "./Backend/Microservices/Reports/**.cs"
-      - "./Backend/Microservices/Reports/**.csproj"
-      - "./Backend/Microservices/Reports/Reports.Api/Dockerfile"
-      - "./Backend/Microservices/Reports/Reports.Api/appsettings.json"
+      - "Backend/Shared/Libraries/**.cs"
+      - "Backend/Microservices/Reports/**.cs"
+      - "Backend/Microservices/Reports/**.csproj"
+      - "Backend/Microservices/Reports/Reports.Api/Dockerfile"
+      - "Backend/Microservices/Reports/Reports.Api/appsettings.json"
   workflow_dispatch:
 
 jobs:
