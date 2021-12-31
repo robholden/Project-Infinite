@@ -5,6 +5,6 @@ export class ProdEnvironment implements Environment {
     public gateway = 'https://api.snowcapture.com';
     public refresh = '/identity/auth/validate';
     public httpTimeout = 1000 * 60 * 2;
-    public production = false;
+    public production = true;
     public recaptchaKey?: string;
 }
