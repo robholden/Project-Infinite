@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sockets-api
+spec:
+  selector:
+    matchLabels:
+      app: sockets
+      version: v1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sockets
+        version: v1
+    spec:
+      containers:
+        - name: sockets-container
+          image: iamrobert/sc-api-sockets:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__Redis
+              valueFrom:
+                configMapKeyRef:
+                  name: site-config
+                  key: REDIS_CONNECTION_STRING
+            - name: Shared_ReCaptchaSecretKey
+              valueFrom:
+                secretKeyRef:
+                  name: site-secrets
+                  key: ReCaptchaSecretKey
+            - name: Shared_JwtIssuerKey
+              valueFrom:
+                secretKeyRef:
+                  name: site-secrets
+                  key: JwtIssuerKey
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sockets-api
+  labels:
+    app: sockets
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+  selector:
+    app: sockets

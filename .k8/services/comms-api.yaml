@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comms-api
+spec:
+  selector:
+    matchLabels:
+      app: comms
+      version: v1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: comms
+        version: v1
+    spec:
+      containers:
+        - name: comms-container
+          image: iamrobert/sc-api-comms:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__Database
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-secrets
+                  key: COMMS_CONNECTION_STRING
+            - name: ConnectionStrings__Redis
+              valueFrom:
+                configMapKeyRef:
+                  name: site-config
+                  key: REDIS_CONNECTION_STRING
+            - name: Shared_ReCaptchaSecretKey
+              valueFrom:
+                secretKeyRef:
+                  name: site-secrets
+                  key: ReCaptchaSecretKey
+            - name: Shared_JwtIssuerKey
+              valueFrom:
+                secretKeyRef:
+                  name: site-secrets
+                  key: JwtIssuerKey
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comms-api
+  labels:
+    app: comms
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+  selector:
+    app: comms

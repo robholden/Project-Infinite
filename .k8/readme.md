@@ -28,3 +28,6 @@ Enable Ingress
 Start tunnel for access
 `minikube tunnel`
 Browse [snowcapture.dev]`snowcapture.dev`
+
+Generating a secret
+`base64-string input:"YOUR-VALUE"`
