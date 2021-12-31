@@ -1,3 +1,4 @@
 .tye/
 *-secrets.yaml
+secrets.yaml
 *.pem

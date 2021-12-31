@@ -1,8 +1,8 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # CLI: 
-# docker build -t iamrobert/sc-api-identity:v0.0.x-alpha -f Microservices/Identity/Identity.Api/Dockerfile .
-# docker push iamrobert/sc-api-identity:v0.0.x-alpha
+# docker build -t iamrobert/sc-api-identity:latest -f Microservices/Identity/Identity.Api/Dockerfile .
+# docker push iamrobert/sc-api-identity:latest
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app

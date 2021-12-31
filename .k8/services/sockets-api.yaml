@@ -24,18 +24,33 @@ spec:
             - name: ConnectionStrings__Redis
               valueFrom:
                 configMapKeyRef:
-                  name: site-config
+                  name: config-map
                   key: REDIS_CONNECTION_STRING
             - name: Shared_ReCaptchaSecretKey
               valueFrom:
                 secretKeyRef:
-                  name: site-secrets
+                  name: secrets
                   key: ReCaptchaSecretKey
-            - name: Shared_JwtIssuerKey
+            - name: Shared__JwtIssuerKey
               valueFrom:
                 secretKeyRef:
-                  name: site-secrets
+                  name: secrets
                   key: JwtIssuerKey
+            - name: RabbitMq__Hostname
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map
+                  key: RABBITMQ_HOSTNAME
+            - name: RabbitMq__Username
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map
+                  key: RABBITMQ_USERNAME
+            - name: RabbitMq__Password
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: RABBITMQ_PASSWORD
 ---
 apiVersion: v1
 kind: Service

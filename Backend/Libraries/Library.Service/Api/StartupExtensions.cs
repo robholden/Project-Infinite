@@ -29,12 +29,10 @@ namespace Library.Service.Api;
 
 public static class StartupExtensions
 {
+
     public static void ConfigureStartup(this IApplicationBuilder app, IConfiguration config, IWebHostEnvironment env, bool withAuth, Action<IEndpointRouteBuilder> routeBuilder = null)
     {
         if (env.IsDevMode()) app.UseDeveloperExceptionPage();
-        else app.UseHsts();
-
-        app.UseHttpsRedirection();
 
         app.UseCors(x => x
             .BuildOrigins(config["AllowedOrigins"])
@@ -234,8 +232,15 @@ public static class StartupExtensions
             x.UsingRabbitMq((context, cfg) =>
             {
                 // Set RabbitMq host address from settings
-                var host = configuration["RabbitMq:Hostname"];
-                if (!string.IsNullOrEmpty(host)) cfg.Host($"rabbitmq://{ host }");
+                var host = configuration["RabbitMq:Hostname"] ?? "localhost:0";
+                cfg.Host($"rabbitmq://{ host }", h =>
+                {
+                    var username = configuration["RabbitMq:Username"];
+                    var password = configuration["RabbitMq:Password"];
+
+                    if (!string.IsNullOrEmpty(username)) h.Username(username);
+                    if (!string.IsNullOrEmpty(password)) h.Password(password);
+                });
 
                 // Do not register endpoint if there's no consumers registered
                 if (!types.Any())

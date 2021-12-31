@@ -20,11 +20,11 @@ Install Redis & RabbitMq
 
 Apply manifests
 `kubectl apply -f data/mssql-pvc.yaml`
-`kubectl apply -f data/mssql-secrets.yaml`
+`kubectl apply -f data/secrets.yaml`
 `kubectl apply -f data/mssql.yaml`
 
-`kubectl apply -f site-config-map.yaml`
-`kubectl apply -f site-secrets.yaml`
+`kubectl apply -f config-map-map.yaml`
+`kubectl apply -f secrets.yaml`
 `kubectl apply -f gateway-api.yaml`
 `kubectl apply -f identity-api.yaml`
 
@@ -59,4 +59,16 @@ kubectl rollout restart deployment content-api
 kubectl rollout restart deployment reports-api
 kubectl rollout restart deployment sockets-api
 kubectl rollout restart deployment web-ui
+```
+
+Copying local image to minikube
+
+```
+minikube image load image:tag
+```
+
+Gettings logs
+
+```
+kubectl logs pod-name --since-time=2021-12-31T00:00:00Z > pod-logs.txt
 ```
