@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "./Frontend/Desktop/**.ts"
-      - "./Frontend/Desktop/nginx-custom.conf"
-      - "./Frontend/Desktop/Dockerfile"
-      - "./Frontend/Desktop/angular.json"
-      - "./Frontend/Shared/**.ts"
+      - "Frontend/Desktop/**.ts"
+      - "Frontend/Desktop/nginx-custom.conf"
+      - "Frontend/Desktop/Dockerfile"
+      - "Frontend/Desktop/angular.json"
+      - "Frontend/Shared/**.ts"
   workflow_dispatch:
 
 jobs:
