@@ -32,24 +32,7 @@ public class Startup
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if (env.IsDevMode())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-        else
-        {
-            app.UseHsts();
-        }
-
-        app.UseHttpsRedirection();
-
-        app.UseCors(x => x
-            .BuildOrigins(Configuration["AllowedOrigins"])
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-        );
-
-        app.ConfigureStartup(false);
+        app.ConfigureStartup(Configuration, env, false);
 
         // Start ocelot
         if (_useProxy)

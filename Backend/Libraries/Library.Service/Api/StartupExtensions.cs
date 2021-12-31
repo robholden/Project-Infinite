@@ -29,8 +29,19 @@ namespace Library.Service.Api;
 
 public static class StartupExtensions
 {
-    public static void ConfigureStartup(this IApplicationBuilder app, bool withAuth, Action<IEndpointRouteBuilder> routeBuilder = null)
+    public static void ConfigureStartup(this IApplicationBuilder app, IConfiguration config, IWebHostEnvironment env, bool withAuth, Action<IEndpointRouteBuilder> routeBuilder = null)
     {
+        if (env.IsDevMode()) app.UseDeveloperExceptionPage();
+        else app.UseHsts();
+
+        app.UseHttpsRedirection();
+
+        app.UseCors(x => x
+            .BuildOrigins(config["AllowedOrigins"])
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+        );
+
         app.UseRouting();
 
         if (withAuth)
