@@ -8,13 +8,7 @@
 
 ```
 cd Frontend/Desktop & npm i
-```
-
-```
-cd Frontend/Mobile & npm i
-```
-
-```
+cd Frontend/Ionic & npm i
 cd Frontend/Shared & npm i
 ```
 
@@ -34,7 +28,7 @@ ng serve --o
 
 ## Backend
 
-1. Install **.NET 3.1** & **.NET 6.0** at [https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)
+1. Install **.NET 6.0** at [https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)
 2. Install [Tye](https://github.com/dotnet/tye/blob/master/docs/getting_started.md)
 3. Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
 4. Create user-secrets
@@ -57,12 +51,5 @@ Use `tye` to run dependencies locally with Docker -> `.dev/readme.md`
 
 #### Running a local SMTP server
 
-In order to send/receive emails you will need an smtp server
-
-```
-dotnet tool install -g Rnwood.Smtp4dev --version "3.1.0-\*"
-```
-
-```
-smtp4dev
-```
+**Running a local SMTP server**
+In order to send/receive emails you will need a local smtp server such as [https://github.com/ChangemakerStudios/Papercut-SMTP](Papercut-SMTP)

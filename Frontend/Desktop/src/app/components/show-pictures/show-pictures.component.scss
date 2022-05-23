@@ -103,21 +103,6 @@
     }
 }
 
-::ng-deep {
-    .popup-picture {
-        text-align: left;
-
-        .leaflet-popup-content {
-            padding: 0;
-            margin: 0;
-        }
-
-        a.leaflet-popup-close-button {
-            padding: 0;
-        }
-    }
-}
-
 .skeleton-grid {
     display: grid;
     grid-template-columns: 30% 20% 30% 20%;
