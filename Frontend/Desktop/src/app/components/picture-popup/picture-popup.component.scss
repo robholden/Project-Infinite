@@ -1,3 +1,36 @@
+::ng-deep {
+    .popup-picture {
+        text-align: left;
+
+        .leaflet-popup-content-wrapper {
+            border-radius: var(--sc-br);
+            box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.15);
+        }
+
+        .leaflet-popup-content {
+            padding: 0;
+            margin: 0;
+        }
+
+        a.leaflet-popup-close-button {
+            top: -5px;
+            right: -5px;
+            width: 17px;
+            height: 17px;
+            padding: 1px 0 0;
+            color: var(--sc-colour-primary-contrast);
+            background-color: var(--sc-colour-primary);
+            border-radius: 50%;
+
+            &:hover {
+                opacity: 1;
+                background-color: var(--sc-colour-primary-shade);
+                color: var(--sc-colour-primary-contrast);
+            }
+        }
+    }
+}
+
 .picture-popup-link {
     display: flex;
     align-items: center;

@@ -16,7 +16,7 @@ export class PageHeaderComponent {
 
     constructor() {}
 
-    linkClicked(evt: any) {
-        evt.target.blur();
+    linkClicked(target: any) {
+        target?.blur();
     }
 }

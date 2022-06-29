@@ -8,7 +8,7 @@
                 [routerLink]="link.url"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"
-                (click)="linkClicked($event)"
+                (click)="linkClicked($event.target)"
             >
                 {{ link.name }}
             </a>

@@ -145,6 +145,7 @@ export class SettingDetailsPage implements OnInit {
         if (this.sent) return;
 
         const confirmed = await this.alertCtrl.confirm({
+            title: 'Resend Email',
             message: 'Do you want to resend your email confirmation?',
             confirmBtn: {
                 text: 'Resend',
