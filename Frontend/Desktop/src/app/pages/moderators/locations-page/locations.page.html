@@ -61,15 +61,26 @@
             <ng-container *ngFor="let location of result.rows || []; let $i = index">
                 <h4 [class.mt]="$i > 0" *ngIf="headerFn($i) as header">{{ header }}</h4>
                 <div class="card p-s flex-row-align mt-s">
-                    {{ location.name }}
+                    {{ location.name }} ({{ location.code }})
 
                     <div class="flex-spacer"></div>
 
                     <button
-                        [id]="location.locationId"
+                        [id]="location.locationId + '_code'"
                         class="button small icon-only ml"
                         hover="light"
-                        (click)="edit($i)"
+                        (click)="edit($i, 'code')"
+                        tippy="Edit location code"
+                        placement="left"
+                    >
+                        <i class="far fa-tag icon"></i>
+                    </button>
+
+                    <button
+                        [id]="location.locationId + '_name'"
+                        class="button small icon-only ml-s"
+                        hover="light"
+                        (click)="edit($i, 'name')"
                         tippy="Edit location name"
                         placement="left"
                     >

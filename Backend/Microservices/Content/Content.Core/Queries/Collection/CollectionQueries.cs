@@ -39,7 +39,7 @@ public class CollectionQueries : ICollectionQueries
 
         return await _ctx.Collections
             .AsNoTracking()
-            .Include(x => x.Pictures.Where(x => x.PictureId == (pageRequest.Options.IncludePictureId ?? x.PictureId)))
+            .Include(x => x.Pictures.Where(x => x.PictureId == (pageRequest.Options.IncludePictureId ?? x.PictureId)).Take(9))
             .QueryAsync(where, pageRequest, orderBy);
     }
 
@@ -49,7 +49,7 @@ public class CollectionQueries : ICollectionQueries
         var where = BuildExpression(options, out var orderBy);
 
         var enumer = _ctx.Collections
-            .Include(c => c.Pictures.Where(x => x.PictureId == (options.IncludePictureId ?? x.PictureId)))
+            .Include(c => c.Pictures.Where(x => x.PictureId == (options.IncludePictureId ?? x.PictureId)).Take(9))
             .AsNoTracking()
             .Where(where);
 
@@ -72,7 +72,6 @@ public class CollectionQueries : ICollectionQueries
         options ??= new CollectionQueryOptions();
 
         // Build where clause
-        orderBy = null;
         Expression<Func<Collection, bool>> where = _ => true;
 
         // User Id
@@ -93,13 +92,11 @@ public class CollectionQueries : ICollectionQueries
             where = where.And(x => x.Name.ToLower().StartsWith(options.Name.ToLower().Trim()));
         }
 
-        switch (options.OrderBy)
+        orderBy = options.OrderBy switch
         {
-            case CollectionQueryOptions.OrderByEnum.Name:
-                orderBy = x => x.Name;
-                break;
-        }
-
+            CollectionQueryOptions.OrderByEnum.Name => x => x.Name,
+            _ => x => x.Ordinal,
+        };
         return where;
     }
 }

@@ -49,7 +49,7 @@
 
             <div class="button" background="light" tippy="Where it was taken" placement="top" *ngIf="picture.location">
                 <i class="far fa-map-marker-alt icon" position="left"></i>
-                {{ "locations." + picture.location.name | trx : {} : picture.location.name }}, {{ "countries." + picture.location.country.code | trx : {} :
+                {{ "locations." + picture.location.code | trx : {} : picture.location.name }}, {{ "countries." + picture.location.country.code | trx : {} :
                 picture.location.country.name }}
             </div>
         </div>

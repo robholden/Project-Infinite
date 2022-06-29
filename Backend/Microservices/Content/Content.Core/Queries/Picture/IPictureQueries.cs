@@ -7,7 +7,7 @@ namespace Content.Core.Queries;
 
 public interface IPictureQueries
 {
-    Task<Picture> Get(Guid id, Guid userId);
+    Task<Picture> Get(Guid id, Guid? userId);
 
     Task<bool> IsAccessible(Guid pictureId);
 

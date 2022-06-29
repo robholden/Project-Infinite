@@ -13,12 +13,9 @@ export function valuesHasChanged(changes: SimpleChanges, fields: string[]) {
 }
 
 export function valueHasChanged(changes: SimpleChanges, field: string) {
-    if (!changes) return false;
+    if (!fieldHasChanged(changes, field)) return field;
 
-    const change = changes[field];
-    if (!change || change.firstChange) return false;
-
-    return !itemsAreEqual(change.currentValue, change.previousValue);
+    return !itemsAreEqual(changes[field].currentValue, changes[field].previousValue);
 }
 
 export function propHasChanged<T>(changes: SimpleChanges, field: string, condition: (previous: T, current: T) => boolean) {
@@ -26,4 +23,13 @@ export function propHasChanged<T>(changes: SimpleChanges, field: string, conditi
 
     const change = changes[field];
     return condition(change.previousValue as T, change.currentValue as T);
+}
+
+export function fieldHasChanged(changes: SimpleChanges, field: string) {
+    if (!changes) return false;
+
+    const change = changes[field];
+    if (!change || change.firstChange) return false;
+
+    return true;
 }

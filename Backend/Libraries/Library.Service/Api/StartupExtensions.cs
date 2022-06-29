@@ -232,7 +232,7 @@ public static class StartupExtensions
             x.UsingRabbitMq((context, cfg) =>
             {
                 // Set RabbitMq host address from settings
-                var host = configuration["RabbitMq:Hostname"] ?? "localhost:0";
+                var host = configuration["RabbitMq:Hostname"] ?? "localhost";
                 cfg.Host($"rabbitmq://{ host }", h =>
                 {
                     var username = configuration["RabbitMq:Username"];

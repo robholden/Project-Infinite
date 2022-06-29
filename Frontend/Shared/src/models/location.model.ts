@@ -11,6 +11,7 @@ export interface Boundry {
 export interface Location extends Coords {
     locationId: string;
     name: string;
+    code: string;
     country: Country;
     boundry: Boundry;
 }

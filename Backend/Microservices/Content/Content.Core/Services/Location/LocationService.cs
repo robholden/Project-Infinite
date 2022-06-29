@@ -35,6 +35,15 @@ public class LocationService : ILocationService
         await _ctx.Put(location);
     }
 
+    public async Task UpdateCode(Guid id, string code)
+    {
+        var location = await _ctx.Locations.FindAsync(x => x.LocationId == id);
+
+        location.Code = code;
+
+        await _ctx.Put(location);
+    }
+
     public async Task UpdateBoundry(Guid locationId, Boundry newBoundry)
     {
         var boundry = await _ctx.Boundries.FindAsync(x => x.LocationId == locationId);
@@ -98,6 +107,7 @@ public class LocationService : ILocationService
             location = new Location
             {
                 Name = city,
+                Code = city,
                 Country = country,
                 Lat = map.Lat,
                 Lng = map.Lon,

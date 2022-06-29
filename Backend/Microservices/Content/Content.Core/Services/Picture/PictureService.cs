@@ -23,16 +23,18 @@ public class PictureService : IPictureService
 {
     private readonly ContentContext _ctx;
     private readonly PictureSettings _settings;
+    private readonly ILocationService _locationService;
     private readonly ILocationQueries _locationQueries;
 
     private readonly ICommsPubSub _commEvents;
     private readonly ISocketsPubSub _socketEvents;
 
-    public PictureService(ContentContext ctx, IOptions<PictureSettings> options, ILocationQueries locationQueries, ICommsPubSub commEvents, ISocketsPubSub socketEvents)
+    public PictureService(ContentContext ctx, IOptions<PictureSettings> options, ILocationService locationService, ILocationQueries locationQueries, ICommsPubSub commEvents, ISocketsPubSub socketEvents)
     {
         _ctx = ctx;
         _settings = options.Value;
         _locationQueries = locationQueries;
+        _locationService = locationService;
 
         _commEvents = commEvents;
         _socketEvents = socketEvents;
@@ -127,6 +129,14 @@ public class PictureService : IPictureService
             return;
         }
 
+        // Ensure picture has a location
+        picture.Location ??= await GetLocation(picture);
+        if (picture.Location == null)
+        {
+            throw new SiteException(ErrorCode.NoLocationFound);
+        }
+
+        // Mark picture for approval
         picture.Status = PictureStatus.PendingApproval;
         picture.UpdatedDate = DateTime.UtcNow;
         picture = await _ctx.Put(picture);
@@ -136,6 +146,8 @@ public class PictureService : IPictureService
 
         // Create approval notification for moderators
         _ = _commEvents?.AddGeneralNotification(new(UserLevel.Moderator, NotificationType.NewPictureApproval, new($"{ picture.PictureId }", picture.Name, picture.Path)));
+
+
     }
 
     public async Task<PictureModeration> NextModeration(string username)
@@ -157,7 +169,7 @@ public class PictureService : IPictureService
     {
         // Get request from db
         var request = await _ctx.PictureModerations
-            .Include(x => x.Picture)
+            .Include(x => x.Picture).ThenInclude(x => x.Location)
             .FindAsync(x => x.PictureId == pictureId);
 
         // Store picture as it would be lost on deletion
@@ -254,6 +266,23 @@ public class PictureService : IPictureService
         return pictures;
     }
 
+    private async Task<Location> GetLocation(Picture picture)
+    {
+        // Find existing location within lat/lng bounds 
+        var location = await _locationQueries.WithinBounds(picture.Lat, picture.Lng);
+        if (location != null) return location;
+
+        // Call api
+        try
+        {
+            return await _locationService.AddWithCoords(picture.Lat, picture.Lng);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Failed to get location from api => {0}", ex.Message);
+            return null;
+        }
+    }
     private void PhysicalDelete(string path)
     {
         try
@@ -344,13 +373,6 @@ public class PictureService : IPictureService
             return (null, errors);
         }
 
-        // Find location within lat/lng bounds or add location request
-        var location = await _locationQueries.WithinBounds(lat, lng);
-        if (location == null && !await _ctx.PictureLocationRequests.AnyAsync(x => x.Lat == lat && x.Lng == lng))
-        {
-            await _ctx.Post(new PictureLocationRequest(lat, lng));
-        }
-
         // Extract colour pallete
         var colours = new List<string>();
         try
@@ -398,7 +420,7 @@ public class PictureService : IPictureService
             Lng = lng,
             Hash = hash,
             Colours = string.Join(", ", colours),
-            Location = location,
+            Location = await _locationQueries.WithinBounds(lat, lng),
             DateTaken = dateTaken,
             Status = PictureStatus.Draft
         };

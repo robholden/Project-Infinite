@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: backend-ingress
   annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "15m"
 spec:
   tls:
     - hosts:

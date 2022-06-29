@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { wait } from '@shared/functions';
 import { CustomError, Trx } from '@shared/models';
 import { UserService } from '@shared/services/identity/user.service';
 import { AuthState } from '@shared/storage';
@@ -24,6 +25,9 @@ export class ConfirmEmailPage implements OnInit {
     // Checks given key key is valid
     //
     async confirmEmail(key: string) {
+        // Wait for recaptcha to load
+        await wait(2500);
+
         // Quit if key is null
         if (!key) {
             return;

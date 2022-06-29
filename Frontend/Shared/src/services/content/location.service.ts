@@ -35,6 +35,16 @@ export class LocationService {
     }
 
     /**
+     * Changes a location's code
+     *
+     * @param id The location id
+     * @param code The new location code
+     */
+    async updateCode(id: string, code: string): Promise<void | CustomError> {
+        return await this.api.put(`/content/location/${id}/code`, { name: code });
+    }
+
+    /**
      * Changes a location's boundry
      *
      * @param id The location id

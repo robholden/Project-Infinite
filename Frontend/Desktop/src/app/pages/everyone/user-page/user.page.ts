@@ -3,12 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
-import { ShowPicturesComponent } from '@app/components/show-pictures/show-pictures.component';
-import { fade } from '@app/functions/animations.fn';
-import { replaceLoadingTitle } from '@app/functions/routing-titles.fn';
-import { ChangeSettingsModal } from '@app/modals/change-settings/change-settings.modal';
-import { ModalController } from '@app/shared/controllers/modal';
-
 import { CustomEvent } from '@shared/enums';
 import { changeUrl } from '@shared/functions';
 import { CustomError, User, UserStats } from '@shared/models';
@@ -16,6 +10,11 @@ import { EventService } from '@shared/services';
 import { StatsService } from '@shared/services/content';
 import { UserService } from '@shared/services/identity';
 import { AuthState } from '@shared/storage';
+
+import { fade } from '@app/functions/animations.fn';
+import { replaceLoadingTitle } from '@app/functions/routing-titles.fn';
+import { ChangeSettingsModal } from '@app/modals/change-settings/change-settings.modal';
+import { ModalController } from '@app/shared/controllers/modal';
 
 import { ReportUserModal } from './report-user/report-user.modal';
 import { ShowCollectionsComponent } from './show-collections/show-collections.component';
@@ -36,7 +35,6 @@ export class UserPage implements OnInit {
     reported: boolean;
     CustomEvent = CustomEvent;
 
-    @ViewChild(ShowPicturesComponent) pictureList!: ShowPicturesComponent;
     @ViewChild(ShowCollectionsComponent) collectionList!: ShowCollectionsComponent;
 
     constructor(
@@ -67,8 +65,6 @@ export class UserPage implements OnInit {
 
         this.action = action;
         changeUrl(`/user/${this.username}/${action}`);
-
-        if (action !== 'collections' && this.pictureList) this.pictureList.reload();
     }
 
     async openNewCollection() {

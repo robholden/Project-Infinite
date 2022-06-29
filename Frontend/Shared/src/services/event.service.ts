@@ -43,7 +43,6 @@ export class EventService {
             const name = CustomEvent[event];
             const instance = this.events.find((s) => s.name === name);
             if (!instance) {
-                console.error('No event found for ' + event);
                 res(null);
                 return;
             }

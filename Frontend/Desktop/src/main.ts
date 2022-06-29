@@ -19,18 +19,8 @@ if (environment.production) {
     enableProdMode();
 }
 
-function bootstrap() {
-     platformBrowserDynamic()
+platformBrowserDynamic()
     .bootstrapModule(AppModule, {
         providers: [{ provide: LOCALE_ID, useFactory: (translate: TranslateService) => translate.currentLang || locale, deps: [TranslateService] }],
     })
     .catch((err) => console.error(err));
-   };
-
-
-if (document.readyState === 'complete') {
-  bootstrap();
-} else {
-  document.addEventListener('DOMContentLoaded', bootstrap);
-}
-

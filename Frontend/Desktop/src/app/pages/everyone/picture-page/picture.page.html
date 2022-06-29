@@ -1,7 +1,7 @@
 <sc-page>
     <sc-page-content>
         <div class="container">
-            <div class="grid" [attr.cols]="!mapOptions ? 1 : 2">
+            <div class="grid" cols="2">
                 <div>
                     <sc-show-picture [picture]="picture" (deleted)="deleted()" [dedicated]="true" [redirectApproval]="fromApprovals"></sc-show-picture>
 
@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <sc-show-map class="card-shadow mb" [options]="mapOptions" [style.height.%]="100" *ngIf="mapOptions"></sc-show-map>
+                <sc-show-map class="card-shadow mb" [options]="mapOptions" [style.height.%]="100"></sc-show-map>
             </div>
         </div>
     </sc-page-content>

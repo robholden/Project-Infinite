@@ -4,13 +4,13 @@ import { Validators } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { PagedComponent } from '@app/features/paged-component.helper';
-import { AlertController } from '@app/shared/controllers/alert';
-import { LoadingController } from '@app/shared/controllers/loading';
-
 import { enumValues, parseEnum, wait } from '@shared/functions';
 import { CustomError, Location, LocationOrderBy, LocationSearch, PageRequest } from '@shared/models';
 import { LocationService } from '@shared/services/content';
+
+import { PagedComponent } from '@app/features/paged-component.helper';
+import { AlertController } from '@app/shared/controllers/alert';
+import { LoadingController } from '@app/shared/controllers/loading';
 
 @Component({
     selector: 'sc-locations',
@@ -59,18 +59,18 @@ export class LocationsPage extends PagedComponent<Location, LocationSearch> impl
         await this.search(this.pager.page + 1);
     }
 
-    async edit(index: number) {
+    async edit(index: number, field: 'name' | 'code') {
         const location = this.result.rows[index];
         const result = await this.alertCtrl.create({
-            title: 'Change location name',
-            message: `Enter the new name for <b>${location.name}</b>, ${location.country.name}`,
+            title: 'Change location ' + field,
+            message: `Enter the new ${field} for <b>${location.name}</b> (${location.code}), ${location.country.name}`,
             inputs: [
                 {
                     name: 'value',
                     type: 'text',
                     validators: [Validators.required],
-                    placeholder: location.name,
-                    value: location.name,
+                    placeholder: location[field],
+                    value: location[field],
                 },
             ],
             buttons: [
@@ -88,12 +88,15 @@ export class LocationsPage extends PagedComponent<Location, LocationSearch> impl
             ],
         });
 
-        if (!result || result.value === location.name) return;
+        if (!result || result.value === location.code) return;
 
-        const cached = location.name;
-        this.result.rows[index].name = result.value;
+        const cached = location[field];
+        this.result.rows[index][field] = result.value;
 
-        const resp = await this.loadingCtrl.addBtnWithApi(location.locationId, this.service.updateName(location.locationId, result.value));
-        if (resp instanceof CustomError) this.result.rows[index].name = cached;
+        const resp = await this.loadingCtrl.addBtnWithApi(
+            `${location.locationId}_${field}`,
+            field === 'name' ? this.service.updateName(location.locationId, result.value) : this.service.updateCode(location.locationId, result.value)
+        );
+        if (resp instanceof CustomError) this.result.rows[index][field] = cached;
     }
 }

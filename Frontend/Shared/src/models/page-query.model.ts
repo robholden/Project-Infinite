@@ -20,12 +20,14 @@ export class PageRequest {
 
 export function pageRequestFromQueryString(qparams: SMap<string>, def: PageRequest, config?: SMap<QueryType>) {
     def = def || new PageRequest();
-    const pager = buildQueryString<PageRequest>(
-        qparams,
-        { pageSize: 'number', page: 'number', orderDir: 'string', orderBy: 'string', ...(config || {}) },
-        def
-    );
 
+    const pagerConfig: SMap<QueryType> = { pageSize: 'number', page: 'number', orderDir: 'string', orderBy: 'string' };
+    if (config)
+        Object.keys(pagerConfig)
+            .filter((key) => key in config)
+            .forEach((key) => (pagerConfig[key] = config[key]));
+
+    const pager = buildQueryString<PageRequest>(qparams, pagerConfig, def);
     if (!pager.orderBy) pager.orderDir = def.orderDir;
 
     return pager;

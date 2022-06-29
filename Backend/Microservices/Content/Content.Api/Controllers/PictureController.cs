@@ -297,7 +297,7 @@ public class PictureController : BaseController<PictureController>
 
     private async Task<Picture> GetAndVerifyPicture(Guid pictureId, bool enforceAuthor = false)
     {
-        var picture = await _pictureQueries.Get(pictureId, LoggedInUser.Id);
+        var picture = await _pictureQueries.Get(pictureId, LoggedInUser?.Id);
         if (picture == null)
         {
             ThrowNotFound();

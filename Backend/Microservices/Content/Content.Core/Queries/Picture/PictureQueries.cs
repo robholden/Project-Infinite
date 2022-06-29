@@ -20,24 +20,32 @@ public class PictureQueries : IPictureQueries
         _cache = cache;
     }
 
-    public async Task<Picture> Get(Guid pictureId, Guid userId)
+    public async Task<Picture> Get(Guid pictureId, Guid? userId)
     {
-        var picture = await _ctx.Pictures
-            .AsNoTracking()
-            .Include(x => x.Collections.Where(c => c.UserId == userId))
-            .Include(x => x.Likes.Where(l => l.UserId == userId))
-            .Include(x => x.Tags)
-            .Include(x => x.Location).ThenInclude(x => x.Country)
-            .FirstOrDefaultAsync(x => x.PictureId == pictureId);
+        // Build express for picture
+        IQueryable<Picture> query = _ctx.Pictures
+                .AsNoTracking()
+                .Include(x => x.Location).ThenInclude(x => x.Country)
+                .Include(x => x.Tags);
 
+        // Include user specific data
+        if (userId.HasValue)
+        {
+            query = query
+                .Include(x => x.Collections.Where(c => c.UserId == userId))
+                .Include(x => x.Likes.Where(l => l.UserId == userId));
+        }
+
+        // Lookup picture and ensure it exists
+        var picture = await query.FirstOrDefaultAsync(x => x.PictureId == pictureId);
         if (picture == null)
         {
             return null;
         }
 
+        // Assign metadata to picture
         picture.LikesTotal = await _ctx.PictureLikes.CountAsync(x => x.PictureId == pictureId);
-
-        return picture?.Seeded();
+        return picture.Seeded();
     }
 
     public Task<bool> IsAccessible(Guid pictureId)
@@ -186,7 +194,7 @@ public class PictureQueries : IPictureQueries
         // Location and distance
         if (options.Locations?.Any() == true)
         {
-            where = where.And(x => options.Locations.Contains(x.Location.Name));
+            where = where.And(x => options.Locations.Contains(x.Location.Code));
             if (options.Distance.HasValue && options.Locations.Length == 1) where = where.And(options.Distance.Value.IsWithinDistance());
         }
 

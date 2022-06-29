@@ -47,6 +47,7 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
     filter: Filter = { countries: {}, locations: {}, tags: {}, bounds: null };
 
     countryMap: SMap<string> = {};
+    locationMap: SMap<string> = {};
 
     mapOptions: LeafletMapOptions;
 
@@ -91,11 +92,11 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
 
     ngOnInit(): void {}
 
-    setFilters() {
+    setFilters(reload: boolean = true) {
         const countries = Object.keys(this.filter.countries).filter((code) => this.filter.countries[code]);
-        const locations = Object.keys(this.filter.locations).filter((name) => {
-            const country = this.filters.locations.find((c) => c.locations.some((l) => l.name === name));
-            return this.filter.locations[name] && (!country || !countries.some((c) => c === country.code));
+        const locations = Object.keys(this.filter.locations).filter((code) => {
+            const country = this.filters.locations.find((c) => c.locations.some((l) => l.code === code));
+            return this.filter.locations[code] && (!country || !countries.some((c) => c === country.code));
         });
         const tags = Object.keys(this.filter.tags).filter((value) => this.filter.tags[value]);
 
@@ -103,7 +104,7 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
         this.params.locations = locations.length > 0 ? locations : null;
         this.params.tags = tags.length > 0 ? tags : null;
 
-        this.reload();
+        if (reload) this.reload();
     }
 
     async edit(index: number) {
@@ -123,12 +124,18 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
         // Combine locations into countries
         const countries = uniqueArray(
             filters.locations.map((l) => l.country),
-            (l1, l2) => l1.name === l2.name
+            (c1, c2) => c1.name === c2.name
         );
         const locations = countries.map((country) => ({ ...country, locations: filters.locations.filter((l) => l.country.name === country.name) }));
 
         // Create country code map lookup for UI
         this.countryMap = countries.reduce((acc, curr: Country) => {
+            acc[curr.code] = curr.name;
+            return acc;
+        }, {} as SMap<string>);
+
+        // Create location code map lookup for UI
+        this.locationMap = filters.locations.reduce((acc, curr: Location) => {
             acc[curr.code] = curr.name;
             return acc;
         }, {} as SMap<string>);
@@ -145,7 +152,7 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
                     return acc;
                 }, {}),
             locations: (this.params.locations || [])
-                .filter((name) => locations.some((country) => country.locations.some((loc) => loc.name === name)))
+                .filter((code) => locations.some((country) => country.locations.some((loc) => loc.code === code)))
                 .reduce((acc, location) => {
                     acc[location] = true;
                     return acc;
@@ -158,7 +165,7 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
                 }, {}),
             bounds: filters.bounds,
         };
-        this.setFilters();
+        this.setFilters(false);
 
         await wait(0);
 
@@ -177,7 +184,7 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
 
             this.filters.locations = deepCopy(this.allFilters).locations.reduce((list, curr) => {
                 // Filter locations
-                curr.locations = curr.locations.filter((l) => l.name.toLowerCase().includes(value));
+                curr.locations = curr.locations.filter((l) => l.code.toLowerCase().includes(value));
 
                 // Check country name
                 if (curr.name.toLowerCase().includes(value) || curr.locations.length > 0) {

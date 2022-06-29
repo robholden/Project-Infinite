@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 import { CustomEvent } from '@shared/enums';
+import { valueHasChanged } from '@shared/functions';
 import { Collection, CollectionSearch, CustomError, PagedList, PageRequest, SMap } from '@shared/models';
 import { EventService } from '@shared/services';
 import { CollectionService } from '@shared/services/content';
@@ -12,7 +13,7 @@ import { LoadingBtn, LoadingController } from '@app/shared/controllers/loading';
     templateUrl: './select-collection.component.html',
     styleUrls: ['./select-collection.component.scss'],
 })
-export class SelectCollectionComponent implements OnInit {
+export class SelectCollectionComponent implements OnInit, OnChanges {
     pager: PageRequest = { ...new PageRequest(), pageSize: 50 };
     loading: boolean = true;
 
@@ -33,8 +34,20 @@ export class SelectCollectionComponent implements OnInit {
         if (this.autoload) setTimeout(() => this.fetch(), 0);
     }
 
+    ngOnChanges(changes: SimpleChanges) {
+        if (!valueHasChanged(changes, 'pictureId')) return;
+
+        this.pager.page = 1;
+        this.results = null;
+        this.loadingMap = {};
+        this.inCollectionMap = {};
+        this.collections = [];
+
+        this.fetch();
+    }
+
     async fetch(next: boolean = false) {
-        if (!next && this.collections.length > 0) return;
+        if (!next && this.results) return;
 
         this.loading = !next;
         if (next) this.pager.page++;

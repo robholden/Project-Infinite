@@ -45,7 +45,7 @@ internal class Helper
         CollectionService = new CollectionService(Context);
         CollectionQueries = new CollectionQueries(Context);
 
-        PictureService = new PictureService(Context, Options.Create(PictureSettings), LocationQueries, mockCommEvents, mockSocketEvents);
+        PictureService = new PictureService(Context, Options.Create(PictureSettings), LocationService, LocationQueries, mockCommEvents, mockSocketEvents);
         PictureQueries = new PictureQueries(Context, new Mock<IMemoryCache>().Object);
     }
 

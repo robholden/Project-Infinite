@@ -59,26 +59,3 @@ main {
         margin-top: 5px;
     }
 }
-
-@keyframes pulse {
-    0% {
-        transform: scale(0.9);
-    }
-
-    75% {
-        transform: scale(1);
-    }
-
-    100% {
-        transform: scale(0.9);
-    }
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: top left;
-    }
-    100% {
-        background-position: top right;
-    }
-}

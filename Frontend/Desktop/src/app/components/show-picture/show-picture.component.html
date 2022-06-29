@@ -55,14 +55,7 @@
                     <i class="icon far fa-pencil"></i>
                 </button>
 
-                <button
-                    type="button"
-                    id="submit-btn"
-                    class="button ml-s"
-                    background="primary"
-                    (click)="publish()"
-                    [disabled]="!picture.name || !picture.location"
-                >
+                <button type="button" id="submit-btn" class="button ml-s" background="primary" (click)="publish()" [disabled]="!picture.name">
                     Publish <i class="icon far fa-atom-alt"></i>
                 </button>
             </ng-container>
@@ -132,15 +125,11 @@
                 <i class="far fa-at icon" position="left"></i>{{ picture.username | titlecase }}
             </a>
 
-            <div class="button ml-s" background="light" tippy="Where it was taken" placement="top">
+            <div class="button ml-s" background="light" tippy="Where it was taken" placement="top" *ngIf="picture.location">
                 <i class="far fa-map-marker-alt icon" position="left"></i>
 
-                <ng-container *ngIf="picture.location">
-                    {{ 'locations.' + picture.location.name | trx: {}:picture.location.name }},
-                    {{ 'countries.' + picture.location.country.code | trx: {}:picture.location.country.name }}
-                </ng-container>
-
-                <i class="fas fa-spinner-third fa-spin mx" position="left" *ngIf="!picture.location"></i>
+                {{ 'locations.' + picture.location.code | trx: {}:picture.location.name }},
+                {{ 'countries.' + picture.location.country.code | trx: {}:picture.location.country.name }}
             </div>
         </div>
 
