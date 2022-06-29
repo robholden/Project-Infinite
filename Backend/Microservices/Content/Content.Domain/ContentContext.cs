@@ -25,8 +25,6 @@ public class ContentContext : DbContext
 
     public DbSet<PictureLike> PictureLikes { get; set; }
 
-    public DbSet<PictureLocationRequest> PictureLocationRequests { get; set; }
-
     public DbSet<PictureModeration> PictureModerations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,8 +46,6 @@ public class ContentContext : DbContext
         modelBuilder.Entity<PictureLike>().HasKey(t => new { t.PictureLikeId, t.UserId, t.PictureId });
 
         modelBuilder.Entity<Tag>().HasIndex(x => x.Value).IsUnique();
-
-        modelBuilder.Entity<PictureLocationRequest>().Property(p => p.RowVersion).IsConcurrencyToken();
 
         modelBuilder.Entity<PictureModeration>().HasKey(t => new { t.ModerationId, t.PictureId });
         modelBuilder.Entity<PictureModeration>().Property(p => p.RowVersion).IsConcurrencyToken();

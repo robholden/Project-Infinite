@@ -19,17 +19,17 @@
                             class="title-link"
                             (click)="filter.countries[country.code] = !filter.countries[country.code]; setFilters(); $event.preventDefault()"
                         >
-                            {{ country.name }}
+                            {{ 'countries.' + country.code | trx: {}:country.name }}
                             <input [id]="country.code" type="checkbox" class="no-pe ml-a" [checked]="filter.countries[country.code]" />
                         </label>
 
                         <ng-container *ngIf="!filter.countries[country.code]">
                             <label
-                                (click)="filter.locations[loc.name] = !filter.locations[loc.name]; setFilters(); $event.preventDefault()"
+                                (click)="filter.locations[loc.code] = !filter.locations[loc.code]; setFilters(); $event.preventDefault()"
                                 *ngFor="let loc of country.locations"
                             >
-                                <input [id]="loc.name" class="no-pe" type="checkbox" [checked]="filter.locations[loc.name]" />
-                                {{ loc.name }}
+                                <input [id]="loc.code" class="no-pe" type="checkbox" [checked]="filter.locations[loc.code]" />
+                                {{ 'locations.' + loc.code | trx: {}:loc.name }}
                             </label>
                         </ng-container>
                     </div>
@@ -116,8 +116,8 @@
 </div>
 
 <div class="picture-applied-filters flex-row-align mb" *ngIf="params.countries?.length || params.locations?.length || params.tags?.length">
-    <button type="button" class="pill mr-s" *ngFor="let name of params.locations" (click)="filter.locations[name] = false; setFilters()">
-        {{ 'locations.' + name | trx: {}:name }}
+    <button type="button" class="pill mr-s" *ngFor="let code of params.locations" (click)="filter.locations[code] = false; setFilters()">
+        {{ 'locations.' + code | trx: {}:locationMap[code] }}
         <i class="fas fa-times ml-s"></i>
     </button>
 
@@ -149,7 +149,7 @@
     [selectable]="true"
     (selected)="filter.bounds = $event; setFilters()"
     [height]="25"
-    *ngIf="mapOptions"
+    *ngIf="mapOptions && !getting.init"
 ></sc-show-map>
 
 <div class="flex-col flex-spacer" *ngIf="!getting.init; else loadingRef" @fade>
@@ -174,6 +174,8 @@
                 >
                     <i class="icon far fa-pencil"></i>
                 </button>
+
+                TODO: Default click should open modal to picture :)
                 <a [routerLink]="'/picture/' + picture.pictureId">
                     <img [lazyLoad]="picture.path | imgUrl" [width]="picture.width" [height]="picture.height" />
                     <div class="lazyloader"><i class="fas fa-spinner-third fa-spin"></i></div>
@@ -183,7 +185,7 @@
 
                         <p class="location" *ngIf="picture.location">
                             <i class="far fa-map-marker-alt"></i>
-                            {{ 'locations.' + picture.location.name | trx: {}:picture.location.name }},
+                            {{ 'locations.' + picture.location.code | trx: {}:picture.location.name }},
                             {{ 'countries.' + picture.location.country.code | trx: {}:picture.location.country.name }}
                         </p>
                     </div>

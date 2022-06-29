@@ -21,6 +21,11 @@ spec:
           ports:
             - containerPort: 80
           env:
+            - name: ContentSettings__LocationIQToken
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: LocationIQToken
             - name: ConnectionStrings__Database
               valueFrom:
                 secretKeyRef:
@@ -28,8 +33,8 @@ spec:
                   key: CONTENT_CONNECTION_STRING
             - name: ConnectionStrings__Redis
               valueFrom:
-                configMapKeyRef:
-                  name: config-map
+                secretKeyRef:
+                  name: secrets
                   key: REDIS_CONNECTION_STRING
             - name: Shared__ReCaptchaSecretKey
               valueFrom:

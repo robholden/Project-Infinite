@@ -3,7 +3,7 @@
 
     <div class="picture-popup-details">
         <p class="pill link" background="light" *ngIf="picture.location">
-            <i class="far fa-map-marker-alt"></i> {{ 'locations.' + picture.location.name | trx: {}:picture.location.name }}
+            <i class="far fa-map-marker-alt"></i> {{ 'locations.' + picture.location.code | trx: {}:picture.location.name }}
         </p>
         <p class="pill link" background="light"><i class="far fa-at"></i> {{ picture.username }}</p>
         <p class="pill link" background="light"><i class="far fa-calendar-alt icon" position="left"></i> {{ picture.dateTaken | date }}</p>

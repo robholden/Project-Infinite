@@ -1,1 +1,12 @@
-<div leaflet [leafletFitBounds]="options?.fitBounds || fitBounds" [leafletOptions]="leafletOptions" (leafletMapReady)="ready($event)"></div>
+<div
+    leaflet
+    [leafletFitBounds]="options?.fitBounds || fitBounds"
+    [leafletOptions]="leafletOptions"
+    (leafletMapReady)="ready($event)"
+    *ngIf="options"
+></div>
+
+<div class="map-loading" *ngIf="!options">
+    <sc-skeleton-text [animated]="true" width="100%" height="100%"></sc-skeleton-text>
+    <i class="far fa-map-location-dot"></i>
+</div>

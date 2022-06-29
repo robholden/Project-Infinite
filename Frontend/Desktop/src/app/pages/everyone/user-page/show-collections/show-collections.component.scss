@@ -16,10 +16,58 @@ $cover-height: 300px;
         width: $cover-width;
         height: $cover-height;
         padding: 0 !important;
-        overflow: hidden;
 
         &:hover {
             opacity: 1;
+
+            .collection-name {
+                background-color: var(--sc-colour-primary-shade);
+            }
+
+            .collection-grid,
+            .no-picture {
+                opacity: 0.75;
+            }
+        }
+
+        .no-picture {
+            height: 100%;
+            background: var(--sc-colour-default) url('/assets/images/layer-group-light.svg') no-repeat center;
+            background-size: 25%;
+            transition: ease 0.25s;
+        }
+
+        .collection-grid {
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: $cover-height / 2;
+            transition: ease 0.25s;
+            overflow: hidden;
+            background-color: var(--sc-colour-default);
+
+            &.three-rows {
+                grid-template-columns: repeat(3, 1fr);
+                grid-auto-rows: $cover-height / 3;
+
+                div:nth-child(odd) {
+                    background-color: var(--sc-colour-light-tint);
+                }
+            }
+
+            &:not(.three-rows) {
+                div:first-child,
+                div:last-child {
+                    background-color: var(--sc-colour-light-tint);
+                }
+            }
+
+            > div:empty {
+                background-image: url('/assets/images/layer-group-light.svg');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 25%;
+            }
         }
 
         img {
@@ -35,16 +83,17 @@ $cover-height: 300px;
             }
         }
 
-        div {
+        .collection-name {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.25);
-            color: #fff;
-            font-size: 1.25em;
+            top: -14px;
+            left: 10px;
+            min-width: 50px;
+            text-align: center;
+            background-color: var(--sc-colour-primary);
+            color: var(--sc-colour-primary-contrast);
+            padding: 0.4rem 0.5rem;
+            box-shadow: 0 0 6px rgba(var(--sc-colour-dark-rgb), 0.05);
+            transition: ease 0.25s;
         }
     }
 }

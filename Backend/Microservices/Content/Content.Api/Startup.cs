@@ -1,6 +1,5 @@
 ﻿using Content.Api.Templates;
 using Content.Core;
-using Content.Core.BackgroundTasks;
 using Content.Core.Queries;
 using Content.Core.Services;
 using Content.Domain;
@@ -62,8 +61,5 @@ public class Startup
 
         // Add identity db
         services.AddDatabase<ContentContext>(Configuration, typeof(Startup).Assembly.GetName().Name);
-
-        // Register background tasks
-        services.AddHostedService<CreateLocationsTask>();
     }
 }

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PictureStatus } from '@shared/enums';
 import { waitThen } from '@shared/functions';
-import { CustomError, Location, Picture } from '@shared/models';
+import { CustomError, Picture } from '@shared/models';
 import { SocketService } from '@shared/services';
 import { PictureService } from '@shared/services/content';
 import { AuthState } from '@shared/storage';
@@ -48,7 +48,7 @@ export class PicturePage implements OnInit, OnDestroy {
     ngOnInit(): void {}
 
     ngOnDestroy() {
-        this.sockets.off('NewPictureLocation', 'picture_page').off('ModeratedPicture', 'picture_page');
+        this.sockets.off('ModeratedPicture', 'picture_page');
     }
 
     async fetch(key: string) {
@@ -67,14 +67,6 @@ export class PicturePage implements OnInit, OnDestroy {
         this.picture = resp;
         this.author = this.authState.user && this.authState.user.username === resp.username;
 
-        // Listen for location updates
-        if (this.author && this.picture.status === PictureStatus.Draft) {
-            this.sockets.on('NewPictureLocation', 'picture_page', (payload: { pictureId: string; location: Location }) => {
-                if (payload?.pictureId !== this.picture.pictureId) return;
-                this.picture.location = payload.location;
-            });
-        }
-
         // Watch for moderation actions
         if (this.authState.is_mod && this.picture.status !== PictureStatus.Published) {
             this.sockets.on('ModeratedPicture', 'picture_page', async (pictureId: string, approved: boolean) => {
@@ -85,6 +77,8 @@ export class PicturePage implements OnInit, OnDestroy {
 
                 if (resp instanceof CustomError) return;
                 else this.picture = resp;
+
+                this.loadMap();
             });
         }
 
@@ -93,7 +87,7 @@ export class PicturePage implements OnInit, OnDestroy {
             this.nearby = await this.pictureService.nearby(this.picture.pictureId);
         }
 
-        await waitThen(0, () => (this.mapOptions = pictureMarkers(this.injector, this.nearby, this.picture)));
+        await waitThen(0, () => this.loadMap());
     }
 
     deleted() {
@@ -103,5 +97,9 @@ export class PicturePage implements OnInit, OnDestroy {
 
     back() {
         this.location.back();
+    }
+
+    loadMap() {
+        this.mapOptions = pictureMarkers(this.injector, this.nearby, this.picture);
     }
 }

@@ -3,6 +3,5 @@ kind: ConfigMap
 metadata:
   name: config-map
 data:
-  RABBITMQ_HOSTNAME: sc-rabbitmq
+  RABBITMQ_HOSTNAME: sc-rabbitmq-headless.default.svc.cluster.local
   RABBITMQ_USERNAME: user
-  REDIS_CONNECTION_STRING: localhost:6379,abortConnect=False

@@ -10,6 +10,7 @@ import { environment } from './environments/environment';
 
 import cssVars from 'css-vars-ponyfill';
 import tippy from 'tippy.js';
+import SelectArea from 'leaflet-area-select';
 
 cssVars();
 tippy('[data-tooltip]');
@@ -18,16 +19,8 @@ if (environment.production) {
     enableProdMode();
 }
 
-function bootstrap() {
-    platformBrowserDynamic()
-        .bootstrapModule(AppModule, {
-            providers: [{ provide: LOCALE_ID, useFactory: (translate: TranslateService) => translate.currentLang || locale, deps: [TranslateService] }],
-        })
-        .catch((err) => console.error(err));
-}
-
-if (document.readyState === 'complete') {
-    bootstrap();
-} else {
-    document.addEventListener('DOMContentLoaded', bootstrap);
-}
+platformBrowserDynamic()
+    .bootstrapModule(AppModule, {
+        providers: [{ provide: LOCALE_ID, useFactory: (translate: TranslateService) => translate.currentLang || locale, deps: [TranslateService] }],
+    })
+    .catch((err) => console.error(err));

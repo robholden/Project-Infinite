@@ -9,5 +9,7 @@ public interface ILocationService
 
     Task UpdateName(Guid id, string name);
 
+    Task UpdateCode(Guid id, string code);
+
     Task UpdateBoundry(Guid locationId, Boundry newBoundry);
 }

@@ -8,8 +8,9 @@ import { LookupService, PagedComponentOptions, PagedOptions, PagedStore } from '
 
 @Directive()
 export class InfiniteComponent<T, S extends Object> implements OnChanges {
-    pagerDefaults: PageRequest = this.pageOptions.pager || new PageRequest();
+    private _initialised: boolean;
 
+    pagerDefaults: PageRequest = this.pageOptions.pager || new PageRequest();
     pager: PageRequest = this.pageOptions.pager;
     result: PagedList<T>;
     pagedInfo: PagedInfo;
@@ -53,10 +54,10 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
 
         // We only have @inputs at OnInit
         setTimeout(async () => {
-            if (componentOptions?.defer) await componentOptions?.defer();
-
             this.setParams(params);
+            if (componentOptions?.defer) await componentOptions?.defer();
             this.search();
+            this._initialised = true;
         }, 0);
     }
 
@@ -67,13 +68,16 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
             this.componentOptions.routeChanged(this.route);
         }
 
-        this.reset();
-        this.search();
+        if (this._initialised) {
+            this.reset();
+            this.search();
+        }
     }
 
     async reload() {
         await wait(0);
 
+        this.result = null;
         this.pages = [];
 
         this.search();

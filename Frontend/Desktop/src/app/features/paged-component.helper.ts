@@ -1,7 +1,7 @@
-import { Directive, EventEmitter, Injector, Input, Output } from '@angular/core';
+import { Directive, EventEmitter, Injector, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { buildQueryString, deepCopy, obj2QueryString, QueryType, wait, writeQueryString } from '@shared/functions';
+import { buildQueryString, deepCopy, obj2QueryString, QueryType, valueHasChanged, wait, writeQueryString } from '@shared/functions';
 import { CustomError, PagedList, PageRequest, pageRequestFromQueryString, SMap } from '@shared/models';
 
 export interface PageChange {
@@ -34,9 +34,10 @@ export class PagedStore {
 }
 
 @Directive()
-export class PagedComponent<T, S extends Object> {
-    pagerDefaults: PageRequest = this.pageOptions.pager || new PageRequest();
+export class PagedComponent<T, S extends Object> implements OnChanges {
+    private _initialised: boolean;
 
+    pagerDefaults: PageRequest = this.pageOptions.pager || new PageRequest();
     pager: PageRequest = this.pageOptions.pager;
     result: PagedList<T>;
     @Output() resultChange = new EventEmitter<PagedList<T>>();
@@ -78,7 +79,21 @@ export class PagedComponent<T, S extends Object> {
 
             this.setParams(params);
             this.search();
+            this._initialised = true;
         }, 0);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (!valueHasChanged(changes, 'route')) return;
+
+        if (this.componentOptions?.routeChanged) {
+            this.componentOptions.routeChanged(this.route);
+        }
+
+        if (this._initialised) {
+            this.reset();
+            this.search();
+        }
     }
 
     async nextPage() {
@@ -144,6 +159,11 @@ export class PagedComponent<T, S extends Object> {
     removeOrderBy() {
         this.pager.orderDir = this.pagerDefaults.orderDir;
         this.pager.orderBy = this.pagerDefaults.orderBy;
+    }
+
+    private reset() {
+        this.result = null;
+        this.pager.page = 1;
     }
 
     private setParams(params: S) {

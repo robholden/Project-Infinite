@@ -67,6 +67,16 @@ public class LocationController : BaseController<LocationController>
     }
 
     [Authorize(Roles = nameof(UserLevel.Admin))]
+    [HttpPut("{id}/code")]
+    public async Task UpdateCode([FromRoute] Guid id, [FromBody] UpdateNameRequest request)
+    {
+        // Verify model state
+        ThrowWhenStateIsInvalid();
+
+        await _service.UpdateCode(id, request.Name);
+    }
+
+    [Authorize(Roles = nameof(UserLevel.Admin))]
     [HttpPut("{id}/boundry")]
     public async Task UpdateBoundry([FromRoute] Guid id, [FromBody] BoundryDto boundry)
     {

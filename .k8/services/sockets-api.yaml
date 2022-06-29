@@ -23,8 +23,8 @@ spec:
           env:
             - name: ConnectionStrings__Redis
               valueFrom:
-                configMapKeyRef:
-                  name: config-map
+                secretKeyRef:
+                  name: secrets
                   key: REDIS_CONNECTION_STRING
             - name: Shared__ReCaptchaSecretKey
               valueFrom:

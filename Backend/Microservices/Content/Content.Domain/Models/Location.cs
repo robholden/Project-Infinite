@@ -12,6 +12,9 @@ public class Location : Coords
     [Required]
     public string Name { get; set; }
 
+    [Required]
+    public string Code { get; set; }
+
     public virtual Country Country { get; set; }
 
     public virtual Boundry Boundry { get; set; }

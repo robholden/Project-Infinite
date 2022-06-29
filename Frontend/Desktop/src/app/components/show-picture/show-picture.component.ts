@@ -1,4 +1,9 @@
-import { Component, EventEmitter, Injector, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, Output } from '@angular/core';
+
+import { PictureStatus } from '@shared/enums';
+import { CustomError, Picture } from '@shared/models';
+import { PictureService } from '@shared/services/content';
+import { AuthState } from '@shared/storage';
 
 import { fade } from '@app/functions/animations.fn';
 import { deletePicture } from '@app/functions/delete-picture.fn';
@@ -6,11 +11,6 @@ import { PictureEditModal } from '@app/modals/picture-edit/picture-edit.modal';
 import { AlertController } from '@app/shared/controllers/alert';
 import { LoadingController } from '@app/shared/controllers/loading';
 import { ModalController } from '@app/shared/controllers/modal';
-
-import { PictureStatus } from '@shared/enums';
-import { CustomError, Picture } from '@shared/models';
-import { PictureService } from '@shared/services/content';
-import { AuthState } from '@shared/storage';
 
 import { ReportPictureModal } from '../../modals/report-picture/report-picture.modal';
 
@@ -20,7 +20,7 @@ import { ReportPictureModal } from '../../modals/report-picture/report-picture.m
     styleUrls: ['./show-picture.component.scss'],
     animations: [fade],
 })
-export class ShowPictureComponent implements OnInit, OnDestroy {
+export class ShowPictureComponent {
     @Input() dedicated: boolean;
     @Input() redirectApproval: boolean;
 
@@ -50,10 +50,6 @@ export class ShowPictureComponent implements OnInit, OnDestroy {
         private loadingCtrl: LoadingController,
         private alertCtrl: AlertController
     ) {}
-
-    ngOnInit(): void {}
-
-    ngOnDestroy() {}
 
     async edit() {
         const modal = this.modalCtrl.add('edit-picture', PictureEditModal, { pictureId: this.picture.pictureId });

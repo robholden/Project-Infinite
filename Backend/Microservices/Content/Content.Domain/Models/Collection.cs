@@ -11,6 +11,8 @@ public class Collection : IUser
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid CollectionId { get; set; }
 
+    public int Ordinal { get; set; }
+
     public Guid UserId { get; set; }
 
     [Required, MinLength(3), MaxLength(50)]

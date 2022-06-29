@@ -1,5 +1,6 @@
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 
+import { fieldHasChanged } from '@shared/functions';
 import { Boundry } from '@shared/models';
 
 import { boundsToBoundry, getTileLayer, LeafletMapOptions } from '@app/functions/leaflet.fn';
@@ -30,13 +31,11 @@ export class ShowMapComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {
-        this.leafletOptions = {
-            layers: this.options?.layers || this.layers,
-            center: this.center,
-            zoom: this.options?.zoom || this.zoom,
-            minZoom: this.options?.minZoom || this.minZoom,
-            selectArea: this.selectable,
-        };
+        if (this.options) this.load();
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (fieldHasChanged(changes, 'options')) this.load();
     }
 
     ready(map: L.Map) {
@@ -49,5 +48,15 @@ export class ShowMapComponent implements OnInit {
             map.fitBounds(bounds);
             this.selected.emit(boundsToBoundry(bounds));
         });
+    }
+
+    private load() {
+        this.leafletOptions = {
+            layers: this.options?.layers || this.layers,
+            center: this.center,
+            zoom: this.options?.zoom || this.zoom,
+            minZoom: this.options?.minZoom || this.minZoom,
+            selectArea: this.selectable,
+        };
     }
 }

@@ -55,14 +55,23 @@
     <ng-container *ngIf="result?.totalRows; else noCollectionsRef">
         <div class="collections mb">
             <ng-container *ngFor="let col of result.rows || []; let i = index">
-                <a class="collection card flex-row-centre" [routerLink]="'/collection/' + col.collectionId">
-                    <img
-                        [src]="col.pictures?.length ? (col.pictures[0].path | imgUrl) : 'assets/images/layer-group-light.svg'"
-                        [class.no-picture]="!col.pictures?.length"
-                    />
-                    <div class="flex-row-centre">
-                        <span class="button as-link" background="default">{{ col.name }}</span>
+                <a class="collection flex-col-centre" [routerLink]="'/collection/' + col.collectionId">
+                    <div class="collection-grid card-shadow" [class.three-rows]="col.pictures.length >= 5" *ngIf="col.pictures?.length > 0">
+                        <div><img [src]="col.pictures[0].path | imgUrl" *ngIf="col.pictures[0]" /></div>
+                        <div><img [src]="col.pictures[1].path | imgUrl" *ngIf="col.pictures[1]" /></div>
+                        <div><img [src]="col.pictures[2].path | imgUrl" *ngIf="col.pictures[2]" /></div>
+                        <div><img [src]="col.pictures[3].path | imgUrl" *ngIf="col.pictures[3]" /></div>
+
+                        <ng-container *ngIf="col.pictures.length >= 5">
+                            <div><img [src]="col.pictures[4].path | imgUrl" /></div>
+                            <div><img [src]="col.pictures[5].path | imgUrl" *ngIf="col.pictures[5]" /></div>
+                            <div><img [src]="col.pictures[6].path | imgUrl" *ngIf="col.pictures[6]" /></div>
+                            <div><img [src]="col.pictures[7].path | imgUrl" *ngIf="col.pictures[7]" /></div>
+                            <div><img [src]="col.pictures[8].path | imgUrl" *ngIf="col.pictures[8]" /></div>
+                        </ng-container>
                     </div>
+                    <div class="no-picture" *ngIf="!col.pictures?.length"></div>
+                    <div class="collection-name">{{ col.name }}</div>
                 </a>
             </ng-container>
         </div>

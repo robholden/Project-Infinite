@@ -22,7 +22,7 @@ import { MarkdownModule } from 'ngx-markdown';
 @NgModule({
     declarations: [AppComponent],
     imports: [
-        BrowserModule.withServerTransition({ appId: 'serverApp' }),
+        BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
         AppRoutingModule,
