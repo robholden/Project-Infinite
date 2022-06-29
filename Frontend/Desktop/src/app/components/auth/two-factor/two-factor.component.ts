@@ -1,15 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { AlertController } from '@app/shared/controllers/alert';
-import { LoadingController } from '@app/shared/controllers/loading';
-import { ToastController } from '@app/shared/controllers/toast';
-import { DesktopStore } from '@app/storage/desktop.store';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { TwoFactorType } from '@shared/enums';
 import { CustomError, ErrorCode } from '@shared/models';
 import { AuthService } from '@shared/services/identity';
 import { AuthState } from '@shared/storage';
+
+import { AlertController } from '@app/shared/controllers/alert';
+import { LoadingController } from '@app/shared/controllers/loading';
+import { ToastController } from '@app/shared/controllers/toast';
+import { DesktopStore } from '@app/storage/desktop.store';
 
 @Component({
     selector: 'sc-two-factor',
@@ -18,25 +18,23 @@ import { AuthState } from '@shared/storage';
 })
 export class TwoFactorComponent implements OnInit {
     ref: string;
-    form: FormGroup;
+    form = new FormGroup({
+        code: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.minLength(6), Validators.maxLength(6)]),
+        doNotAskAgain: new FormControl(false),
+    });
+
+    TwoFactorType = TwoFactorType;
 
     @Output() completed = new EventEmitter<boolean>();
 
-    get TwoFactorType() {
-        return TwoFactorType;
-    }
-
     constructor(
         public authState: AuthState,
-        private fb: FormBuilder,
         private authService: AuthService,
         private loadingCtrl: LoadingController,
         private alertCtrl: AlertController,
         private toastCtrl: ToastController,
         private desktopStore: DesktopStore
-    ) {
-        this.setForm();
-    }
+    ) {}
 
     ngOnInit() {
         this.desktopStore.preventRefresh(true);
@@ -57,7 +55,7 @@ export class TwoFactorComponent implements OnInit {
         loading.present();
 
         // Talk to our api and log them in
-        const resp = await this.authService.verify(this.form.get('code').value, this.form.get('doNotAskAgain').value);
+        const resp = await this.authService.verify(this.form.value.code, this.form.value.doNotAskAgain);
 
         // Hide loading
         loading.dismiss();
@@ -145,14 +143,5 @@ export class TwoFactorComponent implements OnInit {
         toast.present(5000);
 
         this.dismiss();
-    }
-
-    // Sets the form data
-    //
-    private setForm() {
-        this.form = this.fb.group({
-            code: ['', [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.minLength(6), Validators.maxLength(6)]],
-            doNotAskAgain: [false],
-        });
     }
 }

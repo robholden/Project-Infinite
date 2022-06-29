@@ -1,12 +1,12 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { CustomError, ReportUserReason, User } from '@shared/models';
+import { UserService } from '@shared/services/identity';
 
 import { LoadingController } from '@app/shared/controllers/loading';
 import { ModalComponent } from '@app/shared/controllers/modal';
 import { ToastController } from '@app/shared/controllers/toast';
-
-import { CustomError, ReportUserReason, User } from '@shared/models';
-import { UserService } from '@shared/services/identity';
 
 @Component({
     selector: 'sc-report-user',
@@ -16,25 +16,17 @@ import { UserService } from '@shared/services/identity';
 export class ReportUserModal extends ModalComponent<boolean> implements OnInit {
     @Input() user: User;
 
-    form: FormGroup;
+    form = new FormGroup({
+        reason: new FormControl<ReportUserReason>(null, [Validators.required]),
+    });
 
     ReportReason = ReportUserReason;
 
-    constructor(
-        injector: Injector,
-        private fb: FormBuilder,
-        private service: UserService,
-        private loadingCtrl: LoadingController,
-        private toastCtrl: ToastController
-    ) {
+    constructor(injector: Injector, private service: UserService, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
         super(injector);
     }
 
-    ngOnInit(): void {
-        this.form = this.fb.group({
-            reason: [null, [Validators.required]],
-        });
-    }
+    ngOnInit(): void {}
 
     async submit() {
         const loading = this.loadingCtrl.addBtn('submit-report-btn');

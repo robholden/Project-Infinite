@@ -1,5 +1,5 @@
 import { Component, HostBinding, HostListener, Injector, Input as NgInput, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 
 import { SMap, Trx } from '@shared/models';
 import { AppColour } from '@shared/types';
@@ -55,7 +55,7 @@ export class AlertComponent extends ModalComponent<any> implements OnInit, Dismi
 
     @HostBinding('class.alert-content') _ = true;
 
-    constructor(injector: Injector, private fb: FormBuilder) {
+    constructor(injector: Injector) {
         super(injector);
     }
 
@@ -63,7 +63,7 @@ export class AlertComponent extends ModalComponent<any> implements OnInit, Dismi
         super.ngOnInit();
 
         this.inputs = (this.inputs || []).filter((i) => !!i);
-        this.form = this.fb.group(
+        this.form = new FormGroup(
             this.inputs.reduce((acc, curr) => {
                 const validators = curr.validators || [];
                 if (curr.displayMessages) {
@@ -73,10 +73,10 @@ export class AlertComponent extends ModalComponent<any> implements OnInit, Dismi
                     };
                     validators.push(displayFn);
                 }
-                acc[curr.name] = [curr.value, validators];
+                acc[curr.name] = new FormControl(curr.value, validators);
 
                 return acc;
-            }, {})
+            }, {} as SMap<FormControl<any>>)
         );
 
         setTimeout(() => {

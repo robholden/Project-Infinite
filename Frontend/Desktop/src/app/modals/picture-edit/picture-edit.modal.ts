@@ -1,16 +1,16 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { waitThen } from '@shared/functions';
+import { CustomError, Picture, Tag } from '@shared/models';
+import { PictureService, TagService } from '@shared/services/content';
+import { AuthState } from '@shared/storage';
 
 import { fade } from '@app/functions/animations.fn';
 import { deletePicture } from '@app/functions/delete-picture.fn';
 import { LoadingController } from '@app/shared/controllers/loading';
 import { ModalComponent } from '@app/shared/controllers/modal';
 import { ToastController } from '@app/shared/controllers/toast';
-
-import { waitThen } from '@shared/functions';
-import { CustomError, Picture, Tag } from '@shared/models';
-import { PictureService, TagService } from '@shared/services/content';
-import { AuthState } from '@shared/storage';
 
 @Component({
     selector: 'sc-picture-edit',
@@ -24,23 +24,14 @@ export class PictureEditModal extends ModalComponent<Picture | false> implements
     @Input() pictureId: string;
     picture: Picture;
     allTags: Tag[];
-    form: FormGroup;
-
-    get name() {
-        return this.form.get('name');
-    }
-
-    get useRealCoords() {
-        return this.form.get('useRealCoords');
-    }
-
-    get tags() {
-        return this.form.get('tags');
-    }
+    form: FormGroup<{
+        name: FormControl<string>;
+        useRealCoords: FormControl<boolean>;
+        tags: FormControl<string[]>;
+    }>;
 
     constructor(
         private injector: Injector,
-        private fb: FormBuilder,
         private authState: AuthState,
         private pictureService: PictureService,
         private tagService: TagService,
@@ -55,9 +46,9 @@ export class PictureEditModal extends ModalComponent<Picture | false> implements
     }
 
     addRemoveTag(value: string) {
-        const index = this.tags.value.indexOf(value);
-        if (index < 0 && this.tags.value.length < 10) this.tags.value.push(value);
-        else if (index >= 0) this.tags.value.splice(index, 1);
+        const index = this.form.value.tags.indexOf(value);
+        if (index < 0 && this.form.value.tags.length < 10) this.form.value.tags.push(value);
+        else if (index >= 0) this.form.value.tags.splice(index, 1);
     }
 
     async update() {
@@ -67,9 +58,9 @@ export class PictureEditModal extends ModalComponent<Picture | false> implements
         this.form.disable();
 
         const resp = await this.pictureService.update(this.picture.pictureId, {
-            name: this.name.value,
-            concealCoords: !this.useRealCoords.value,
-            tags: this.tags.value,
+            name: this.form.value.name,
+            concealCoords: !this.form.value.useRealCoords,
+            tags: this.form.value.tags,
             seed: this.picture.seed,
         });
 
@@ -114,10 +105,10 @@ export class PictureEditModal extends ModalComponent<Picture | false> implements
             this.allTags = tags;
         }
 
-        this.form = this.fb.group({
-            name: [resp.name, [Validators.required, Validators.minLength(4), Validators.maxLength(100)]],
-            useRealCoords: [!resp.concealCoords],
-            tags: [resp.tags || []],
+        this.form = new FormGroup({
+            name: new FormControl(resp.name, [Validators.required, Validators.minLength(4), Validators.maxLength(100)]),
+            useRealCoords: new FormControl(!resp.concealCoords),
+            tags: new FormControl(resp.tags || []),
         });
         this.picture = resp;
 

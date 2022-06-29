@@ -1,12 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { LoadingController } from '@app/shared/controllers/loading/loading.controller';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { PasswordStrength, zxcvbn } from '@shared/functions';
 import { CustomError, Trx, userValidators } from '@shared/models';
 import { EventService } from '@shared/services';
 import { AuthService, UserService } from '@shared/services/identity';
+
+import { LoadingController } from '@app/shared/controllers/loading/loading.controller';
 
 @Component({
     selector: 'sc-register',
@@ -14,22 +14,42 @@ import { AuthService, UserService } from '@shared/services/identity';
     styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-    form: FormGroup;
     pwStrength: PasswordStrength;
     regError: Trx;
     loginError: Trx;
+    form = new FormGroup({
+        name: new FormControl('rob', userValidators('name')),
+        email: new FormControl('rob.holden@live.co.uk', userValidators('email')),
+        username: new FormControl('admin', userValidators('username')),
+        terms: new FormControl(false, [Validators.requiredTrue]),
+        password: new FormControl('admin1', [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(100),
+            (control: AbstractControl) => {
+                if (!this.form) return {};
+
+                this.pwStrength = zxcvbn(control.value);
+                setTimeout(() => this.form.get('confirmPassword').updateValueAndValidity(), 0);
+            },
+        ]),
+        confirmPassword: new FormControl('admin1', [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(100),
+            (control: AbstractControl) => {
+                if (!this.form) return {};
+
+                const errors = {};
+                if (control.value !== this.form.get('password').value) errors['mismatch'] = true;
+                return errors;
+            },
+        ]),
+    });
 
     @Output() completed = new EventEmitter<boolean>();
 
-    constructor(
-        public events: EventService,
-        private fb: FormBuilder,
-        private userService: UserService,
-        private authService: AuthService,
-        private loadingCtrl: LoadingController
-    ) {
-        this.setForm();
-    }
+    constructor(public events: EventService, private userService: UserService, private authService: AuthService, private loadingCtrl: LoadingController) {}
 
     ngOnInit() {
         setTimeout(() => document.getElementById('name').focus(), 0);
@@ -43,12 +63,7 @@ export class RegisterComponent implements OnInit {
         this.loginError = null;
 
         // Talk to our api and register them
-        const regResp = await this.userService.register(
-            this.form.get('name').value,
-            this.form.get('email').value,
-            this.form.get('username').value,
-            this.form.get('password').value
-        );
+        const regResp = await this.userService.register(this.form.value.name, this.form.value.email, this.form.value.username, this.form.value.password);
 
         // Stop if response is an exception
         if (regResp instanceof CustomError) {
@@ -58,7 +73,7 @@ export class RegisterComponent implements OnInit {
         }
 
         // Login user
-        const loginResp = await this.authService.login(regResp.email, this.form.get('password').value);
+        const loginResp = await this.authService.login(regResp.email, this.form.value.password);
 
         // Hide loading
         loading.dismiss();
@@ -70,45 +85,5 @@ export class RegisterComponent implements OnInit {
         }
 
         this.completed.emit();
-    }
-
-    // Sets the form data
-    //
-    private setForm() {
-        this.form = this.fb.group({
-            name: ['rob', userValidators('name')],
-            email: ['rob.holden@live.co.uk', userValidators('email')],
-            username: ['admin', userValidators('username')],
-            terms: [false, [Validators.requiredTrue]],
-            password: [
-                'admin1',
-                [
-                    Validators.required,
-                    Validators.minLength(6),
-                    Validators.maxLength(100),
-                    (control: AbstractControl) => {
-                        if (!this.form) return;
-
-                        this.pwStrength = zxcvbn(control.value);
-                        setTimeout(() => this.form.get('confirmPassword').updateValueAndValidity(), 0);
-                    },
-                ],
-            ],
-            confirmPassword: [
-                'admin1',
-                [
-                    Validators.required,
-                    Validators.minLength(6),
-                    Validators.maxLength(100),
-                    (control: AbstractControl) => {
-                        if (!this.form) return {};
-
-                        const errors = {};
-                        if (control.value !== this.form.get('password').value) errors['mismatch'] = true;
-                        return errors;
-                    },
-                ],
-            ],
-        });
     }
 }

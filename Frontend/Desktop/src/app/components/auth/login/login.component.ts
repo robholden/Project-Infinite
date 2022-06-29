@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { TwoFactorType } from '@shared/enums';
 import { CustomError, ErrorCode, Trx } from '@shared/models';
@@ -16,22 +16,23 @@ import { ToastController } from '@app/shared/controllers/toast';
     styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-    form: FormGroup;
+    form = new FormGroup({
+        username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
+        password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]),
+        remember: new FormControl(false),
+    });
     error: Trx;
 
     @Output() completed = new EventEmitter<boolean>();
 
     constructor(
         public events: EventService,
-        private fb: FormBuilder,
         private authService: AuthService,
         private passwordService: PasswordService,
         private alertCtrl: AlertController,
         private toastCtrl: ToastController,
         private loadingCtrl: LoadingController
-    ) {
-        this.setForm();
-    }
+    ) {}
 
     ngOnInit() {
         setTimeout(() => document.getElementById('username').focus(), 0);
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
         this.error = null;
 
         // Talk to our api and log them in
-        const resp = await this.authService.login(this.form.get('username').value, this.form.get('password').value);
+        const resp = await this.authService.login(this.form.value.username, this.form.value.password);
 
         // Hide loading
         this.form.enable();
@@ -112,14 +113,6 @@ export class LoginComponent implements OnInit {
 
                 return true;
             },
-        });
-    }
-
-    private setForm() {
-        this.form = this.fb.group({
-            username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
-            password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
-            remember: [false],
         });
     }
 }

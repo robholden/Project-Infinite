@@ -1,12 +1,12 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { LoadingController } from '@app/shared/controllers/loading';
-import { ModalComponent, ModalController } from '@app/shared/controllers/modal';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { CustomError, ProviderResult, Trx, User, userValidators } from '@shared/models';
 import { EventService } from '@shared/services';
 import { AuthService, UserService } from '@shared/services/identity';
+
+import { LoadingController } from '@app/shared/controllers/loading';
+import { ModalComponent, ModalController } from '@app/shared/controllers/modal';
 
 @Component({
     selector: 'sc-register-external',
@@ -17,14 +17,13 @@ export class RegisterExternalComponent extends ModalComponent<boolean> implement
     @Input() providerResult: ProviderResult;
     @Input() user: User;
 
-    form: FormGroup;
+    form: FormGroup<{ name: FormControl<string>; email: FormControl<string>; username: FormControl<string>; terms: FormControl<boolean> }>;
     regError: Trx;
     loginError: Trx;
 
     constructor(
         injector: Injector,
         public events: EventService,
-        private fb: FormBuilder,
         private userService: UserService,
         private authService: AuthService,
         private modalCtrl: ModalController,
@@ -34,8 +33,13 @@ export class RegisterExternalComponent extends ModalComponent<boolean> implement
     }
 
     ngOnInit() {
-        this.setForm();
         setTimeout(() => document.getElementById('name').focus(), 0);
+        this.form = new FormGroup({
+            name: new FormControl(this.user.name, userValidators('name')),
+            email: new FormControl(this.user.email, userValidators('email')),
+            username: new FormControl('', userValidators('username')),
+            terms: new FormControl<boolean>(false, [Validators.requiredTrue]),
+        });
     }
 
     async register() {
@@ -47,11 +51,7 @@ export class RegisterExternalComponent extends ModalComponent<boolean> implement
         this.loginError = null;
 
         // Talk to our api and register them
-        const regResp = await this.userService.registerExternalProvider(
-            this.providerResult.provider,
-            this.form.get('name').value,
-            this.form.get('username').value
-        );
+        const regResp = await this.userService.registerExternalProvider(this.providerResult.provider, this.form.value.name, this.form.value.username);
 
         // Stop if response is an exception
         if (regResp instanceof CustomError) {
@@ -74,16 +74,5 @@ export class RegisterExternalComponent extends ModalComponent<boolean> implement
         }
 
         this.modalCtrl.dismiss();
-    }
-
-    // Sets the form data
-    //
-    private setForm() {
-        this.form = this.fb.group({
-            name: [this.user.name, userValidators('name')],
-            email: [this.user.email, userValidators('email')],
-            username: ['', userValidators('username')],
-            terms: [false, [Validators.requiredTrue]],
-        });
     }
 }

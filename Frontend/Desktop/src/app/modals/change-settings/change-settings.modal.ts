@@ -1,12 +1,12 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { ContentSettings, CustomError } from '@shared/models';
+import { AdminService } from '@shared/services/identity';
 
 import { LoadingController } from '@app/shared/controllers/loading';
 import { ModalComponent } from '@app/shared/controllers/modal';
 import { ToastController } from '@app/shared/controllers/toast';
-
-import { ContentSettings, CustomError } from '@shared/models';
-import { AdminService } from '@shared/services/identity';
 
 @Component({
     selector: 'sc-change-settings',
@@ -14,17 +14,17 @@ import { AdminService } from '@shared/services/identity';
     styleUrls: ['./change-settings.modal.scss'],
 })
 export class ChangeSettingsModal extends ModalComponent<boolean> implements OnInit {
-    form: FormGroup;
-
     @Input() userId: string;
 
-    constructor(
-        injector: Injector,
-        private fb: FormBuilder,
-        private service: AdminService,
-        private loadingCtrl: LoadingController,
-        private toastCtrl: ToastController
-    ) {
+    form: FormGroup<{
+        maxPictureSize: FormControl<number>;
+        minPictureResolutionX: FormControl<number>;
+        minPictureResolutionY: FormControl<number>;
+        uploadLimit: FormControl<number>;
+        uploadEnabled: FormControl<boolean>;
+    }>;
+
+    constructor(injector: Injector, private service: AdminService, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
         super(injector);
     }
 
@@ -39,12 +39,12 @@ export class ChangeSettingsModal extends ModalComponent<boolean> implements OnIn
             return;
         }
 
-        this.form = this.fb.group({
-            maxPictureSize: [settings.maxPictureSize, [Validators.required]],
-            minPictureResolutionX: [settings.minPictureResolutionX, [Validators.required]],
-            minPictureResolutionY: [settings.minPictureResolutionY, [Validators.required]],
-            uploadLimit: [settings.uploadLimit, [Validators.required]],
-            uploadEnabled: [settings.uploadEnabled, []],
+        this.form = new FormGroup({
+            maxPictureSize: new FormControl(settings.maxPictureSize, [Validators.required]),
+            minPictureResolutionX: new FormControl(settings.minPictureResolutionX, [Validators.required]),
+            minPictureResolutionY: new FormControl(settings.minPictureResolutionY, [Validators.required]),
+            uploadLimit: new FormControl(settings.uploadLimit, [Validators.required]),
+            uploadEnabled: new FormControl(settings.uploadEnabled, []),
         });
     }
 
@@ -53,11 +53,11 @@ export class ChangeSettingsModal extends ModalComponent<boolean> implements OnIn
         loading.present();
 
         const settings: ContentSettings = {
-            maxPictureSize: this.form.get('maxPictureSize').value,
-            minPictureResolutionX: this.form.get('minPictureResolutionX').value,
-            minPictureResolutionY: this.form.get('minPictureResolutionY').value,
-            uploadLimit: this.form.get('uploadLimit').value,
-            uploadEnabled: this.form.get('uploadEnabled').value,
+            maxPictureSize: this.form.value.maxPictureSize,
+            minPictureResolutionX: this.form.value.minPictureResolutionX,
+            minPictureResolutionY: this.form.value.minPictureResolutionY,
+            uploadLimit: this.form.value.uploadLimit,
+            uploadEnabled: this.form.value.uploadEnabled,
         };
         const resp = await this.service.updateUserSettings(this.userId, settings);
 

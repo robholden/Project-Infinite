@@ -1,12 +1,12 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { Collection, CustomError } from '@shared/models';
+import { CollectionService } from '@shared/services/content';
 
 import { LoadingController } from '@app/shared/controllers/loading';
 import { ModalComponent } from '@app/shared/controllers/modal';
 import { ToastController } from '@app/shared/controllers/toast';
-
-import { Collection, CustomError } from '@shared/models';
-import { CollectionService } from '@shared/services/content';
 
 @Component({
     selector: 'sc-modify-collection',
@@ -16,21 +16,15 @@ import { CollectionService } from '@shared/services/content';
 export class ModifyCollectionModal extends ModalComponent<Collection> implements OnInit {
     @Input() collection: Collection;
 
-    form: FormGroup;
+    form: FormGroup<{ name: FormControl<string> }>;
 
-    constructor(
-        injector: Injector,
-        private fb: FormBuilder,
-        private service: CollectionService,
-        private loadingCtrl: LoadingController,
-        private toastCtrl: ToastController
-    ) {
+    constructor(injector: Injector, private service: CollectionService, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
         super(injector);
     }
 
     ngOnInit(): void {
-        this.form = this.fb.group({
-            name: [this.collection ? this.collection.name : '', [Validators.required, Validators.minLength(4), Validators.maxLength(100)]],
+        this.form = new FormGroup({
+            name: new FormControl(this.collection ? this.collection.name : '', [Validators.required, Validators.minLength(4), Validators.maxLength(100)]),
         });
 
         setTimeout(() => document.getElementById('collection-name').focus());
@@ -46,7 +40,7 @@ export class ModifyCollectionModal extends ModalComponent<Collection> implements
         const updating = this.collection && !!this.collection.collectionId;
         const collection = {
             ...(this.collection || new Collection()),
-            name: this.form.get('name').value,
+            name: this.form.value.name,
         };
 
         const resp = updating ? await this.service.update(this.collection.collectionId, collection) : await this.service.create(collection);

@@ -12,8 +12,8 @@
                 </label>
             </div>
             <div class="mt-s">
-                <small *ngIf="name.hasError('minlength')" class="mt-s" colour="danger"> {{ 'form_errors.minlength' | trx }} </small>
-                <small *ngIf="name.hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+                <small *ngIf="form.get('name').hasError('minlength')" class="mt-s" colour="danger"> {{ 'form_errors.minlength' | trx }} </small>
+                <small *ngIf="form.get('name').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
             </div>
         </div>
 
@@ -32,7 +32,7 @@
                 <button
                     type="button"
                     class="pill mr-s mt-s"
-                    [attr.background]="tags.value.includes(tag.value) ? 'dark' : null"
+                    [attr.background]="form.value.tags.includes(tag.value) ? 'dark' : null"
                     (click)="addRemoveTag(tag.value)"
                     *ngFor="let tag of (allTags || []); let $i = index"
                 >

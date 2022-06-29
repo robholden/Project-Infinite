@@ -1,10 +1,7 @@
 import { trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
-import { LoadingController } from '@app/shared/controllers/loading';
-import { ToastController } from '@app/shared/controllers/toast';
 
 import { CustomEvent } from '@shared/enums';
 import { PasswordStrength, zxcvbn } from '@shared/functions';
@@ -12,22 +9,48 @@ import { CustomError, ErrorCode } from '@shared/models';
 import { EventService } from '@shared/services';
 import { PasswordService } from '@shared/services/identity';
 
+import { LoadingController } from '@app/shared/controllers/loading';
+import { ToastController } from '@app/shared/controllers/toast';
+
 @Component({
     selector: 'sc-reset-password',
     templateUrl: './reset-password.page.html',
     styleUrls: ['./reset-password.page.scss'],
 })
 export class ResetPasswordPage implements OnInit {
-    form: FormGroup;
     pwStrength: PasswordStrength;
     valid: boolean = null;
     success: boolean;
+    form = new FormGroup({
+        password: new FormControl('', [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(100),
+            (control: AbstractControl) => {
+                if (!this.form) return {};
+
+                this.pwStrength = zxcvbn(control.value);
+                setTimeout(() => this.form.get('confirmPassword').updateValueAndValidity(), 0);
+            },
+        ]),
+        confirmPassword: new FormControl('', [
+            Validators.required,
+            Validators.minLength(6),
+            (control: AbstractControl) => {
+                if (!this.form) return {};
+
+                const errors = {};
+                if (control.value !== this.form.value.password) errors['mismatch'] = true;
+                return errors;
+            },
+        ]),
+        clear: new FormControl<boolean>(false),
+    });
 
     private _key: string;
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private fb: FormBuilder,
         private events: EventService,
         private passwordService: PasswordService,
         private toastCtrl: ToastController,
@@ -60,7 +83,6 @@ export class ResetPasswordPage implements OnInit {
 
         // We have a valid key
         this._key = key;
-        this.setForm();
         this.valid = true;
     }
 
@@ -72,7 +94,7 @@ export class ResetPasswordPage implements OnInit {
         loading.present();
 
         // Talk to our api and log them in
-        const resp = await this.passwordService.reset(this._key, this.form.get('password').value, this.form.value.clear);
+        const resp = await this.passwordService.reset(this._key, this.form.value.password, this.form.value.clear);
 
         // Stop loading
         loading.dismiss();
@@ -89,41 +111,5 @@ export class ResetPasswordPage implements OnInit {
 
         this.success = true;
         this.events.trigger(CustomEvent.Login);
-    }
-
-    // Sets the form data
-    //
-    private setForm() {
-        this.form = this.fb.group({
-            password: [
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(6),
-                    Validators.maxLength(100),
-                    (control: AbstractControl) => {
-                        if (!this.form) return;
-
-                        this.pwStrength = zxcvbn(control.value);
-                        setTimeout(() => this.form.get('confirmPassword').updateValueAndValidity(), 0);
-                    },
-                ],
-            ],
-            confirmPassword: [
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(6),
-                    (control: AbstractControl) => {
-                        if (!this.form) return {};
-
-                        const errors = {};
-                        if (control.value !== this.form.get('password').value) errors['mismatch'] = true;
-                        return errors;
-                    },
-                ],
-            ],
-            clear: [false],
-        });
     }
 }

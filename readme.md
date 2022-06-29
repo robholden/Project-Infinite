@@ -51,5 +51,4 @@ Use `tye` to run dependencies locally with Docker -> `.dev/readme.md`
 
 #### Running a local SMTP server
 
-**Running a local SMTP server**
 In order to send/receive emails you will need a local smtp server such as [https://github.com/ChangemakerStudios/Papercut-SMTP](Papercut-SMTP)

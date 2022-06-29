@@ -1,13 +1,13 @@
 import { Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { AlertController } from '@app/shared/controllers/alert';
-import { LoadingController } from '@app/shared/controllers/loading';
-import { ModalComponent } from '@app/shared/controllers/modal';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { TwoFactorType } from '@shared/enums';
 import { CustomError, ErrorCode, RecoveryCode } from '@shared/models';
 import { AuthService, TwoFactorResponse } from '@shared/services/identity';
+
+import { AlertController } from '@app/shared/controllers/alert';
+import { LoadingController } from '@app/shared/controllers/loading';
+import { ModalComponent } from '@app/shared/controllers/modal';
 
 import qrcode from 'qrcode';
 
@@ -23,21 +23,15 @@ export class SetupTwoFactorModal extends ModalComponent<any> implements OnInit, 
 
     recoveryCodes: RecoveryCode[];
     qrcode: string;
-    form: FormGroup = this.fb.group({
-        code: ['', [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.minLength(6), Validators.maxLength(6)]],
+    form: FormGroup = new FormGroup({
+        code: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.minLength(6), Validators.maxLength(6)]),
     });
 
     get TwoFactorType() {
         return TwoFactorType;
     }
 
-    constructor(
-        injector: Injector,
-        private fb: FormBuilder,
-        private authService: AuthService,
-        private loadingCtrl: LoadingController,
-        private alertCtrl: AlertController
-    ) {
+    constructor(injector: Injector, private authService: AuthService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
         super(injector);
 
         this.options.dismissOnEscape = false;
@@ -74,7 +68,7 @@ export class SetupTwoFactorModal extends ModalComponent<any> implements OnInit, 
         this.preventClosing(true);
 
         // Call api
-        const resp = await this.authService.enable2FA(this.type, this.form.get('code').value);
+        const resp = await this.authService.enable2FA(this.type, this.form.value.code);
 
         // Hide loading
         loading.dismiss();
