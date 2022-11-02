@@ -52,7 +52,6 @@ public static class StartupExtensions
         {
             routeBuilder?.Invoke(endpoints);
             endpoints.MapControllers();
-
             endpoints.UseHealthChecks();
         });
     }
@@ -233,7 +232,7 @@ public static class StartupExtensions
             {
                 // Set RabbitMq host address from settings
                 var host = configuration["RabbitMq:Hostname"] ?? "localhost";
-                cfg.Host($"rabbitmq://{ host }", h =>
+                cfg.Host($"rabbitmq://{host}", h =>
                 {
                     var username = configuration["RabbitMq:Username"];
                     var password = configuration["RabbitMq:Password"];
@@ -260,7 +259,15 @@ public static class StartupExtensions
 
             // Add pub subs
             services.AddPubSubs(x);
-        }).AddMassTransitHostedService();
+        });
+
+        // Configure the bus options
+        services.Configure<MassTransitHostOptions>(options =>
+        {
+            options.WaitUntilStarted = true;
+            options.StartTimeout = TimeSpan.FromSeconds(30);
+            options.StopTimeout = TimeSpan.FromMinutes(1);
+        });
     }
 
     public static CorsPolicyBuilder BuildOrigins(this CorsPolicyBuilder builder, string origins)
@@ -279,7 +286,7 @@ public static class StartupExtensions
                  config
                      .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                      .AddJsonFile("appsettings.json", false, true)
-                     .AddJsonFile($"appsettings.{ hostingContext.HostingEnvironment.EnvironmentName }.json", true, true)
+                     .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
                      .AddJsonFile("appsettings.local.json", true, true)
                      .AddUserSecrets<T>(optional: true)
                      .AddEnvironmentVariables();
@@ -329,7 +336,7 @@ public static class StartupExtensions
         }
         catch
         {
-            logger.LogError("ConnString={0}", context.Database.GetConnectionString());
+            logger.LogError("ConnString={ConnString}", context.Database.GetConnectionString());
             throw;
         }
 

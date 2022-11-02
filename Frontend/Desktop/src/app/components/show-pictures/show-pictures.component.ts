@@ -36,7 +36,7 @@ interface Filters {
     animations: [fade],
 })
 export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSearch> implements OnInit {
-    enum_values = enumValues(PictureOrderBy, PictureOrderBy.None);
+    readonly enum_values = enumValues(PictureOrderBy, PictureOrderBy.None);
 
     @Input() showFilters: boolean;
     @ViewChild('locationInput', { static: false }) locationInput: ElementRef;

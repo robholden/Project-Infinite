@@ -2,7 +2,6 @@
 using Library.Core.Enums;
 
 using MassTransit;
-using MassTransit.ExtensionsDependencyInjectionIntegration;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -79,7 +78,7 @@ public class SocketsPubSub : BasePubSub, ISocketsPubSub
 
     public async Task ModeratedPicture(ModeratedPictureRq payload) => await Publish(payload);
 
-    public static void AddRequestClients(IServiceCollectionBusConfigurator configurator)
+    public static void AddRequestClients(IBusRegistrationConfigurator configurator)
     {
     }
 }

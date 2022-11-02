@@ -5,11 +5,11 @@ import { RouterModule } from '@angular/router';
 
 import { TranslateModule } from '@ngx-translate/core';
 
+import { PipesModule } from '@shared/pipes/pipes.module';
+
 import { ComponentsModule } from '@app/components/component.module';
 import { DirectivesModule } from '@app/directives/directives.module';
 import { FeaturesModule } from '@app/features/features.module';
-
-import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { AuthModal } from './auth-modal/auth.modal';
 import { ChangeSettingsModal } from './change-settings/change-settings.modal';

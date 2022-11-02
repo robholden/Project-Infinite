@@ -1,6 +1,5 @@
 ﻿
 using MassTransit;
-using MassTransit.ExtensionsDependencyInjectionIntegration;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -55,7 +54,7 @@ public abstract class BasePubSub
 
 public static class PubSubExtensions
 {
-    public static void AddPubSubs(this IServiceCollection services, IServiceCollectionBusConfigurator configurator)
+    public static void AddPubSubs(this IServiceCollection services, IBusRegistrationConfigurator configurator)
     {
         CommsPubSub.AddRequestClients(configurator);
         ContentPubSub.AddRequestClients(configurator);

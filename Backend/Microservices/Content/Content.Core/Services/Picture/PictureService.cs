@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;
+using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace Content.Core.Services;
@@ -145,7 +146,7 @@ public class PictureService : IPictureService
         await _ctx.Post(new PictureModeration(picture.PictureId));
 
         // Create approval notification for moderators
-        _ = _commEvents?.AddGeneralNotification(new(UserLevel.Moderator, NotificationType.NewPictureApproval, new($"{ picture.PictureId }", picture.Name, picture.Path)));
+        _ = _commEvents?.AddGeneralNotification(new(UserLevel.Moderator, NotificationType.NewPictureApproval, new($"{picture.PictureId}", picture.Name, picture.Path)));
 
 
     }
@@ -194,14 +195,14 @@ public class PictureService : IPictureService
 
         // Notify user of the result
         var type = outcome ? NotificationType.PictureApproved : NotificationType.PictureUnapproved;
-        var contentKey = outcome ? $"{ picture.PictureId }" : picture.Name;
+        var contentKey = outcome ? $"{picture.PictureId}" : picture.Name;
         var contentMessage = outcome ? picture.Name : notes;
         var contentImage = outcome ? picture.Path : "";
         var content = new NotificationContent(contentKey, contentMessage, contentImage);
 
         _ = Task.WhenAll(
             _commEvents?.AddNotification(new(picture.ToUserRecord(), type, content)),
-            _commEvents?.UpdateGeneralNotification(new(UserLevel.Moderator, NotificationType.NewPictureApproval, $"{ picture.PictureId }", type, content)),
+            _commEvents?.UpdateGeneralNotification(new(UserLevel.Moderator, NotificationType.NewPictureApproval, $"{picture.PictureId}", type, content)),
             _socketEvents?.ModeratedPicture(new(picture.PictureId, outcome))
         );
     }
@@ -290,7 +291,7 @@ public class PictureService : IPictureService
             var filePath = _settings.UploadDir + path;
             File.Delete(filePath);
 
-            filePath = $"{ _settings.UploadDir }thumbs/{ path }";
+            filePath = $"{_settings.UploadDir}thumbs/{path}";
             File.Delete(filePath);
         }
         catch { }
@@ -318,7 +319,7 @@ public class PictureService : IPictureService
         //    throw new SiteException(ErrorCode.DuplicatePicture);
         //}
 
-        using var image = Image.Load(bytes);
+        using var image = Image.Load<Rgba32>(bytes);
 
         // Run checks on the picture
         //
@@ -333,7 +334,7 @@ public class PictureService : IPictureService
         var fileSizeBytes = settings.MaxPictureSize * 1000 * 1000;
         if (fileSizeBytes > 0 && bytes.Length > fileSizeBytes)
         {
-            errors.Add(new ErrorCodeDto(ErrorCode.PictureTooBig, new string[] { $"{ settings.MaxPictureSize }mb" }));
+            errors.Add(new ErrorCodeDto(ErrorCode.PictureTooBig, new string[] { $"{settings.MaxPictureSize}mb" }));
         }
 
         // Validate dimensions
@@ -373,7 +374,7 @@ public class PictureService : IPictureService
             return (null, errors);
         }
 
-        // Extract colour pallete
+        // Extract colour palette
         var colours = new List<string>();
         try
         {
@@ -444,12 +445,12 @@ public class PictureService : IPictureService
             }
 
             // Save images
-            var saveTo = $"{ picture.PictureId }{ ext }";
+            var saveTo = $"{picture.PictureId}{ext}";
             var imagePath = _settings.UploadDir + saveTo;
             if (!string.IsNullOrEmpty(_settings.UploadDir))
             {
                 // Create directories
-                var thumbsDir = $"{ _settings.UploadDir }thumbs";
+                var thumbsDir = $"{_settings.UploadDir}thumbs";
                 if (!Directory.Exists(_settings.UploadDir)) Directory.CreateDirectory(_settings.UploadDir);
                 if (!Directory.Exists(thumbsDir)) Directory.CreateDirectory(thumbsDir);
 
@@ -461,7 +462,7 @@ public class PictureService : IPictureService
 
                 // Save thumbnail
                 image.Mutate(x => x.Resize(400, 0));
-                image.Save($"{ thumbsDir }/{ saveTo }");
+                image.Save($"{thumbsDir}/{saveTo}");
             }
 
             // TODO: Scan for viruses

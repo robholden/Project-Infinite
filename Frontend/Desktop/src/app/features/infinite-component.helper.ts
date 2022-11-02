@@ -17,6 +17,7 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
     @Output() resultChange = new EventEmitter<PagedList<T>>();
 
     loaded: boolean = false;
+    reloading: boolean = false;
     getting = {
         init: true,
         prev: false,
@@ -77,10 +78,12 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
     async reload() {
         await wait(0);
 
-        this.result = null;
-        this.pages = [];
+        this.reloading = true;
 
-        this.search();
+        this.pages = [];
+        await this.search();
+
+        this.reloading = false;
     }
 
     async nextPage() {

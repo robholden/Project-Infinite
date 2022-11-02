@@ -8,29 +8,32 @@
             <sc-drop-down position="bottomright" [width]="250">
                 <div class="link-search">
                     <div class="form-section button-attached flex-row">
-                        <input class="input" type="text" #locationInput placeholder="Search for a location" [disabled]="getting.init" />
+                        <input class="input" type="text" #locationInput placeholder="Search for a location" />
                         <label class="button affix icon-only" background="primary"><i class="fas fa-search"></i></label>
                     </div>
                 </div>
 
                 <div class="link-scrollable">
                     <div class="link-section" *ngFor="let country of filters.locations; let $i = index">
-                        <label
-                            class="title-link"
+                        <button
+                            class="link-title"
                             (click)="filter.countries[country.code] = !filter.countries[country.code]; setFilters(); $event.preventDefault()"
+                            [disabled]="getting.init"
                         >
                             {{ 'countries.' + country.code | trx: {}:country.name }}
                             <input [id]="country.code" type="checkbox" class="no-pe ml-a" [checked]="filter.countries[country.code]" />
-                        </label>
+                        </button>
 
                         <ng-container *ngIf="!filter.countries[country.code]">
-                            <label
+                            <button
+                                class="link-item"
                                 (click)="filter.locations[loc.code] = !filter.locations[loc.code]; setFilters(); $event.preventDefault()"
+                                [disabled]="getting.init"
                                 *ngFor="let loc of country.locations"
                             >
-                                <input [id]="loc.code" class="no-pe" type="checkbox" [checked]="filter.locations[loc.code]" />
+                                <input [id]="loc.code" class="no-pe" type="checkbox" [checked]="filter.locations[loc.code]" [disabled]="getting.init" />
                                 {{ 'locations.' + loc.code | trx: {}:loc.name }}
-                            </label>
+                            </button>
                         </ng-container>
                     </div>
                 </div>
@@ -50,7 +53,7 @@
 
                 <div class="link-scrollable">
                     <div class="link-section" *ngFor="let tag of filters.tags; let $i = index">
-                        <label class="title-link" (click)="filter.tags[tag] = !filter.tags[tag]; setFilters(); $event.preventDefault()">
+                        <label class="link-title" (click)="filter.tags[tag] = !filter.tags[tag]; setFilters(); $event.preventDefault()">
                             {{ tag }}
                             <input [id]="tag" type="checkbox" class="no-pe ml-a" [checked]="filter.tags[tag]" />
                         </label>
@@ -149,10 +152,10 @@
     [selectable]="true"
     (selected)="filter.bounds = $event; setFilters()"
     [height]="25"
-    *ngIf="mapOptions && !getting.init"
+    *ngIf="mapOptions && (!getting.init || reloading)"
 ></sc-show-map>
 
-<div class="flex-col flex-spacer" *ngIf="!getting.init; else loadingRef" @fade>
+<div class="flex-col flex-spacer" *ngIf="!getting.init || reloading; else loadingRef" @fade>
     <div
         infinite-scroll
         [infiniteScrollDistance]="3"
@@ -175,7 +178,6 @@
                     <i class="icon far fa-pencil"></i>
                 </button>
 
-                TODO: Default click should open modal to picture :)
                 <a [routerLink]="'/picture/' + picture.pictureId">
                     <img [lazyLoad]="picture.path | imgUrl" [width]="picture.width" [height]="picture.height" />
                     <div class="lazyloader"><i class="fas fa-spinner-third fa-spin"></i></div>
@@ -216,3 +218,7 @@
         <ng-content select="[empty]"></ng-content>
     </div>
 </ng-template>
+
+<div id="reloading-pictures" [class.visible]="reloading">
+    <i class="fas fa-spinner-third fa-spin" colour="success"></i> &nbsp; Loading awesome pictures
+</div>

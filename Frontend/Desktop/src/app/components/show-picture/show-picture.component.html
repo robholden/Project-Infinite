@@ -101,6 +101,11 @@
 
                     <sc-drop-down position="bottomleft" [width]="100">
                         <div class="link-section">
+                            <button type="button" (click)="edit()" *ngIf="author && picture.status !== Status.Draft">
+                                Edit
+                                <i class="far fa-pencil"></i>
+                            </button>
+
                             <button type="button" colour="danger" (click)="delete()" *ngIf="author">
                                 Delete
                                 <i class="far fa-trash"></i>

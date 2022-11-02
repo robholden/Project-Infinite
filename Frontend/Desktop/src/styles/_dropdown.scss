@@ -43,7 +43,7 @@
         font-size: 12px;
     }
 
-    .title-link {
+    .link-title {
         display: block;
         width: 100%;
         padding: 0.35em 0.5em;
@@ -58,7 +58,7 @@
         }
     }
 
-    > :first-child:not(.title-link) {
+    > :first-child:not(.link-title) {
         padding-top: 0.25em;
     }
 
@@ -74,7 +74,7 @@
     .link-section {
         padding-bottom: 0.25em;
 
-        > .title-link {
+        > .link-title {
             border-bottom: none;
             margin-bottom: 0;
         }
@@ -134,7 +134,9 @@
             }
         }
 
-        > label {
+        > label,
+        .link-title,
+        .link-item {
             display: flex;
             flex-direction: row;
             align-items: center;

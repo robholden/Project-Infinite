@@ -3,7 +3,6 @@ using Library.Core.Enums;
 using Library.Core.Models;
 
 using MassTransit;
-using MassTransit.ExtensionsDependencyInjectionIntegration;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -94,7 +93,7 @@ public class CommsPubSub : BasePubSub, ICommsPubSub
 
     public async Task DeleteNotifications(DeleteNotificationsRq payload) => await Publish(payload);
 
-    public static void AddRequestClients(IServiceCollectionBusConfigurator configurator)
+    public static void AddRequestClients(IBusRegistrationConfigurator configurator)
     {
         configurator.AddRequestClient<AddCommsUserRq>();
     }

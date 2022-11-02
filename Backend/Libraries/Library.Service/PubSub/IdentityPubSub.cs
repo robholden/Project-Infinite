@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using MassTransit.ExtensionsDependencyInjectionIntegration;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -44,7 +43,7 @@ public class IdentityPubSub : BasePubSub, IIdentityPubSub
 
     public async Task DeleteReportedUser(DeleteReportedUserRq payload) => await Publish(payload);
 
-    public static void AddRequestClients(IServiceCollectionBusConfigurator configurator)
+    public static void AddRequestClients(IBusRegistrationConfigurator configurator)
     {
     }
 }

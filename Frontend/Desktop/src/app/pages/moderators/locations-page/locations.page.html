@@ -61,7 +61,14 @@
             <ng-container *ngFor="let location of result.rows || []; let $i = index">
                 <h4 [class.mt]="$i > 0" *ngIf="headerFn($i) as header">{{ header }}</h4>
                 <div class="card p-s flex-row-align mt-s">
-                    {{ location.name }} ({{ location.code }})
+                    {{ location.name }}
+
+                    <span class="pill ml-s" background="light" *ngIf="location.code else showCodeWarning">
+                        <strong>{{ location.code }}</strong>
+                    </span>
+                    <ng-template #showCodeWarning>
+                        <strong colour="danger" class="ml-s">*code required</strong>
+                    </ng-template>
 
                     <div class="flex-spacer"></div>
 
