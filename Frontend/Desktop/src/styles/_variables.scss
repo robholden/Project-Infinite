@@ -1,13 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=DM+Sans:400,500,600,700|Snowburst+One&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lexend:400,500,600,700|Snowburst+One&display=swap');
 
 :root {
-    --sc-font-family: 'DM Sans', serif;
+    --sc-font-family: 'Lexend', serif;
     --sc-logo-font: 'Snowburst One', serif;
     --sc-font-size: 14px;
-    --sc-br: 2px;
+    --sc-br: 3px;
+    --sc-button-br: 3px;
     --sc-header-height: 55px;
-
-    --sc-button-br: 2px;
 }
 
 body {

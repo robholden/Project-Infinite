@@ -18,7 +18,7 @@
                         <button
                             class="link-title"
                             (click)="filter.countries[country.code] = !filter.countries[country.code]; setFilters(); $event.preventDefault()"
-                            [disabled]="getting.init"
+                            [disabled]="getting.init || getting.reload"
                         >
                             {{ 'countries.' + country.code | trx: {}:country.name }}
                             <input [id]="country.code" type="checkbox" class="no-pe ml-a" [checked]="filter.countries[country.code]" />
@@ -28,10 +28,16 @@
                             <button
                                 class="link-item"
                                 (click)="filter.locations[loc.code] = !filter.locations[loc.code]; setFilters(); $event.preventDefault()"
-                                [disabled]="getting.init"
+                                [disabled]="getting.init || getting.reload"
                                 *ngFor="let loc of country.locations"
                             >
-                                <input [id]="loc.code" class="no-pe" type="checkbox" [checked]="filter.locations[loc.code]" [disabled]="getting.init" />
+                                <input
+                                    [id]="loc.code"
+                                    class="no-pe"
+                                    type="checkbox"
+                                    [checked]="filter.locations[loc.code]"
+                                    [disabled]="getting.init || getting.reload"
+                                />
                                 {{ 'locations.' + loc.code | trx: {}:loc.name }}
                             </button>
                         </ng-container>
@@ -46,7 +52,7 @@
             <sc-drop-down position="bottomright" [width]="250">
                 <div class="link-search">
                     <div class="form-section button-attached flex-row">
-                        <input class="input" type="text" #tagInput placeholder="Search for a tag" [disabled]="getting.init" />
+                        <input class="input" type="text" #tagInput placeholder="Search for a tag" [disabled]="getting.init || getting.reload" />
                         <label class="button affix icon-only" background="primary"><i class="fas fa-search"></i></label>
                     </div>
                 </div>
@@ -152,10 +158,10 @@
     [selectable]="true"
     (selected)="filter.bounds = $event; setFilters()"
     [height]="25"
-    *ngIf="mapOptions && (!getting.init || reloading)"
+    *ngIf="mapOptions && !getting.init"
 ></sc-show-map>
 
-<div class="flex-col flex-spacer" *ngIf="!getting.init || reloading; else loadingRef" @fade>
+<div class="picture-grid flex-col flex-spacer" [class.reloading]="getting.reload" *ngIf="!getting.init; else loadingRef" @fade>
     <div
         infinite-scroll
         [infiniteScrollDistance]="3"
@@ -218,7 +224,3 @@
         <ng-content select="[empty]"></ng-content>
     </div>
 </ng-template>
-
-<div id="reloading-pictures" [class.visible]="reloading">
-    <i class="fas fa-spinner-third fa-spin" colour="success"></i> &nbsp; Loading awesome pictures
-</div>

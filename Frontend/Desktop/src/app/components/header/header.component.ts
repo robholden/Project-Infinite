@@ -6,7 +6,7 @@ import { AlertController } from '@app/shared/controllers/alert';
 import { CustomEvent } from '@shared/enums';
 import { waitThen } from '@shared/functions';
 import { SMap } from '@shared/models';
-import { EventService, SocketService } from '@shared/services';
+import { EventService, LoadingService, SocketService } from '@shared/services';
 import { AuthState } from '@shared/storage';
 
 import { NotificationsComponent } from '../notifications/notifications.component';
@@ -23,9 +23,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     @ViewChild('userNotif') notificationsRef!: NotificationsComponent;
     @ViewChild('modNotif') modNotificationsRef?: NotificationsComponent;
 
-    CustomEvent = CustomEvent;
+    readonly CustomEvent = CustomEvent;
 
-    constructor(private sockets: SocketService, private alertCtrl: AlertController, public authState: AuthState, public events: EventService) {}
+    constructor(
+        private sockets: SocketService,
+        private alertCtrl: AlertController,
+        public authState: AuthState,
+        public events: EventService,
+        public loading: LoadingService
+    ) {}
 
     ngOnInit() {}
 

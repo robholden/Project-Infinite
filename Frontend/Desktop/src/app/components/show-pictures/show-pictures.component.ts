@@ -66,7 +66,7 @@ export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSea
                 pager: new PageRequest(),
                 def: {},
                 filterParams: [],
-                queryConfig: { countries: 'array', locations: 'array', orderBy: (value: string) => parseEnum(value, PictureOrderBy) },
+                queryConfig: { countries: 'array', locations: 'array', tags: 'array', orderBy: (value: string) => parseEnum(value, PictureOrderBy) },
                 onResult: async () => {
                     this.mapOptions = null;
                     await wait(0);

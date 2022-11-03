@@ -33,6 +33,26 @@
         }
     }
 
+    .icon-loader {
+        position: relative;
+        opacity: 0;
+        transition: ease 0.25s;
+        left: 14px;
+
+        &.show {
+            opacity: 1;
+        }
+    }
+
+    .icon-logo {
+        transform: scale(1);
+        transition: ease 0.3s;
+
+        &.hide {
+            transform: scale(0);
+        }
+    }
+
     .header-link {
         display: flex;
         align-items: center;

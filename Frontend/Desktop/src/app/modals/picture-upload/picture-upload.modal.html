@@ -52,6 +52,7 @@
 
             <button
                 class="button small icon-only circular remove-upload"
+                background="primary"
                 tippy="Remove"
                 (click)="upload.file = null; upload.url = ''; upload.errors = []; $event.stopPropagation()"
                 *ngIf="upload.file && upload.progress < 0"
@@ -65,14 +66,18 @@
         <div class="flex-spacer">
             <h3>Picture Requirements</h3>
             <ul>
-                <li>Geo location metadata <i class="far fa-check-circle" colour="success" *ngIf="!has_errors && has_file"></i></li>
+                <li>
+                    Geo location metadata
+                    <i class="fas fa-circle-question" colour="medium" tippy="Metadata is stripped on upload"></i>
+                    <i class="far fa-check-circle ml-s" colour="success" *ngIf="!has_errors && has_file"></i>
+                </li>
                 <li>
                     Less than {{ authState.contentSettings.maxPictureSize }}mb
-                    <i class="far fa-check-circle" colour="success" *ngIf="!has_errors && has_file"></i>
+                    <i class="far fa-check-circle ml-s" colour="success" *ngIf="!has_errors && has_file"></i>
                 </li>
                 <li>
                     {{ authState.contentSettings.minPictureResolutionX }}x{{ authState.contentSettings.minPictureResolutionY }} minimum resolution
-                    <i class="far fa-check-circle" colour="success" *ngIf="!has_errors && has_file"></i>
+                    <i class="far fa-check-circle ml-s" colour="success" *ngIf="!has_errors && has_file"></i>
                 </li>
                 <li>Adhere to our terms of content use described in our <a routerLink="/policies/terms" target="_blank" rel="noopener">policy</a></li>
             </ul>

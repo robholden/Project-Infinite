@@ -5,12 +5,14 @@
 
     <div class="flex-spacer"></div>
 
-    <i class="fad fa-snowflakes"></i>
+    <i class="fas fa-spinner-third fa-spin icon-loader" colour="success" [class.show]="loading.visible"></i>
+    <i class="fad fa-snowflakes icon-logo" [class.hide]="loading.visible"></i>
 
     <div class="flex-spacer"></div>
 
     <ng-container *ngIf="authState.loggedIn; else loggedOutLinks">
         <button
+            type="button"
             class="button icon-only notif dropdown-toggle mr-s"
             background="default"
             hover="light"
@@ -28,6 +30,7 @@
         </button>
 
         <button
+            type="button"
             class="button icon-only notif dropdown-toggle mr-s"
             background="default"
             hover="light"
@@ -44,6 +47,7 @@
         </button>
 
         <button
+            type="button"
             class="button"
             background="light"
             (click)="events.trigger(CustomEvent.Upload)"
@@ -60,7 +64,7 @@
             </ng-template>
         </button>
 
-        <button class="header-link dropdown-toggle">
+        <button type="button" class="header-link dropdown-toggle">
             <div class="user-info">
                 <sc-avatar [name]="authState.user.username" [size]="28" bg="var(--sc-colour-primary)" fg="var(--sc-colour-primary-contrast)"></sc-avatar>
             </div>
@@ -129,6 +133,6 @@
 </div>
 
 <ng-template #loggedOutLinks>
-    <button class="button mr-s" background="light" (click)="events.trigger(CustomEvent.Register)">Register</button>
-    <button class="button mr" background="light" (click)="events.trigger(CustomEvent.Login)">Login</button>
+    <button type="button" class="button mr-s" background="light" (click)="events.trigger(CustomEvent.Register)">Register</button>
+    <button type="button" class="button mr" background="light" (click)="events.trigger(CustomEvent.Login)">Login</button>
 </ng-template>

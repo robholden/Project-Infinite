@@ -32,6 +32,12 @@
         display: block;
         font-weight: 600;
         font-size: 1.1em;
+
+        & + small,
+        & + p {
+            margin-top: 2px;
+            color: var(--sc-colour-medium-shade);
+        }
     }
 
     > label {

@@ -3,12 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 
 import { buildQueryString, deepCopy, obj2QueryString, valueHasChanged, wait, writeQueryString } from '@shared/functions';
 import { CustomError, PagedInfo, PagedList, PageRequest, pageRequestFromQueryString, SMap } from '@shared/models';
+import { LoadingService } from '@shared/services';
 
 import { LookupService, PagedComponentOptions, PagedOptions, PagedStore } from './paged-component.helper';
 
 @Directive()
 export class InfiniteComponent<T, S extends Object> implements OnChanges {
     private _initialised: boolean;
+    private _loading: LoadingService;
 
     pagerDefaults: PageRequest = this.pageOptions.pager || new PageRequest();
     pager: PageRequest = this.pageOptions.pager;
@@ -17,11 +19,11 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
     @Output() resultChange = new EventEmitter<PagedList<T>>();
 
     loaded: boolean = false;
-    reloading: boolean = false;
     getting = {
         init: true,
         prev: false,
         next: false,
+        reload: false,
     };
 
     pages: number[] = [];
@@ -41,6 +43,7 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
         private componentOptions?: PagedComponentOptions
     ) {
         const ar = injector.get<ActivatedRoute>(ActivatedRoute);
+        this._loading = injector.get<LoadingService>(LoadingService);
 
         this.route = componentOptions?.route || '';
         this.pager = deepCopy(this.pagerDefaults);
@@ -77,13 +80,7 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
 
     async reload() {
         await wait(0);
-
-        this.reloading = true;
-
-        this.pages = [];
-        await this.search();
-
-        this.reloading = false;
+        await this.search({ reload: true });
     }
 
     async nextPage() {
@@ -94,62 +91,81 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
         await this.search({ prev: true });
     }
 
-    async search(options?: { next?: boolean; prev?: boolean; page?: number; pageSize?: number; oneTime?: boolean }) {
+    async search(options?: { reload?: boolean; next?: boolean; prev?: boolean; page?: number; pageSize?: number }) {
         options = options || {};
         let page = this.pager.page;
         let pageSize = options.pageSize;
-        let oneTime = options.oneTime === true;
 
-        if (options.next) page++;
-        else if (options.prev) page--;
-        else if (options.page) page = options.page;
+        // Force reset when reloading
+        if (options.reload) this.pages = [];
+        // Incremement or set page number based on provided options
+        else {
+            if (options.next) page++;
+            else if (options.prev) page--;
+            else if (options.page) page = options.page;
+        }
 
+        // Stop if the page is out of bounds
         if (page <= 0 || (this.result && page > this.result.totalPages)) return;
 
-        if (!oneTime) this.pager.page = page;
+        // Do not re-fetch pages we already have
         if (this.pages.includes(page)) {
             this.writeParams();
             return;
         }
 
+        // Store page info
         this.pages.push(page);
         this.pages.sort();
-
         if (!pageSize) pageSize = this.pager.pageSize;
-        else if (!oneTime) this.pager.pageSize = pageSize;
 
+        // Check for a cache response to avoid unnecessary api calls
         let result: PagedList<T>;
-
         const qstring = obj2QueryString({ ...this.params, ...this.pager });
         if (page > 1 && this.componentOptions?.cache) {
             const cached = PagedStore.cache[qstring];
             if (cached) result = cached;
         }
 
+        // Added filter params to url
         this.writeParams();
 
+        // If we have no result, call api
         if (!result) {
-            if (page === 1) this.getting.init = true;
-            else if (options.next) this.getting.next = true;
-            else if (options.prev) this.getting.prev = true;
+            // Show temporary loader
+            if (options.reload) {
+                this.getting.reload = true;
+                this._loading.show();
+            }
 
+            // Set internal loaders
+            else {
+                if (page === 1) this.getting.init = true;
+                else if (options.next) this.getting.next = true;
+                else if (options.prev) this.getting.prev = true;
+            }
+
+            // Call injected lookup service
             const resp = await this.lookupService.lookup(this.route, this.params, { ...this.pager, page, pageSize });
-            this.getting = { init: false, prev: false, next: false };
+            this.getting = { init: false, prev: false, next: false, reload: false };
+            if (options.reload) this._loading.hide();
 
             // Stop if response is an exception
             if (resp instanceof CustomError) {
                 return;
             }
 
+            // Cache response
             PagedStore.cache[qstring] = resp;
             result = resp;
         }
 
-        if (!this.result) this.result = result;
+        // Store result
+        if (!this.result || options.reload) this.result = result;
+        // Update or append result to existing set
         else {
             this.result.totalPages = result.totalPages;
             this.result.filtered = this.filtered;
-            if (!oneTime) this.result.pageNumber = result.pageNumber;
 
             if (options.prev) {
                 if (this.pages[0] === this.result.pageNumber) this.result.hasPreviousPage = result.hasPreviousPage;
@@ -160,6 +176,7 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
             }
         }
 
+        // Emit changes to child components
         this.resultChange.emit(this.result);
         this.pagedInfo = this.result;
         if (this.pageOptions.onResult) this.pageOptions.onResult();

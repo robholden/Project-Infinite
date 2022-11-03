@@ -1,10 +1,9 @@
 ## Run Backend
 
-#### 1. Start dependencies
+#### 1. Start dependencies only
 
-`tye run tye-deps.yaml`
+`tye run tye-deps-only.yaml`
 
-#### 2. Start microservices
+#### 2. Start all microservices and dependencies
 
-This is optional if you want to run the projects using VS debuggers
-`tye run tye-services.yaml`
+`tye run tye-deps-services.yaml`

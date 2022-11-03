@@ -62,9 +62,13 @@
 </ng-container>
 
 <h2 class="mt mb-s pt">Delete Account</h2>
-<div class="form-box">
-    <span class="label">If you wish to leave us, we won't stop you</span>
-    <p><small colour="danger">You will not be able to recover your account</small></p>
+<div class="form-box flex-row-align">
+    <div>
+        <span class="label">If you wish to leave us, we won't stop you</span>
+        <p><small colour="danger">Deletion is immediate, and you will not be able to recover your account once deleted</small></p>
+    </div>
+
+    <div class="flex-spacer"></div>
 
     <button class="button" background="danger" (click)="deleteAccount()">Delete Account</button>
 </div>
