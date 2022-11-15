@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comms.Api.Consumers.Emails;
 
-public class OptOutUserConsumer: ISnowConsumer, IConsumer<OptOutUserRq>
+public class OptOutUserConsumer : ISnowConsumer, IConsumer<OptOutUserRq>
 {
     private readonly CommsContext _ctx;
 
@@ -26,6 +26,6 @@ public class OptOutUserConsumer: ISnowConsumer, IConsumer<OptOutUserRq>
         user.MarketingEmail = false;
         user.MarketingOptOutKey = null;
 
-        await _ctx.Put(user);
+        await _ctx.UpdateAsync(user);
     }
 }

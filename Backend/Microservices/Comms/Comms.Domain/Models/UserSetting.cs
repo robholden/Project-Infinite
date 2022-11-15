@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using Library.Core.Models;
+using Library.Core;
 
 namespace Comms.Domain;
 

@@ -1,4 +1,4 @@
-﻿namespace Library.Core.Models;
+﻿namespace Library.Core;
 
 public record XY(int X, int Y);
 

@@ -2,8 +2,6 @@
 using Content.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 
 using Microsoft.AspNetCore.Http;
 

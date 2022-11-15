@@ -32,7 +32,7 @@ public class LocationService : ILocationService
 
         location.Name = name;
 
-        await _ctx.Put(location);
+        await _ctx.UpdateAsync(location);
     }
 
     public async Task UpdateCode(Guid id, string code)
@@ -41,7 +41,7 @@ public class LocationService : ILocationService
 
         location.Code = code;
 
-        await _ctx.Put(location);
+        await _ctx.UpdateAsync(location);
     }
 
     public async Task UpdateBoundry(Guid locationId, Boundry newBoundry)
@@ -53,7 +53,7 @@ public class LocationService : ILocationService
         boundry.MaxLat = newBoundry.MaxLat;
         boundry.MaxLng = newBoundry.MaxLng;
 
-        await _ctx.Put(boundry);
+        await _ctx.UpdateAsync(boundry);
     }
 
     public async Task<Location> AddWithCoords(decimal lat, decimal lng)
@@ -113,7 +113,7 @@ public class LocationService : ILocationService
                 Lng = map.Lon,
                 Boundry = boundry
             };
-            location = await _ctx.Post(location);
+            location = await _ctx.CreateAsync(location);
         }
 
         // Update all picture in range of this location
@@ -122,7 +122,7 @@ public class LocationService : ILocationService
             .ToListAsync())
             .Select(x => { x.Location = location; return x; });
 
-        await _ctx.PutRange(pictures);
+        await _ctx.UpdateManyAsync(pictures);
         SendLocationToClients(pictures);
 
         return location;

@@ -1,5 +1,4 @@
-﻿
-using Library.Core;
+﻿using Library.Core;
 using Library.Service.PubSub;
 
 using MassTransit;
@@ -8,7 +7,7 @@ using Reports.Domain;
 
 namespace Reports.Api.Consumers.Users;
 
-public class DeletedUserConsumer: ISnowConsumer, IConsumer<DeletedUserRq>
+public class DeletedUserConsumer : ISnowConsumer, IConsumer<DeletedUserRq>
 {
     private readonly ReportContext _ctx;
 

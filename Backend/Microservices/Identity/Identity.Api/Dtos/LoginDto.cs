@@ -1,7 +1,7 @@
 ﻿
 using Identity.Domain;
 
-using Library.Core.Enums;
+using Library.Core;
 
 namespace Identity.Api.Dtos;
 
@@ -13,7 +13,7 @@ public class LoginDto
 
     public string RefreshToken { get; set; }
 
-    public UserDto User { get; set; }
+    public object User { get; set; }
 
     public TwoFactorType TwoFactorRequired { get; set; }
 

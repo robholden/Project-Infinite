@@ -98,15 +98,20 @@ export class AlertComponent extends ModalComponent<any> implements OnInit, Dismi
     }
 
     errors(field: string): Trx[] {
-        const errors = this.form.get(field).errors || {};
-        if (errors['required']) return [new Trx('form_errors.required', null, 'Required')];
+        const errorMap = this.form.get(field).errors || {};
+        const errorKeys = Object.keys(errorMap);
+        if (errorKeys.length === 0) return [];
 
-        return Object.keys(errors).reduce((acc, key) => {
+        // If field is required, only return that error
+        if (errorMap['required']) return [new Trx('form_errors.required', null, 'Required')];
+
+        return Object.keys(errorMap).reduce((acc, key) => {
             const inp = this.inputs.find((i) => i.name === field);
             const errorMap = !inp ? {} : inp.errorMap || {};
             const defaultErrorMap = {
                 minlength: new Trx('form_errors.minlength'),
                 maxlength: new Trx('form_errors.maxlength'),
+                email: new Trx('form_errors.email'),
             };
 
             if (errorMap[key]) acc.push(errorMap[key]);

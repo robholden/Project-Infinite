@@ -38,14 +38,14 @@ public class AddCommsUserConsumer : ISnowConsumer, IConsumer<AddCommsUserRq>
                 MarketingOptOutKey = request.Marketing ? Guid.NewGuid() : null
             };
 
-            if (!exists) await _ctx.Post(data);
-            else await _ctx.Put(data);
+            if (!exists) await _ctx.CreateAsync(data);
+            else await _ctx.UpdateAsync(data);
 
-            response = new();
+            response = SnowConsumerResponse.Ok();
         }
         catch (Exception ex)
         {
-            response = new(ex);
+            response = SnowConsumerResponse.Throw(ex);
         }
 
         await context.RespondAsync(response);

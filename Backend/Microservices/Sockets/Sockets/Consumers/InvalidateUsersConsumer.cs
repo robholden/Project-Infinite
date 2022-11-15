@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Sockets.Api.Consumers;
 
-public class InvalidateUsersConsumer: ISnowConsumer, IConsumer<InvalidateUsersRq>
+public class InvalidateUsersConsumer : ISnowConsumer, IConsumer<InvalidateUsersRq>
 {
     private readonly IHubContext<SocketHub> _hub;
 

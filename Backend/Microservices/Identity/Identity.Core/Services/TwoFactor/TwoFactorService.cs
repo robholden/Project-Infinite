@@ -2,8 +2,6 @@
 using Identity.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 using Library.Service.PubSub;
 
 using Microsoft.EntityFrameworkCore;
@@ -92,7 +90,7 @@ public class TwoFactorService : ITwoFactorService
         };
 
         // Add entity to set
-        await _ctx.Post(twoFA);
+        await _ctx.CreateAsync(twoFA);
 
         return true;
     }
@@ -119,11 +117,12 @@ public class TwoFactorService : ITwoFactorService
         using var transaction = await _ctx.Database.BeginTransactionAsync();
 
         // Remove existing codes
-        var toRemove = _ctx.RecoveryCodes.Where(r => r.UserId == userId && !r.UsedAt.HasValue);
-        if (await toRemove.AnyAsync()) await _ctx.DeleteRange(toRemove);
+        await _ctx.RecoveryCodes
+            .Where(r => r.UserId == userId && !r.UsedAt.HasValue)
+            .ExecuteDeleteAsync();
 
         // Add new codes
-        await _ctx.PostRange(codes);
+        await _ctx.CreateManyAsync(codes);
 
         // Commit to db
         await transaction.CommitAsync();
@@ -147,12 +146,13 @@ public class TwoFactorService : ITwoFactorService
         using var transaction = await _ctx.Database.BeginTransactionAsync();
 
         // Delete codes we haven't used
-        var codes = _ctx.RecoveryCodes.Where(r => r.UserId == userId && !r.UsedAt.HasValue && r.RecoveryCodeId != code.RecoveryCodeId);
-        await _ctx.DeleteRange(codes);
+        await _ctx.RecoveryCodes
+            .Where(r => r.UserId == userId && !r.UsedAt.HasValue && r.RecoveryCodeId != code.RecoveryCodeId)
+            .ExecuteDeleteAsync();
 
         // Update code to used
         code.UsedAt = DateTime.UtcNow;
-        await _ctx.Put(code);
+        await _ctx.UpdateAsync(code);
 
         // Remove 2FA from user account
         user.TwoFactorEnabled = false;
@@ -161,7 +161,7 @@ public class TwoFactorService : ITwoFactorService
         user.LastActive = DateTime.UtcNow;
 
         // Update user
-        await _ctx.Put(user);
+        await _ctx.UpdateAsync(user);
 
         // Commit to db
         await transaction.CommitAsync();

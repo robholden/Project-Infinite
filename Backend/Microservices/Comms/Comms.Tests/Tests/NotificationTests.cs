@@ -5,7 +5,6 @@ using Comms.Api.Consumers.Notifications;
 using Comms.Core.Queries;
 
 using Library.Core;
-using Library.Core.Enums;
 using Library.Service.PubSub;
 
 using MassTransit;
@@ -141,7 +140,7 @@ public class NotificationTests
 
         // Assert
         Assert.IsTrue(outcome, ex?.Message ?? "Failed to add notification");
-        Assert.AreEqual(result.TotalRows, 3, $"Total rows value is incorrect, expected 3 got { result.TotalRows }");
-        Assert.AreEqual(result.Rows?.Count(), 3, $"Rows data is incorrect, expected 3 got { result.Rows?.Count() }");
+        Assert.AreEqual(result.TotalRows, 3, $"Total rows value is incorrect, expected 3 got {result.TotalRows}");
+        Assert.AreEqual(result.Rows?.Count(), 3, $"Rows data is incorrect, expected 3 got {result.Rows?.Count()}");
     }
 }

@@ -24,7 +24,7 @@ public class TextMagicSmsProvider : ISmsProvider
         using var client = new HttpClient();
 
         var assembly = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
-        var useragent = $"textmagic-rest-csharp/{ assembly.Version } (.NET { Environment.Version }; { Environment.OSVersion })";
+        var useragent = $"textmagic-rest-csharp/{assembly.Version} (.NET {Environment.Version}; {Environment.OSVersion})";
 
         client.BaseAddress = new Uri("https://rest.textmagic.com/api/v2/");
 

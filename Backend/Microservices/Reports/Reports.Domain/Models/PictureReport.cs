@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using Library.Core.Enums;
-using Library.Core.Models;
+using Library.Core;
 
 namespace Reports.Domain;
 

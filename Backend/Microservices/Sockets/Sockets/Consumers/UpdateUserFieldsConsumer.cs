@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Sockets.Api.Consumers;
 
-public class UpdateUserFieldsConsumer: ISnowConsumer, IConsumer<UpdatedUserFieldsRq>
+public class UpdateUserFieldsConsumer : ISnowConsumer, IConsumer<UpdatedUserFieldsRq>
 {
     private readonly IHubContext<SocketHub> _hub;
 
@@ -17,6 +17,6 @@ public class UpdateUserFieldsConsumer: ISnowConsumer, IConsumer<UpdatedUserField
 
     public async Task Consume(ConsumeContext<UpdatedUserFieldsRq> context)
     {
-        await _hub.Clients.User($"{ context.Message.UserId }").SendAsync("UpdatedUserFields", context.Message.NewValues);
+        await _hub.Clients.User($"{context.Message.UserId}").SendAsync("UpdatedUserFields", context.Message.NewValues);
     }
 }

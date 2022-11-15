@@ -14,7 +14,6 @@ using Identity.Core.Services.Auth.Providers;
 using Identity.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
 using Library.Service;
 using Library.Service.Api;
 using Library.Service.Api.Auth;
@@ -146,15 +145,15 @@ public class AuthController : BaseController<AuthController>
         // Create temporary jwt for registration
         var claims = new List<Claim>()
             {
-                new Claim(UserClaimsKeys.ExternalProvider, extProvider.ToString()),
+                new Claim(UserClaimsKeys.ExtProvider, extProvider.ToString()),
                 new Claim(UserClaimsKeys.Email, externalUser.Email),
-                new Claim(UserClaimsKeys.ExternalProviderIdentifier, externalUser.Identifier)
+                new Claim(UserClaimsKeys.ExtProviderIdentifier, externalUser.Identifier)
             };
 
         return new LoginDto
         {
             Token = CreateJwt(claims, 120),
-            User = new()
+            User = new UserDto()
             {
                 Name = externalUser.Name,
                 Email = externalUser.Email
@@ -167,7 +166,7 @@ public class AuthController : BaseController<AuthController>
     public async Task<SecretDto> EnableDisableTouchId([FromRoute] string state)
     {
         var token = await _authService.EnableDisableTouchId(LoggedInUser.AuthTokenId, ClientIdentity, state.AreEqual("enabled"));
-        return new() { Secret = $"{ token.AuthTokenId }" };
+        return new() { Secret = $"{token.AuthTokenId}" };
     }
 
     [HttpGet("logout")]
@@ -326,8 +325,8 @@ public class AuthController : BaseController<AuthController>
         // Add external provider
         if (token.User.ExternalProvider != ExternalProvider.Unset)
         {
-            claims.Add(new Claim(UserClaimsKeys.ExternalProvider, token.User.ExternalProvider.ToString()));
-            claims.Add(new Claim(UserClaimsKeys.ExternalProviderIdentifier, token.User.ExternalProviderIdentifier));
+            claims.Add(new Claim(UserClaimsKeys.ExtProvider, token.User.ExternalProvider.ToString()));
+            claims.Add(new Claim(UserClaimsKeys.ExtProviderIdentifier, token.User.ExternalProviderIdentifier));
         }
 
         var dto = new LoginDto
@@ -335,7 +334,7 @@ public class AuthController : BaseController<AuthController>
             Token = CreateJwt(claims, _identitySettings.ExpiryLength),
             RefreshToken = token.RefreshToken,
             AuthToken = token.AuthTokenId,
-            User = !token.TwoFactorPassed ? null : _mapper.Map<UserDto>(token.User),
+            User = !token.TwoFactorPassed ? null : token.User.UserLevel == UserLevel.Admin ? _mapper.Map<AdminUserDto>(token.User) : _mapper.Map<UserDto>(token.User),
             TwoFactorRequired = token.TwoFactorPassed ? TwoFactorType.Unset : token.User.TwoFactorType,
             Provider = token.User.ExternalProvider,
             ExpiresIn = _identitySettings.ExpiryLength

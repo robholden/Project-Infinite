@@ -1,7 +1,4 @@
-﻿
-using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
+﻿using Library.Core;
 using Library.Service.PubSub;
 
 using Reports.Domain;
@@ -34,7 +31,7 @@ public class ReportService : IReportService
 
         // Add action to report
         report.Action = new ReportAction(actionedBy, actionTaken, notes);
-        report = await _ctx.Put(report);
+        report = await _ctx.UpdateAsync(report);
 
         // Call identity service and delete user
         if (actionTaken == ReportedAction.Deleted)
@@ -56,7 +53,7 @@ public class ReportService : IReportService
 
         // Add action to report
         report.Action = new ReportAction(actionedBy, actionTaken, notes);
-        report = await _ctx.Put(report);
+        report = await _ctx.UpdateAsync(report);
 
         // Call identity service and delete user
         if (actionTaken == ReportedAction.Deleted)

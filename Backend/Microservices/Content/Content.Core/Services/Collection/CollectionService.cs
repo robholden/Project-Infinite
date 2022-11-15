@@ -2,7 +2,6 @@
 using Content.Domain;
 
 using Library.Core;
-using Library.Core.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +24,7 @@ public class CollectionService : ICollectionService
             Username = user.Username,
             Name = name
         };
-        collection = await _ctx.Post(collection);
+        collection = await _ctx.CreateAsync(collection);
 
         return collection.CollectionId;
     }
@@ -55,7 +54,7 @@ public class CollectionService : ICollectionService
 
         collection.Name = name;
 
-        await _ctx.Put(collection);
+        await _ctx.UpdateAsync(collection);
     }
 
     public async Task Delete(Guid collectionId)
@@ -66,6 +65,6 @@ public class CollectionService : ICollectionService
             return;
         }
 
-        await _ctx.Delete(collection);
+        await _ctx.RemoveAsync(collection);
     }
 }

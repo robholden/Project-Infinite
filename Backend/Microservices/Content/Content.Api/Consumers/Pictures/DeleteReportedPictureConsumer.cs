@@ -1,15 +1,14 @@
 ﻿
 using Content.Core.Services;
 
-using Library.Core.Enums;
-using Library.Core.Models;
+using Library.Core;
 using Library.Service.PubSub;
 
 using MassTransit;
 
 namespace Content.Api.Consumers.Pictures;
 
-public class DeleteReportedPictureConsumer: ISnowConsumer, IConsumer<DeleteReportedPictureRq>
+public class DeleteReportedPictureConsumer : ISnowConsumer, IConsumer<DeleteReportedPictureRq>
 {
     private readonly IPictureService _service;
     private readonly ICommsPubSub _commEvents;
@@ -30,7 +29,7 @@ public class DeleteReportedPictureConsumer: ISnowConsumer, IConsumer<DeleteRepor
         if (request.SendEmail)
         {
             var subject = "We've removed your picture";
-            var message = $"We're informing you your picture \"{ picture.Name }\" has violated our site policies. Due to this, we have permanently deleted the picture from our site.";
+            var message = $"We're informing you your picture \"{picture.Name}\" has violated our site policies. Due to this, we have permanently deleted the picture from our site.";
 
             _ = _commEvents?.SendEmailToUser(new(picture.ToUserRecord(), message, subject, EmailType.Instant));
         }

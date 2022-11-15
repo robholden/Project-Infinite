@@ -17,6 +17,6 @@ public class NewSessionConsumer : ISnowConsumer, IConsumer<NewSessionRq>
 
     public async Task Consume(ConsumeContext<NewSessionRq> context)
     {
-        await _hub.Clients.User($"{ context.Message.UserId }").SendAsync("SessionAdded");
+        await _hub.Clients.User($"{context.Message.UserId}").SendAsync("SessionAdded");
     }
 }

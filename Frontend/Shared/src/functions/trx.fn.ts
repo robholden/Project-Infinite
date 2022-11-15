@@ -5,7 +5,7 @@ import { Trx } from '@shared/models';
 import { pascalToScores, stringFormat } from './';
 
 export function trxTransform(translate: TranslateService, key: any, params?: Object, text?: string, startKey?: string): string {
-    if (!startKey) startKey = key;
+    if (!startKey && typeof key === 'string') startKey = key;
     if (!key) return key;
 
     if (key instanceof Trx) {
@@ -46,7 +46,7 @@ export function trxTransform(translate: TranslateService, key: any, params?: Obj
 
             // Use text as key, else use fallback text
             if (text) trx = translate.instant(text, params);
-            else trx = startKey;
+            else if (startKey) trx = startKey;
         }
     }
 

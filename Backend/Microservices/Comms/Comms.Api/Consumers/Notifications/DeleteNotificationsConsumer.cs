@@ -24,7 +24,7 @@ public class DeleteNotificationsConsumer : ISnowConsumer, IConsumer<DeleteNotifi
         var notifications = _ctx.Notifications.Where(n => context.Message.Keys.Contains(n.ContentKey) && !n.UserLevel.HasValue);
         if (notifications.Any())
         {
-            await _ctx.DeleteRange(notifications);
+            await _ctx.RemoveManyAsync(notifications);
         }
     }
 }

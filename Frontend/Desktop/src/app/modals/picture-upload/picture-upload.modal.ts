@@ -1,17 +1,16 @@
 import { Component, HostListener, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { LoadingController } from '@app/shared/controllers/loading';
-import { ModalComponent } from '@app/shared/controllers/modal';
-import { ToastController } from '@app/shared/controllers/toast';
-import { DesktopStore } from '@app/storage/desktop.store';
-
 import { CustomEvent } from '@shared/enums';
 import { base64FileSizeInMb, deepCopy, validateFileGeoLocation } from '@shared/functions';
 import { CustomError, ErrorCode, Picture } from '@shared/models';
 import { EventService } from '@shared/services';
 import { PictureService } from '@shared/services/content';
 import { AuthState } from '@shared/storage';
+
+import { LoadingController } from '@app/shared/controllers/loading';
+import { ModalComponent } from '@app/shared/controllers/modal';
+import { ToastController } from '@app/shared/controllers/toast';
 
 class FileInstance {
     url: string = '';
@@ -87,19 +86,21 @@ export class PictureUploadModal extends ModalComponent<any> implements OnInit {
             return;
         }
 
-        const results: Array<false | Picture> = await Promise.all(to_upload.map((upload) => this.uploadInstance(upload)));
+        const results: (false | Picture)[] = await Promise.all(to_upload.map((upload) => this.uploadInstance(upload)));
 
         stopLoading();
         this.completed = true;
 
-        if (this.has_errors || results.some((r) => typeof r === 'boolean')) {
+        if (this.has_errors || results.some((result) => result === false)) {
             return;
         }
 
-        let text = `Picture uploaded successfully`;
+        const pictures = results.map((r) => r as Picture);
+        let text: string;
 
-        if (results.length === 1 && typeof results[0] === 'object') {
-            this.router.navigate([`/picture/${results[0].pictureId}`]);
+        if (pictures.length === 1) {
+            text = `Picture uploaded successfully`;
+            this.router.navigate([`/picture/${pictures[0].pictureId}`]);
         } else {
             this.router.navigate([`/user/${this.authState.user.username}/drafts`]);
             text = `${results.length} pictures uploaded successfully`;
@@ -208,9 +209,9 @@ export class PictureUploadModal extends ModalComponent<any> implements OnInit {
 
             const errors: CustomError[] = [];
 
-            // TODO: UNDO FOR GEO
-            // if (exif_error) errors.push(new CustomError(exif_error));
-            if (file_size > 10) errors.push(new CustomError(ErrorCode.MissingExifLocation));
+            if (exif_error) errors.push(new CustomError(exif_error));
+            if (file_size > this.authState.contentSettings.maxPictureSize)
+                errors.push(new CustomError(ErrorCode.PictureTooBig, [this.authState.contentSettings.maxPictureSize]));
 
             upload.errors = errors;
             upload.url = result;

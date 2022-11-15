@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Sockets.Api.Consumers;
 
-public class RevokeSessionConsumer: ISnowConsumer, IConsumer<RevokeSessionRq>
+public class RevokeSessionConsumer : ISnowConsumer, IConsumer<RevokeSessionRq>
 {
     private readonly IHubContext<SocketHub> _hub;
 
@@ -17,6 +17,6 @@ public class RevokeSessionConsumer: ISnowConsumer, IConsumer<RevokeSessionRq>
 
     public async Task Consume(ConsumeContext<RevokeSessionRq> context)
     {
-        await _hub.Clients.User($"{ context.Message.UserId }").SendAsync("SessionRevoked", context.Message.AuthToken);
+        await _hub.Clients.User($"{context.Message.UserId}").SendAsync("SessionRevoked", context.Message.AuthToken);
     }
 }

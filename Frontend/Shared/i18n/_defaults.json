@@ -46,7 +46,7 @@
         "required": "Required",
         "minlength": "Too short",
         "maxlength": "Too long",
-        "email": "Invalid",
+        "email": "Invalid Email",
         "mismatch": "{{ name }} do not match",
         "username": "Letters, numbers or underscores only"
     },
@@ -101,7 +101,7 @@
         "sms_failed_to_send": "Failed to send SMS: {0}",
         "report_already_actioned": "Report already actioned",
         "invalid_picture_extension": "Picture extension is invalid",
-        "picture_too_big": "Picture size must not exceed 10mb",
+        "picture_too_big": "Picture size must not exceed {0}mb",
         "picture_dimensions_too_small": "Picture dimensions are too small",
         "missing_exif_location": "No location could found in picture metadata",
         "missing_exif_timestamp": "No timestamp could found in picture metadata",

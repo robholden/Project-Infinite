@@ -2,7 +2,7 @@
 
 namespace Identity.Api.Migrations;
 
-public partial class touchid : Migration
+public partial class TouchId : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {

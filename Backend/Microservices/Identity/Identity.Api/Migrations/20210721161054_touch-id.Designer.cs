@@ -11,7 +11,7 @@ namespace Identity.Api.Migrations;
 
 [DbContext(typeof(IdentityContext))]
 [Migration("20210721161054_touch-id")]
-partial class touchid
+partial class TouchId
 {
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {

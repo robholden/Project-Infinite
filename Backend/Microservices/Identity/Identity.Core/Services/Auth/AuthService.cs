@@ -3,8 +3,6 @@
 using Identity.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -67,7 +65,7 @@ public class AuthService : IAuthService
             RefreshToken = GenerateRefreshToken()
         };
         token.SetPlatform();
-        token = await _ctx.Post(token);
+        token = await _ctx.CreateAsync(token);
 
         // If 2FA is enabled send to user
         // Only trigger when identity is not set as remembered
@@ -117,7 +115,7 @@ public class AuthService : IAuthService
         token.SetPlatform();
 
         // Return reponse
-        return await _ctx.Post(token);
+        return await _ctx.CreateAsync(token);
     }
 
     public async Task<AuthToken> TouchIdLogin(Guid key, ClientIdentity identity)
@@ -182,7 +180,7 @@ public class AuthService : IAuthService
             token.TwoFactorPassed = true;
         }
 
-        return await _ctx.Put(token);
+        return await _ctx.UpdateAsync(token);
     }
 
     public async Task VerifyAuth(Guid userId, VerifyAuthRequest request)
@@ -224,7 +222,7 @@ public class AuthService : IAuthService
         token.Updated = DateTime.UtcNow;
 
         // Update entity in set
-        await _ctx.Put(token);
+        await _ctx.UpdateAsync(token);
     }
 
     public async Task<AuthToken> ValidateTwoFactorCode(Guid userId, Guid authTokenId, string code, bool doNotAskAgain)
@@ -245,19 +243,15 @@ public class AuthService : IAuthService
         token.TwoFactorPassed = true;
         token.RememberIdentityForTwoFactor = doNotAskAgain;
 
-        return await _ctx.Put(token);
+        return await _ctx.UpdateAsync(token);
     }
 
     public async Task ForgetIdentity(Guid userId)
     {
-        var tokens = _ctx.AuthTokens.Where(t => t.UserId == userId && t.RememberIdentityForTwoFactor);
-        if (!await tokens.AnyAsync())
-        {
-            return;
-        }
-
-        await tokens.ForEachAsync(k => k.RememberIdentityForTwoFactor = true);
-        await _ctx.PutRange(tokens);
+        // Mark tokens as forgotten
+        await _ctx.AuthTokens
+            .Where(t => t.UserId == userId && t.RememberIdentityForTwoFactor)
+            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.RememberIdentityForTwoFactor, false));
     }
 
     public async Task<AuthToken> EnableDisableTouchId(Guid authTokenId, ClientIdentity identity, bool enabled)
@@ -268,7 +262,7 @@ public class AuthService : IAuthService
         // Mark this token for touch id
         token.TouchIdEnabled = enabled;
 
-        return await _ctx.Put(token);
+        return await _ctx.UpdateAsync(token);
     }
 
     public async Task<AuthToken> Delete(Guid authTokenId)
@@ -284,7 +278,7 @@ public class AuthService : IAuthService
         token.Deleted = true;
         token.Updated = DateTime.UtcNow;
 
-        return await _ctx.Put(token);
+        return await _ctx.UpdateAsync(token);
     }
 
     public async Task DeleteAll(Guid userId)
@@ -305,7 +299,7 @@ public class AuthService : IAuthService
             return token;
         });
 
-        await _ctx.PutRange(updates);
+        await _ctx.UpdateManyAsync(updates);
     }
 
     private static void EnsureAccountIsEnabled(UserStatus status)

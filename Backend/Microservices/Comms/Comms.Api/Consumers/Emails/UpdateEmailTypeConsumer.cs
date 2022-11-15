@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comms.Api.Consumers.Emails;
 
-public class UpdateEmailTypeConsumer: ISnowConsumer, IConsumer<UpdateEmailTypeRq>
+public class UpdateEmailTypeConsumer : ISnowConsumer, IConsumer<UpdateEmailTypeRq>
 {
     private readonly CommsContext _ctx;
 
@@ -34,6 +34,6 @@ public class UpdateEmailTypeConsumer: ISnowConsumer, IConsumer<UpdateEmailTypeRq
         queues.ForEach(x => x.Type = context.Message.Type);
 
         // Update db
-        await _ctx.Put(queues);
+        await _ctx.UpdateAsync(queues);
     }
 }

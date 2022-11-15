@@ -13,18 +13,18 @@
             <label for="name">Name</label>
             <input id="name" class="input" type="text" autocomplete="name" formControlName="name" />
 
-            <small *ngIf="form.get('name').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+            <p class="form-error" *ngIf="form.get('name').hasError('maxlength')">{{ 'form_errors.maxlength' | trx }}</p>
         </div>
 
         <div class="form-section mb">
             <label for="username">Choose a username</label>
             <input id="username" class="input" type="text" autocomplete="username" formControlName="username" />
 
-            <small *ngIf="form.get('username').hasError('minlength')" class="mt-s" colour="danger"> {{ 'form_errors.minlength' | trx }} </small>
-            <small *ngIf="form.get('username').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
-            <small *ngIf="form.get('username').hasError('pattern')" class="mt-s" colour="danger">
+            <p class="form-error" *ngIf="form.get('username').hasError('minlength')">{{ 'form_errors.minlength' | trx }}</p>
+            <p class="form-error" *ngIf="form.get('username').hasError('maxlength')">{{ 'form_errors.maxlength' | trx }}</p>
+            <p class="form-error" *ngIf="form.get('username').hasError('pattern')">
                 {{ 'form_errors.patter' | trx: { name: 'Username' } }}
-            </small>
+            </p>
         </div>
 
         <label for="terms">

@@ -20,7 +20,7 @@ public class ImagesController : Controller
     public Task<IActionResult> Get([FromQuery] string name) => ReturnPicture(_settings.UploadDir + name);
 
     [HttpGet("thumbnail")]
-    public Task<IActionResult> Thumbnail([FromQuery] string name) => ReturnPicture($"{ _settings.UploadDir }thumbs/{ name }");
+    public Task<IActionResult> Thumbnail([FromQuery] string name) => ReturnPicture($"{_settings.UploadDir}thumbs/{name}");
 
     private async Task<IActionResult> ReturnPicture(string path)
     {

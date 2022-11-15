@@ -23,25 +23,20 @@
     @extend .card-shadow;
 
     &.small {
-        font-size: 12px;
         @extend .p-s;
     }
 
     > label,
     .label {
         display: block;
-        font-weight: 600;
-        font-size: 1.1em;
+        font-weight: 500;
+        font-size: 16px;
+        margin-bottom: 3px;
 
         & + small,
         & + p {
-            margin-top: 2px;
             color: var(--sc-colour-medium-shade);
         }
-    }
-
-    > label {
-        margin-bottom: 5px;
     }
 
     small {

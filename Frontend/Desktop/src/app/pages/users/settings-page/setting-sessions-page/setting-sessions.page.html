@@ -1,10 +1,10 @@
 <div class="form-box flex-row-align">
     <div>
         <div class="label">What does this mean?</div>
-        <small>
+        <p>
             We keep track of all your sessions so you can control who has access to your account at anytime. If you do not recognize a session, you can
             simply end it and their session will end.
-        </small>
+        </p>
     </div>
 
     <div class="flex-spacer"></div>
@@ -17,7 +17,7 @@
 
 <ng-container *ngIf="sessions">
     <ng-container *ngFor="let session of sessions || []; let $i = index">
-        <h4 class="mt" *ngIf="headerFn($i, sessions) as header">{{ header }}</h4>
+        <h5 class="mt" *ngIf="headerFn($i, sessions) as header">{{ header }}</h5>
         <div class="card flex-row-align mt-s">
             <div class="pill small mr-s" background="light">
                 <small>Device</small>

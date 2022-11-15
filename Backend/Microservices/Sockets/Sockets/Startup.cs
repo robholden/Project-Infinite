@@ -37,7 +37,6 @@ public class Startup
 
         // Setup SignalR 
         services.AddSignalR()
-            .AddNewtonsoftJsonProtocol()
             .AddStackExchangeRedis(Configuration.GetConnectionString("Redis"), options => options.Configuration.ChannelPrefix = "SnowCapture");
     }
 }

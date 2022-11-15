@@ -4,29 +4,28 @@
     <form class="form" (submit)="update()" [formGroup]="form" novalidate="novalidate" *ngIf="form else loadingRef" @fade>
         <div class="form-box">
             <label>Title</label>
-            <small colour="medium">A short description describing your picture</small>
+            <p>A short description describing your picture</p>
             <div class="form-section button-attached">
                 <input id="pic-name" class="input" type="text" autocomplete="name" formControlName="name" />
                 <label for="pic-name" class="button affix icon-only" background="primary">
                     <i class="icon far fa-pencil"></i>
                 </label>
             </div>
-            <div class="mt-s">
-                <small *ngIf="form.get('name').hasError('minlength')" class="mt-s" colour="danger"> {{ 'form_errors.minlength' | trx }} </small>
-                <small *ngIf="form.get('name').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
-            </div>
+
+            <p class="form-error" *ngIf="form.get('name').hasError('minlength')">{{ 'form_errors.minlength' | trx }}</p>
+            <p class="form-error" *ngIf="form.get('name').hasError('maxlength')">{{ 'form_errors.maxlength' | trx }}</p>
         </div>
 
         <div class="form-box mt">
             <label>Show Real Location</label>
-            <small colour="medium">Choose to display the real location, or an approximate location on a map</small>
+            <p>Choose to display the real location, or an approximate location on a map</p>
 
             <sc-toggle-switch [parent]="form" name="useRealCoords"></sc-toggle-switch>
         </div>
 
         <div class="form-box mt">
             <label>Tags</label>
-            <small>Choose up to <strong>10</strong> tags to describe your picture</small>
+            <p>Choose up to <strong>10</strong> tags to describe your picture</p>
 
             <div class="tags" [sortablejs]="picture.tags">
                 <button

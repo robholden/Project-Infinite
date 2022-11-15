@@ -19,7 +19,7 @@ public static class TemplateKeys
     public static bool ValidKey(string type, string name) => _keys.Any(k => k.Name == name && k.Type == type);
 
     public static string GetPath(string type, string name)
-        => Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Templates", $"{ type }.{ name }.md");
+        => Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Templates", $"{type}.{name}.md");
 
     public static async Task CacheTemplates(this IMemoryCache cache)
     {
@@ -36,6 +36,6 @@ public static class TemplateKeys
         var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
         var html = Markdown.ToHtml(md, pipeline);
 
-        cache.Set($"{ type }_{ name }", html);
+        cache.Set($"{type}_{name}", html);
     }
 }

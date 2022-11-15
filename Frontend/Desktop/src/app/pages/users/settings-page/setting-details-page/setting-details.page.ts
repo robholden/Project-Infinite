@@ -54,7 +54,7 @@ export class SettingDetailsPage implements OnInit {
                     validators: userValidators(field),
                     placeholder: `Enter your ${field}`,
                     value: this.user[field],
-                    errorMap: { pattern: new Trx('form_errors.pattern', { name: 'Username' }) },
+                    errorMap: { pattern: new Trx('form_errors.username') },
                 },
             ],
             buttons: [

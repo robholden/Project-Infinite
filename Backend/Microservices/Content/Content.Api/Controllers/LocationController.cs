@@ -8,7 +8,6 @@ using Content.Core.Services;
 using Content.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
 using Library.Service.Api;
 
 using Microsoft.AspNetCore.Authorization;

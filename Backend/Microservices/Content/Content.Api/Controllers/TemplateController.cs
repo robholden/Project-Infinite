@@ -22,7 +22,7 @@ public class TemplateController : BaseController<TemplateController>
     [HttpGet("{type}/{name}")]
     public ContentResult GetTemplate([FromRoute] string type, [FromRoute] string name)
     {
-        var key = $"{ type }_{ name }";
+        var key = $"{type}_{name}";
         if (!_cache.TryGetValue(key, out string html))
         {
             ThrowNotFound();

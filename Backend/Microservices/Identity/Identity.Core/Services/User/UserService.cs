@@ -1,10 +1,6 @@
-﻿using System.Text.RegularExpressions;
-
-using Identity.Domain;
+﻿using Identity.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 using Library.Service.PubSub;
 
 using Microsoft.EntityFrameworkCore;
@@ -83,7 +79,7 @@ public class UserService : IUserService
             try
             {
                 // Add user to db
-                user = await _ctx.Post(user);
+                user = await _ctx.CreateAsync(user);
 
                 // Publish new user event
                 await _commEvents.AddUser(new(user.ToUserRecord(), user.Name, user.Email, register.AllowMarketing));
@@ -110,7 +106,7 @@ public class UserService : IUserService
     {
         if (!pass)
         {
-            await _ctx.Post(new FailedLogin(user.UserId));
+            await _ctx.CreateAsync(new FailedLogin(user.UserId));
         }
 
         var attempts = await _ctx.FailedLogins.CountAsync(l => l.UserId == user.UserId && l.Created > DateTime.UtcNow.AddMinutes(-_settings.FailedLoginDuration));
@@ -141,16 +137,13 @@ public class UserService : IUserService
         }
 
         // Create a new one
-        if (userKey == null)
-        {
-            userKey = await _keyService.Create(user.UserId, UserKeyType.PasswordReset, DateTime.UtcNow.AddDays(1));
-        }
+        userKey ??= await _keyService.Create(user.UserId, UserKeyType.PasswordReset, DateTime.UtcNow.AddDays(1));
 
         // Email the verification to user
         var subject = "Password Reset Link";
         var message = $@"
                 <p>You've requested a password reset. Please click this link to reset your password (it will expire after 24 hours):</p>
-                <p>###SITE_URL###/reset-password/{ userKey.Key }</p>
+                <p>###SITE_URL###/reset-password/{userKey.Key}</p>
             ";
         _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject, EmailType.System));
     }
@@ -192,7 +185,7 @@ public class UserService : IUserService
         await Trigger2FA(user);
 
         // Now save the user
-        user = await _ctx.Put(user);
+        user = await _ctx.UpdateAsync(user);
 
         return user.TwoFactorSecret;
     }
@@ -221,19 +214,19 @@ public class UserService : IUserService
                 if (user.TwoFactorEnabled)
                 {
                     subject = "Your two-factor sign in code";
-                    body = $"<p>You recently tried to login from a new device, browser, or location. In order to complete your login, please use the following code:</p> { code }";
+                    body = $"<p>You recently tried to login from a new device, browser, or location. In order to complete your login, please use the following code:</p> {code}";
                 }
                 else
                 {
                     subject = "Your two-factor setup code";
-                    body = $"<p>You recently tried to setup email two-factor authentication. In order to complete your setup, please use the following code:</p> { code }";
+                    body = $"<p>You recently tried to setup email two-factor authentication. In order to complete your setup, please use the following code:</p> {code}";
                 }
 
                 _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), body, subject, EmailType.Instant));
                 break;
 
             case TwoFactorType.SMS:
-                var message = $"Your Snow Capture one time password is { code }";
+                var message = $"Your Snow Capture one time password is {code}";
                 _ = _commEvents?.SendSmsToUser(new(user.ToUserRecord(), user.Mobile, message, SmsType.TwoFactor));
 
                 break;
@@ -257,15 +250,12 @@ public class UserService : IUserService
         user.TwoFactorType = TwoFactorType.Unset;
 
         // Update db
-        user = await _ctx.Put(user);
+        user = await _ctx.UpdateAsync(user);
 
         // Forget token identity
-        var tokens = _ctx.AuthTokens.Where(t => t.UserId == userId && t.RememberIdentityForTwoFactor);
-        if (await tokens.AnyAsync())
-        {
-            await tokens.ForEachAsync(k => k.RememberIdentityForTwoFactor = false);
-            await _ctx.PutRange(tokens);
-        }
+        await _ctx.AuthTokens
+            .Where(t => t.UserId == userId && t.RememberIdentityForTwoFactor)
+            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.RememberIdentityForTwoFactor, false));
 
         // Send email to user for confirmation
         var subject = "You've disabled two-factor authentication";
@@ -295,7 +285,7 @@ public class UserService : IUserService
 
         // Set 2FA properties
         user.TwoFactorEnabled = true;
-        user = await _ctx.Put(user);
+        user = await _ctx.UpdateAsync(user);
 
         // Send email to user for confirmation
         var subject = "You've enabled two-factor authentication";
@@ -317,7 +307,7 @@ public class UserService : IUserService
         if (user.EmailConfirmed)
         {
             user.EmailConfirmed = false;
-            user = await _ctx.Put(user);
+            user = await _ctx.UpdateAsync(user);
         }
 
         // Create confirmation key
@@ -330,7 +320,7 @@ public class UserService : IUserService
             var message = $@"
                 <p>You've recently signed up to ###SITE_NAME###.</p>
                 <p>To complete the registration process, please confirm your email address by clicking the link below:</p>
-                <p>###SITE_URL###/confirm-email/{ userKey.Key }</p>
+                <p>###SITE_URL###/confirm-email/{userKey.Key}</p>
             ";
             _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject, EmailType.System));
         }
@@ -344,7 +334,7 @@ public class UserService : IUserService
         var user = await _ctx.Users.FindAsync(u => u.UserId == userId);
 
         user.LastActive = DateTime.UtcNow;
-        await _ctx.Put(user);
+        await _ctx.UpdateAsync(user);
     }
 
     public async Task UpdateUsername(Guid userId, string username)
@@ -363,7 +353,7 @@ public class UserService : IUserService
 
         // Update email property
         user.Username = username;
-        user = await _ctx.Put(user);
+        user = await _ctx.UpdateAsync(user);
 
         // Tell ALL microservices of this change
         _ = _identityEvents?.UpdatedUsername(new(user.UserId, user.Username));
@@ -385,7 +375,7 @@ public class UserService : IUserService
 
         // Update email property
         user.Email = email;
-        user = await _ctx.Put(user);
+        user = await _ctx.UpdateAsync(user);
 
         // Tell microservices of this change
         _ = _identityEvents?.UpdatedEmail(new(user.UserId, user.Email));
@@ -401,7 +391,7 @@ public class UserService : IUserService
 
         // Update mobile property
         user.Mobile = mobile;
-        await _ctx.Put(user);
+        await _ctx.UpdateAsync(user);
     }
 
     public async Task UpdateName(Guid userId, string name)
@@ -411,7 +401,7 @@ public class UserService : IUserService
 
         // Update name property
         user.Name = name;
-        await _ctx.Put(user);
+        await _ctx.UpdateAsync(user);
     }
 
     public async Task<UserStatus> UpdateStatus(Guid userId, UserStatus status)
@@ -421,7 +411,7 @@ public class UserService : IUserService
 
         // Update name property
         user.Status = status;
-        await _ctx.Put(user);
+        await _ctx.UpdateAsync(user);
 
         return status;
     }
@@ -433,7 +423,7 @@ public class UserService : IUserService
 
         // Update confirmed flag property
         userKey.User.EmailConfirmed = true;
-        return await _ctx.Put(userKey.User);
+        return await _ctx.UpdateAsync(userKey.User);
     }
 
     public async Task<User> VerifyAndResetPassword(string key, string password)
@@ -454,14 +444,12 @@ public class UserService : IUserService
 
     public async Task<User> DeleteAccount(Guid userId)
     {
+        // Ensure user exists before deleting
         var user = await _ctx.Users.FirstOrDefaultAsync(p => p.UserId == userId);
-        if (user == null)
-        {
-            return null;
-        }
+        if (user == null) return null;
 
         // Remove all records of this user
-        await _ctx.Delete(user);
+        await _ctx.RemoveAsync(user);
 
         // Publish delete user event
         await _identityEvents?.DeletedUser(new(userId));
@@ -474,8 +462,7 @@ public class UserService : IUserService
 
     private async Task ValidateUsername(string username)
     {
-        var regex = new Regex("^[a-zA-Z0-9][a-zA-Z0-9_]*$");
-        if (!regex.IsMatch(username))
+        if (!StringExtensions.UsernameRegex().IsMatch(username))
         {
             throw new SiteException(ErrorCode.InvalidUsername);
         }

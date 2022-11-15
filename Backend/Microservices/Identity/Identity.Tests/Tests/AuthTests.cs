@@ -45,6 +45,7 @@ public class AuthTests
             try { helper.AuthService.Login(email, password, new(identityKey, ipAddress, platform)).Wait(); }
             catch { }
         }
+
         var ex = Assert.ThrowsExceptionAsync<SiteException>(() => helper.AuthService.Login(email, password, new(identityKey, ipAddress, platform))).Result;
 
         // Assert

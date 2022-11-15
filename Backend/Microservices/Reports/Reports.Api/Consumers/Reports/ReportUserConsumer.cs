@@ -1,5 +1,4 @@
-﻿
-using Library.Core;
+﻿using Library.Core;
 using Library.Service.PubSub;
 
 using MassTransit;
@@ -9,7 +8,7 @@ using Reports.Domain;
 
 namespace Report.Api.Consumers.Reports;
 
-public class ReportUserConsumer: ISnowConsumer, IConsumer<ReportUserRq>
+public class ReportUserConsumer : ISnowConsumer, IConsumer<ReportUserRq>
 {
     private readonly ReportContext _ctx;
     private readonly IReportQueries _queries;
@@ -35,15 +34,17 @@ public class ReportUserConsumer: ISnowConsumer, IConsumer<ReportUserRq>
         var instance = new UserReportInstance(request.User, request.Reason);
         if (report == null)
         {
-            report = new(request.ReportedUser, request.Name, request.Email);
-            report.Reports = new List<UserReportInstance>() { instance };
-            report = await _ctx.Post(report);
+            report = new(request.ReportedUser, request.Name, request.Email)
+            {
+                Reports = new List<UserReportInstance>() { instance }
+            };
+            report = await _ctx.CreateAsync(report);
         }
         else
         {
             report.Date = DateTime.UtcNow;
             report.Reports.Add(instance);
-            report = await _ctx.Put(report);
+            report = await _ctx.UpdateAsync(report);
         }
     }
 }

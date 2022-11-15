@@ -27,7 +27,6 @@ public class StatsController : BaseController<StatsController>
         var drafts = 0;
         var pending = 0;
 
-        // TODO: Does this return a user?
         if (LoggedIn && username == LoggedInUser.Username.ToLower())
         {
             var userId = LoggedInUser.Id;

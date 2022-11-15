@@ -16,35 +16,27 @@ public class TagService : ITagService
         _ctx = ctx;
     }
 
-    public Task Create(IEnumerable<Tag> tags) => _ctx.PostRange(tags);
+    public Task Create(IEnumerable<Tag> tags) => _ctx.CreateManyAsync(tags);
 
     public async Task Update(IEnumerable<Tag> tags)
     {
         // Find existing tags
-        var tagIds = tags.Select(t => t.Id);
-        var entities = await _ctx.Tags.Where(x => tagIds.Contains(x.Id)).ToListAsync();
+        var tagMap = tags.ToDictionary(t => t.Id, t => t);
 
-        // Update and save
-        var updated = entities.Select(tag =>
-        {
-            var t = tags.FirstOrDefault(x => x.Id == x.Id);
-            tag.Value = t.Value;
-            tag.Weight = t.Weight;
-            return tag;
-        });
-
-        await _ctx.PutRange(updated);
+        // Update tags
+        await _ctx.Tags.Where(x => tagMap.ContainsKey(x.Id)).ExecuteUpdateAsync(prop => prop
+            .SetProperty(p => p.Value, p => tagMap[p.Id].Value)
+            .SetProperty(p => p.Weight, p => tagMap[p.Id].Weight)
+        );
     }
 
     public async Task Delete(IEnumerable<int> tags)
     {
-        var tag = _ctx.Tags.Where(x => tags.Any(id => id == x.Id));
-        await _ctx.DeleteRange(tag);
+        await _ctx.Tags.Where(x => tags.Contains(x.Id)).ExecuteDeleteAsync();
     }
 
     public async Task Delete(int id)
     {
-        var tag = await _ctx.Tags.FindAsync(t => t.Id == id);
-        await _ctx.Delete(tag);
+        await _ctx.Tags.Where(t => t.Id == id).ExecuteDeleteAsync();
     }
 }

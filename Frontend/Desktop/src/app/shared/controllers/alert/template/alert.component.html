@@ -42,15 +42,15 @@
             ></textarea>
 
             <ng-container *ngFor="let error of myErrors">
-                <small class="mt-s" colour="danger" *ngIf="error.fallback !== 'Required' && (form.get(input.name).dirty || form.get(input.name).touched)">
+                <p class="form-error mt-s" *ngIf="error.fallback !== 'Required' && (form.get(input.name).dirty || form.get(input.name).touched)">
                     {{ error | trx }}
-                </small>
+                </p>
             </ng-container>
 
             <ng-container *ngFor="let msg of myErrors.length ? [] : displayMessages[input.name] || []">
-                <small class="mt-s" [attr.colour]="msg.colour" *ngIf="form.get(input.name).dirty || form.get(input.name).touched">
+                <p class="mt-s" [attr.colour]="msg.colour" *ngIf="form.get(input.name).dirty || form.get(input.name).touched">
                     {{ msg.text | trx }}
-                </small>
+                </p>
             </ng-container>
         </ng-container>
     </div>

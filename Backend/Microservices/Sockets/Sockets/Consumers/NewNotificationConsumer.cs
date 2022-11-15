@@ -21,11 +21,11 @@ public class NewNotificationConsumer : ISnowConsumer, IConsumer<NewNotificationR
 
         if (request.UserId != new Guid())
         {
-            await _hub.Clients.User($"{ request.UserId }").SendAsync("NewNotification", request.Notification);
+            await _hub.Clients.User($"{request.UserId}").SendAsync("NewNotification", request.Notification);
         }
         else if (request.UserLevel.HasValue)
         {
-            await _hub.Clients.Groups(request.UserLevel.ToString()).SendAsync($"{ request.UserLevel }NewNotification", request.Notification);
+            await _hub.Clients.Groups(request.UserLevel.ToString()).SendAsync($"{request.UserLevel}NewNotification", request.Notification);
         }
     }
 }

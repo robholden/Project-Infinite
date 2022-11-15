@@ -1,5 +1,5 @@
 ﻿
-using Library.Core.Enums;
+using Library.Core;
 
 using MassTransit;
 
@@ -68,7 +68,7 @@ public class SocketsPubSub : BasePubSub, ISocketsPubSub
 
     public async Task UpdatedUserFields(UpdatedUserFieldsRq payload) => await Publish(payload);
 
-    public async Task UpdatedUserSettings(UpdatedUserSettingsRq payload) => await Publish(new UpdatedUserSettingsRq(payload.UserId, payload.Settings));
+    public async Task UpdatedUserSettings(UpdatedUserSettingsRq payload) => await Publish(payload);
 
     public async Task UpdatedUserPreferences(UpdatedUserPreferencesRq payload) => await Publish(payload);
 

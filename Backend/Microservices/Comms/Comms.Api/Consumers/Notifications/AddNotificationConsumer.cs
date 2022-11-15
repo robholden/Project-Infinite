@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comms.Api.Consumers.Notifications;
 
-public class AddNotificationConsumer: ISnowConsumer, IConsumer<AddNotificationRq>
+public class AddNotificationConsumer : ISnowConsumer, IConsumer<AddNotificationRq>
 {
     private readonly IMapper _mapper;
     private readonly CommsContext _ctx;
@@ -61,7 +61,7 @@ public class AddNotificationConsumer: ISnowConsumer, IConsumer<AddNotificationRq
                 notification.Entries.Add(new(request.TriggeredUser));
             }
 
-            notification = await _ctx.Post(notification);
+            notification = await _ctx.CreateAsync(notification);
         }
 
         // Update current notification
@@ -90,10 +90,10 @@ public class AddNotificationConsumer: ISnowConsumer, IConsumer<AddNotificationRq
                 }
             }
 
-            notification = await _ctx.Put(notification);
+            notification = await _ctx.UpdateAsync(notification);
         }
 
-        // Send update if not viewed
+        // Send update
         await _service.TryToSend(notification, _mapper.Map<NotificationDto>(notification));
     }
 }

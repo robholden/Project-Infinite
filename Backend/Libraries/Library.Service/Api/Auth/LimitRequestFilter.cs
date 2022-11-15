@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace Library.Service.Api;
 
@@ -43,14 +44,16 @@ public class LimitRequestTracker
 
 public class LimitRequestFilter : IAsyncAuthorizationFilter
 {
+    private readonly ILogger<LimitRequestFilter> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMemoryCache _cache;
     private readonly LimitRequestTracker _tracker;
 
     public LimitRequestOptions Options { get; private set; }
 
-    public LimitRequestFilter(IHttpContextAccessor httpContextAccessor, IMemoryCache cache, LimitRequestTracker tracker, LimitRequestOptions options)
+    public LimitRequestFilter(ILogger<LimitRequestFilter> logger, IHttpContextAccessor httpContextAccessor, IMemoryCache cache, LimitRequestTracker tracker, LimitRequestOptions options)
     {
+        _logger = logger;
         _httpContextAccessor = httpContextAccessor;
         _cache = cache;
         _tracker = tracker;
@@ -74,8 +77,8 @@ public class LimitRequestFilter : IAsyncAuthorizationFilter
         var httpContext = _httpContextAccessor?.HttpContext;
         if (httpContext == null || !HasValidIdentity(httpContext, out var identity))
         {
-            Console.WriteLine("LimitRequestFilter => Missing identity header");
-            context.Result = new NotFoundResult();
+            _logger.LogError("LimitRequestFilter => Missing identity header");
+            context.Result = new ForbidResult();
             return Task.CompletedTask;
         }
 
@@ -99,13 +102,12 @@ public class LimitRequestFilter : IAsyncAuthorizationFilter
         // Validate total with our threshold
         if (request.Total > Options.MaxLimit)
         {
-            Console.WriteLine($"LimitRequestFilter => total: { request.Total } > max: { Options.MaxLimit } in { (DateTime.UtcNow - request.Created).TotalSeconds }s");
-            context.Result = new NotFoundResult();
+            _logger.LogError("LimitRequestFilter => total: {Total} > max: {MaxLimit} in {Seconds}s", request.Total, Options.MaxLimit, (DateTime.UtcNow - request.Created).TotalSeconds);
+            context.Result = new StatusCodeResult(StatusCodes.Status429TooManyRequests);
         }
 
         return Task.CompletedTask;
     }
-
 
     private static bool HasValidIdentity(HttpContext context, out string identity)
     {

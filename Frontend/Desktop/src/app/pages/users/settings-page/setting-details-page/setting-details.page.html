@@ -6,7 +6,7 @@
             <i class="icon far fa-pencil"></i>
         </button>
     </div>
-    <small colour="medium">This is kept privately by us and how we will address you in any communications</small>
+    <p colour="medium">This is kept privately by us and how we will address you in any communications</p>
 </div>
 
 <div class="form-box mt">
@@ -38,15 +38,16 @@
     </div>
 
     <div colour="medium">
-        <small>Used for logging in, password recovery and communication purposes</small>
-        <ng-container *ngIf="!authState.provider">
-            <small *ngIf="user?.emailConfirmed" class="mt-s"><strong colour="success">Email Verified</strong></small>
-            <small *ngIf="!user?.emailConfirmed" class="mt-s">
-                <strong colour="danger">Unverified</strong> &#8212; please verify your email
-                <button id="resend-btn" *ngIf="!sent" class="button small ml-s" background="danger" (click)="resend()">Resend Email</button>
-                <strong colour="success" *ngIf="sent"> &nbsp; &bull; &nbsp; a confirmation email has been resent </strong>
-            </small>
-        </ng-container>
+        <p>Used for logging in, password recovery and communication purposes</p>
+        <p *ngIf="!authState.provider" class="mt-s">
+            <strong colour="success" *ngIf="user?.emailConfirmed else notConfirmed">Email Verified</strong>
+        </p>
+
+        <ng-template #notConfirmed>
+            <strong colour="danger">Unverified</strong> &#8212; please verify your email
+            <button id="resend-btn" *ngIf="!sent" class="button small ml-s" background="danger" (click)="resend()">Resend Email</button>
+            <strong colour="success" *ngIf="sent"> &nbsp; &bull; &nbsp; a confirmation email has been resent </strong>
+        </ng-template>
     </div>
 </div>
 
@@ -65,5 +66,5 @@
             <i class="icon far fa-pencil"></i>
         </button>
     </div>
-    <small colour="medium">Used for logging in, and how we identify yourself to other users</small>
+    <p colour="medium">Used for logging in, and how we identify yourself to other users</p>
 </div>

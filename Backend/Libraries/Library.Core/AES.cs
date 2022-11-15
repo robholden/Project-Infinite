@@ -155,9 +155,7 @@ public static class AES
     /// <returns></returns>
     public static T FromByteArray<T>(byte[] data)
     {
-        if (data == null) return default;
-
-        return JsonSerializer.Deserialize<T>(data);
+        return data == null ? default : JsonSerializer.Deserialize<T>(data);
     }
 
     /// <summary>
@@ -182,21 +180,16 @@ public static class AES
     /// <returns></returns>
     private static byte[] DecryptToBytes(string cipherString, string key)
     {
-        byte[] keyArray;
-        byte[] cryptBytes = Convert.FromBase64String(cipherString);
-
-        using (var encMethod = MD5.Create())
-        {
-            keyArray = encMethod.ComputeHash(Encoding.UTF8.GetBytes(key));
-        }
+        var cryptBytes = Convert.FromBase64String(cipherString);
+        var keyArray = MD5.HashData(Encoding.UTF8.GetBytes(key));
 
         // Create an Aes object
         // with the specified key and IV.
         using Aes aes = Aes.Create();
         aes.Key = keyArray;
 
-        byte[] IV = new byte[aes.BlockSize / 8];
-        byte[] cipherText = new byte[cryptBytes.Length - IV.Length];
+        var IV = new byte[aes.BlockSize / 8];
+        var cipherText = new byte[cryptBytes.Length - IV.Length];
 
         Array.Copy(cryptBytes, IV, IV.Length);
         Array.Copy(cryptBytes, IV.Length, cipherText, 0, cipherText.Length);
@@ -223,14 +216,9 @@ public static class AES
     /// <returns></returns>
     private static byte[] EncryptToBytes(byte[] toEncryptArray, string key)
     {
-        byte[] keyArray;
         byte[] IV;
         byte[] encrypted;
-
-        using (var encMethod = MD5.Create())
-        {
-            keyArray = encMethod.ComputeHash(Encoding.UTF8.GetBytes(key));
-        }
+        var keyArray = MD5.HashData(Encoding.UTF8.GetBytes(key));
 
         using (var aes = Aes.Create())
         {

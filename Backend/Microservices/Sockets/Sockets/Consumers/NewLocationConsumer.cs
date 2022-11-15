@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Sockets.Api.Consumers;
 
-public class NewLocationConsumer: ISnowConsumer, IConsumer<NewLocationRq>
+public class NewLocationConsumer : ISnowConsumer, IConsumer<NewLocationRq>
 {
     private readonly IHubContext<SocketHub> _hub;
 
@@ -25,6 +25,6 @@ public class NewLocationConsumer: ISnowConsumer, IConsumer<NewLocationRq>
             request.Lat,
             request.Lng
         };
-        await _hub.Clients.User($"{ request.UserId }").SendAsync("NewPictureLocation", new { pictureId = request.PictureId, location });
+        await _hub.Clients.User($"{request.UserId}").SendAsync("NewPictureLocation", new { pictureId = request.PictureId, location });
     }
 }

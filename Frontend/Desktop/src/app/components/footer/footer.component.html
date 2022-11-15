@@ -28,14 +28,14 @@
 
         <div class="locales">
             <button
-                [class.active]="translate.currentLang.toLowerCase() == lang"
+                [class.active]="translate.currentLang.toLowerCase() == lang.locale"
                 type="button"
-                (click)="updateLang(lang)"
-                [tippy]="'locales.' + lang | trx"
+                (click)="updateLang(lang.locale)"
+                [tippy]="lang.name"
                 placement="top"
-                *ngFor="let lang of ['en-gb', 'en-us', 'de', 'fr', 'es']"
+                *ngFor="let lang of langs"
             >
-                <img [src]="'assets/images/flags/' + lang + '.png'" />
+                <img [src]="'assets/images/flags/' + lang.locale + '.png'" />
             </button>
         </div>
     </div>

@@ -30,9 +30,9 @@
                     </div>
 
                     <ng-template #okRef>
-                        <!-- <div class="button circular icon-only mt-a ml-a" background="success">
-                            <i class="fas fa-map-marked-alt"></i>
-                        </div> -->
+                        <div class="button circular icon-only mt-a ml-a" background="success">
+                            <i class="fas fa-check"></i>
+                        </div>
                     </ng-template>
 
                     <ng-template #errorRef>
@@ -69,16 +69,9 @@
                 <li>
                     Geo location metadata
                     <i class="fas fa-circle-question" colour="medium" tippy="Metadata is stripped on upload"></i>
-                    <i class="far fa-check-circle ml-s" colour="success" *ngIf="!has_errors && has_file"></i>
                 </li>
-                <li>
-                    Less than {{ authState.contentSettings.maxPictureSize }}mb
-                    <i class="far fa-check-circle ml-s" colour="success" *ngIf="!has_errors && has_file"></i>
-                </li>
-                <li>
-                    {{ authState.contentSettings.minPictureResolutionX }}x{{ authState.contentSettings.minPictureResolutionY }} minimum resolution
-                    <i class="far fa-check-circle ml-s" colour="success" *ngIf="!has_errors && has_file"></i>
-                </li>
+                <li>Less than {{ authState.contentSettings.maxPictureSize }}mb</li>
+                <li>{{ authState.contentSettings.minPictureResolutionX }}x{{ authState.contentSettings.minPictureResolutionY }} minimum resolution</li>
                 <li>Adhere to our terms of content use described in our <a routerLink="/policies/terms" target="_blank" rel="noopener">policy</a></li>
             </ul>
         </div>

@@ -24,7 +24,7 @@ public class UserSettingService : IUserSettingService
         user.MarketingOptOutKey = null;
 
         // Update
-        await _ctx.Put(user);
+        await _ctx.UpdateAsync(user);
     }
 
     public async Task Update(Guid userId, UserSetting userData)
@@ -42,11 +42,12 @@ public class UserSettingService : IUserSettingService
             user.MarketingEmail = userData.MarketingEmail;
             user.MarketingOptOutKey = user.MarketingEmail ? Guid.NewGuid() : null;
         }
+
         user.PictureApprovedEmail = userData.PictureApprovedEmail;
         user.PictureLikedEmail = userData.PictureLikedEmail;
         user.PictureUnapprovedEmail = userData.PictureUnapprovedEmail;
 
         // Update
-        await _ctx.Put(user);
+        await _ctx.UpdateAsync(user);
     }
 }

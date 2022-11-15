@@ -1,4 +1,4 @@
-﻿namespace Library.Core.Enums;
+﻿namespace Library.Core;
 
 public enum ReportPictureReason
 {

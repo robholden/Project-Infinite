@@ -3,8 +3,7 @@ using Comms.Core.Queries;
 using Comms.Core.Services;
 using Comms.Domain;
 
-using Library.Core.Enums;
-using Library.Core.Models;
+using Library.Core;
 using Library.Service.PubSub;
 
 using Microsoft.EntityFrameworkCore;
@@ -49,7 +48,6 @@ internal class Helper
     }
 
     public CommsContext Context { get; }
-
 
     public IEmailService EmailService { get; }
 

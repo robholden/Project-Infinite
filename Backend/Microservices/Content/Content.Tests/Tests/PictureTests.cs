@@ -4,7 +4,6 @@ using Content.Core.Queries;
 using Content.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -15,8 +15,6 @@ export class ContentService {
      * Gets the logged in user's content settings
      */
     async getSettings(): Promise<ContentSettings | CustomError> {
-        if (this.authState.contentSettings) return this.authState.contentSettings;
-
         const settings = await this.api.get<ContentSettings>('/content/user', { toastError: false });
         if (settings instanceof CustomError) return settings;
 

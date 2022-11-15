@@ -1,8 +1,6 @@
 ﻿using System.Security.Claims;
 
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 
 namespace Library.Service.Api.Auth;
 
@@ -24,9 +22,9 @@ public static class UserClaimsKeys
 
     public static string TwoFactor => "2FA";
 
-    public static string ExternalProvider => "Provider";
+    public static string ExtProvider => "Provider";
 
-    public static string ExternalProviderIdentifier => "ProviderId";
+    public static string ExtProviderIdentifier => "ProviderId";
 
     public static LoggedInUser GetUser(this ClaimsPrincipal user)
     {
@@ -54,8 +52,8 @@ public static class UserClaimsKeys
             Email = user?.GetClaim(Email),
             Username = user?.GetClaim(Username),
             HashToken = user?.GetClaim(HashToken),
-            ExternalProviderIdentifier = user?.GetClaim(ExternalProviderIdentifier),
-            ExternalProvider = user.GetClaim(ExternalProvider)?.ToEnum(Core.Enums.ExternalProvider.Unset) ?? Core.Enums.ExternalProvider.Unset,
+            ExternalProviderIdentifier = user?.GetClaim(ExtProviderIdentifier),
+            ExternalProvider = user.GetClaim(ExtProvider)?.ToEnum(ExternalProvider.Unset) ?? ExternalProvider.Unset,
             Level = isAdmin ? UserLevel.Admin : (isMod ? UserLevel.Moderator : UserLevel.Default)
         };
     }

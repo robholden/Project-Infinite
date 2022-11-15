@@ -1,6 +1,6 @@
 ﻿using Comms.Domain;
 
-using Library.Core.Enums;
+using Library.Core;
 
 namespace Comms.Core.Services;
 
@@ -14,7 +14,5 @@ public interface INotificationService
 
     Task Delete(Guid id);
 
-    Task<bool> TryToSend<T>(Notification notification, T notificationDto);
-
-    Task Send(Notification notification);
+    Task<bool> TryToSend(Notification notification, object payload);
 }

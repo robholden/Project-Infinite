@@ -5,7 +5,7 @@ public class SiteException : Exception
     private readonly object[] _values;
 
     public SiteException(ErrorCode errorCode)
-        : base($"Error Code: { errorCode } ({ errorCode })")
+        : base($"Error Code: {errorCode} ({errorCode})")
     {
         ErrorCode = errorCode;
     }

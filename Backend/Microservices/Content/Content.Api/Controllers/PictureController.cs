@@ -9,8 +9,6 @@ using Content.Core.Services;
 using Content.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 using Library.Service.Api;
 using Library.Service.Api.Auth;
 using Library.Service.PubSub;

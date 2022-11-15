@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using Library.Core.Enums;
+using Library.Core;
 
 namespace Identity.Api.Requests;
 

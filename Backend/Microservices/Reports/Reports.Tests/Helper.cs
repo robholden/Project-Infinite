@@ -1,5 +1,5 @@
 ﻿
-using Library.Core.Models;
+using Library.Core;
 using Library.Service.PubSub;
 
 using Microsoft.EntityFrameworkCore;

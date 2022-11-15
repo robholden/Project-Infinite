@@ -66,7 +66,7 @@ public class PasswordController : BaseController<PasswordController>
         catch (Exception ex)
         {
             // Always assume success
-            _logger.LogError("Invalid forgot password email: " + request.Email, ex);
+            _logger.LogError(ex, "Invalid forgot password email: {Email}", request.Email);
         }
     }
 

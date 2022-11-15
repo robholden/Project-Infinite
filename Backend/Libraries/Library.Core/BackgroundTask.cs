@@ -25,7 +25,7 @@ public abstract class BackgroundTask<T> : IHostedService, IBackgroundTask, IDisp
 
     public Task StartAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation($"{ nameof(T) } Service running.");
+        logger.LogInformation($"{nameof(T)} Service running.");
         _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(_interval));
 
         return Task.CompletedTask;
@@ -35,7 +35,7 @@ public abstract class BackgroundTask<T> : IHostedService, IBackgroundTask, IDisp
 
     public Task StopAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation($"{ nameof(T) } Service is stopping.");
+        logger.LogInformation($"{nameof(T)} Service is stopping.");
         _timer?.Change(Timeout.Infinite, 0);
 
         return Task.CompletedTask;

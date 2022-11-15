@@ -4,7 +4,6 @@ using System.Net.Mail;
 using Comms.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -35,36 +34,36 @@ public class EmailService : IEmailService
                 return queue.Email;
             }
 
-                // Set opting out text
-                var optOutText = string.Empty;
+            // Set opting out text
+            var optOutText = string.Empty;
             if (queue.User?.MarketingOptOutKey != null)
             {
-                optOutText = $"<p>If you no longer wish to receive these emails, click to <a href='###SITE_URL###/unsubscribe/{ queue.User.MarketingOptOutKey }'>unsubscribe</a>.</p>";
+                optOutText = $"<p>If you no longer wish to receive these emails, click to <a href='###SITE_URL###/unsubscribe/{queue.User.MarketingOptOutKey}'>unsubscribe</a>.</p>";
             }
 
-                // Create html body text
-                // TODO: Use template
-                var body = $@"
+            // Create html body text
+            // TODO: Use template
+            var body = $@"
                     <div style='font-family: Arial, Helvetica, sans-serif;'
                         <p>
-                            Hello { queue.User?.Name ?? queue.Name },
+                            Hello {queue.User?.Name ?? queue.Name},
                         </p>
                         <p>
-                            { queue.Message }
+                            {queue.Message}
                         </p>
                         <p>
                             Regards,
                             <br />
-                            { _settings.Name }
+                            {_settings.Name}
                         </p>
-                        { optOutText }
+                        {optOutText}
                     </div>
                 ";
 
-                // Replace body keys
-                body = body
-                .Replace("###SITE_NAME###", _settings.Name)
-                .Replace("###SITE_URL###", _settings.WebUrl);
+            // Replace body keys
+            body = body
+            .Replace("###SITE_NAME###", _settings.Name)
+            .Replace("###SITE_URL###", _settings.WebUrl);
 
             return new Email
             {
@@ -76,7 +75,7 @@ public class EmailService : IEmailService
         });
 
         // Create entries into database
-        emails.AddRange(await _ctx.PostRange(newEmails));
+        emails.AddRange(await _ctx.CreateManyAsync(newEmails));
 
         var error = string.Empty;
         try
@@ -125,7 +124,7 @@ public class EmailService : IEmailService
                 }
                 catch (Exception ex)
                 {
-                    email.Errors = $"Sending Error: { ex.Message }";
+                    email.Errors = $"Sending Error: {ex.Message}";
                 }
                 finally
                 {
@@ -138,19 +137,18 @@ public class EmailService : IEmailService
         {
             emails.ForEach(email =>
             {
-                email.Errors = $"Connection Error: { ex.Message }";
+                email.Errors = $"Connection Error: {ex.Message}";
                 email.Completed = true;
                 email.Attempts++;
             });
         }
 
-        await _ctx.PutRange(emails);
+        await _ctx.UpdateManyAsync(emails);
     }
 
     public async Task DeleteQueues(IEnumerable<Guid> queueIds)
     {
-        var queues = _ctx.Emails.Where(e => queueIds.Contains(e.EmailQueueId));
-        await _ctx.DeleteRange(queues);
+        await _ctx.Emails.Where(e => queueIds.Contains(e.EmailQueueId)).ExecuteDeleteAsync();
     }
 
     public async Task<EmailQueue> Add(EmailQueue model)
@@ -162,7 +160,7 @@ public class EmailService : IEmailService
         }
 
         // Build email queue model
-        var queue = await _ctx.Post(model);
+        var queue = await _ctx.CreateAsync(model);
 
         // Send email when typeof instant
         if (model.Type == EmailType.Instant)
@@ -182,6 +180,9 @@ public class EmailService : IEmailService
             return true;
         }
 
+        // Remove older entries
+        await existing.Where(x => x.Completed && !x.CompletedAt.HasValue).ExecuteDeleteAsync();
+
         // Check for recently sent email
         var threshold = queue.Type switch
         {
@@ -193,10 +194,6 @@ public class EmailService : IEmailService
         {
             return false;
         }
-
-        // Remove older entries
-        var toRemove = existing.Where(x => x.Completed && !x.CompletedAt.HasValue);
-        await _ctx.DeleteRange(toRemove);
 
         return true;
     }

@@ -3,7 +3,6 @@ using Comms.Core.Services;
 using Comms.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,15 +61,16 @@ public class SendEmailsTask : BackgroundTask<SendEmailsTask>
             }
 
             // Assign this batch an owner id
+
             queues.ForEach(x => x.OwnedBy = _ownerId);
             try
             {
-                await ctx.PutRange(queues);
-                Console.WriteLine($"{ _ownerId } now owns { queues.Count } emails");
+                await ctx.UpdateManyAsync(queues);
+                Console.WriteLine($"{_ownerId} now owns {queues.Count} emails");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{ _ownerId } failed to own emails: { ex.Message }");
+                Console.WriteLine($"{_ownerId} failed to own emails: {ex.Message}");
                 return;
             }
 
@@ -105,7 +105,7 @@ public class SendEmailsTask : BackgroundTask<SendEmailsTask>
                     }
                 });
 
-                await ctx.PutRange(myQueues);
+                await ctx.UpdateManyAsync(myQueues);
             }
             catch (Exception ex)
             {

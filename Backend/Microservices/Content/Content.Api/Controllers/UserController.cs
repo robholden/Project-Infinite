@@ -6,7 +6,7 @@ using Content.Core.Queries;
 using Content.Core.Services;
 using Content.Domain;
 
-using Library.Core.Enums;
+using Library.Core;
 using Library.Service.Api;
 using Library.Service.PubSub;
 
@@ -43,7 +43,7 @@ public class UserController : BaseController<UserController>
     [HttpGet("{userId}")]
     public async Task<UserSettingDto> Get([FromRoute] Guid userId)
     {
-        var setting = await _queries.Get(LoggedInUser.Id) ?? new();
+        var setting = await _queries.Get(userId) ?? new();
         return _mapper.Map<UserSettingDto>(setting);
     }
 

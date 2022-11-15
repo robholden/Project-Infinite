@@ -70,20 +70,24 @@ public static class StartupExtensions
                     writer.WriteStartObject();
                     writer.WriteString("status", result.Status.ToString());
                     writer.WriteStartObject("results");
+
                     foreach (var entry in result.Entries)
                     {
                         writer.WriteStartObject(entry.Key);
                         writer.WriteString("status", entry.Value.Status.ToString());
                         writer.WriteString("description", entry.Value.Description);
                         writer.WriteStartObject("data");
+
                         foreach (var item in entry.Value.Data)
                         {
                             writer.WritePropertyName(item.Key);
                             JsonSerializer.Serialize(writer, item.Value, item.Value?.GetType() ?? typeof(object));
                         }
+
                         writer.WriteEndObject();
                         writer.WriteEndObject();
                     }
+
                     writer.WriteEndObject();
                     writer.WriteEndObject();
                 }
@@ -110,7 +114,7 @@ public static class StartupExtensions
                 .AddDbContext<T>(x => x
                     .EnableDetailedErrors(false)
                     .UseSqlServer(connectionString, options => options.MigrationsAssembly(assembly))
-                    //.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), options => options.MigrationsAssembly(assembly))
+                    //.UseMySQL(connectionString, options => options.MigrationsAssembly(assembly))
                     .UseLazyLoadingProxies(lazyLoad)
                 );
         }
@@ -183,6 +187,7 @@ public static class StartupExtensions
                         {
                             context.Response.Headers.Add("Token-Expired", "true");
                         }
+
                         return Task.CompletedTask;
                     }
                 };

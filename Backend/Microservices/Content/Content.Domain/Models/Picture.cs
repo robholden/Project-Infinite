@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using Library.Core;
-using Library.Core.Models;
 
 namespace Content.Domain;
 
@@ -56,7 +55,7 @@ public class Picture : Coords, IUser
     public string Ext { get; set; }
 
     [NotMapped]
-    public string Path => $"{ PictureId }{ Ext }";
+    public string Path => $"{PictureId}{Ext}";
 
     [NotMapped]
     public string Seed { get; set; }

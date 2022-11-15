@@ -12,7 +12,7 @@ public abstract class BasePubSub
 
     protected BasePubSub(IBus publishEndpoint, IServiceScopeFactory scopeFactory)
     {
-        this.bus = publishEndpoint;
+        bus = publishEndpoint;
         _scopeFactory = scopeFactory;
     }
 

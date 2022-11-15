@@ -83,12 +83,11 @@ public class PictureQueries : IPictureQueries
             .Take(limit);
     }
 
-
     public async Task<PagedList<Picture>> Featured(int page = 1, int pageSize = 10)
     {
         // Get current seed
         var seedKey = "content_featured_seed";
-        if (_cache.TryGetValue(seedKey, out string seed) && _cache.TryGetValue<PagedList<Picture>>($"{ seed }_{ page }_{ pageSize}", out var results))
+        if (_cache.TryGetValue(seedKey, out string seed) && _cache.TryGetValue<PagedList<Picture>>($"{seed}_{page}_{pageSize}", out var results))
         {
             return results;
         }
@@ -107,7 +106,7 @@ public class PictureQueries : IPictureQueries
         // Cache when results are more than 25
         if (pictures.TotalRows > 25)
         {
-            _cache.Set($"{ seed }_{ page }_{ pageSize}", pictures, DateTime.UtcNow.AddMinutes(60));
+            _cache.Set($"{seed}_{page}_{pageSize}", pictures, DateTime.UtcNow.AddMinutes(60));
         }
 
         return pictures;

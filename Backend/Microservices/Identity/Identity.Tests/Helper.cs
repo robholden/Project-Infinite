@@ -104,7 +104,7 @@ public class Helper
         {
             Name = "Unit Tester " + index,
             Username = "Tester " + index,
-            Email = $"tester_{ index }@email.com"
+            Email = $"tester_{index}@email.com"
         };
     }
 }

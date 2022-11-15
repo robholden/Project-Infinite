@@ -1,7 +1,5 @@
 ﻿
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 using Library.Service.PubSub;
 
 using MassTransit;

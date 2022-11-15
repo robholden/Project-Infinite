@@ -7,7 +7,7 @@ using MassTransit;
 
 namespace Identity.Api.Consumers;
 
-public class DeleteReportedUserConsumer: ISnowConsumer, IConsumer<DeleteReportedUserRq>
+public class DeleteReportedUserConsumer : ISnowConsumer, IConsumer<DeleteReportedUserRq>
 {
     private readonly IUserService _service;
     private readonly ICommsPubSub _commEvents;

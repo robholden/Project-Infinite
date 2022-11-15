@@ -4,7 +4,7 @@
 <div class="form-box flex-row-align mb" *ngFor="let key of emailPrefs">
     <div>
         <span class="label">{{ "settings.preferences." + key + ".title" | trx }}</span>
-        <small>{{ "settings.preferences." + key + ".subtitle" | trx }}</small>
+        <p>{{ "settings.preferences." + key + ".subtitle" | trx }}</p>
     </div>
 
     <sc-toggle-switch class="ml-a" [checked]="settings[key]" (checkedChange)="toggle(key, $event)"></sc-toggle-switch>

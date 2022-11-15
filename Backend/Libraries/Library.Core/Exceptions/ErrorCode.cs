@@ -139,7 +139,7 @@ public enum ErrorCode
     [Description("Picture extension is invalid")]
     InvalidPictureExtension,
 
-    [Description("Picture size must not exceed 10mb")]
+    [Description("Picture size must not exceed {0}mb")]
     PictureTooBig,
 
     [Description("Picture dimensions are too small")]

@@ -1,5 +1,4 @@
-﻿
-using Library.Core;
+﻿using Library.Core;
 using Library.Service.PubSub;
 
 using MassTransit;
@@ -9,7 +8,7 @@ using Reports.Domain;
 
 namespace Report.Api.Consumers.Reports;
 
-public class ReportPictureConsumer: ISnowConsumer, IConsumer<ReportPictureRq>
+public class ReportPictureConsumer : ISnowConsumer, IConsumer<ReportPictureRq>
 {
     private readonly ReportContext _ctx;
     private readonly IReportQueries _queries;
@@ -35,15 +34,17 @@ public class ReportPictureConsumer: ISnowConsumer, IConsumer<ReportPictureRq>
         var instance = new PictureReportInstance(request.User, request.Reason);
         if (report == null)
         {
-            report = new(request.PictureUser, request.PictureId, request.PictureName, request.PicturePath);
-            report.Reports = new List<PictureReportInstance>() { instance };
-            report = await _ctx.Post(report);
+            report = new(request.PictureUser, request.PictureId, request.PictureName, request.PicturePath)
+            {
+                Reports = new List<PictureReportInstance>() { instance }
+            };
+            report = await _ctx.CreateAsync(report);
         }
         else
         {
             report.Date = DateTime.UtcNow;
             report.Reports.Add(instance);
-            report = await _ctx.Put(report);
+            report = await _ctx.UpdateAsync(report);
         }
     }
 }

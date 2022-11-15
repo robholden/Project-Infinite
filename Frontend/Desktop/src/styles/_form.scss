@@ -135,6 +135,12 @@ form {
     }
 }
 
+.form-errors > *,
+.form-error {
+    color: var(--sc-colour-danger);
+    margin-top: 5px;
+}
+
 .form-box {
     @extend .card;
 

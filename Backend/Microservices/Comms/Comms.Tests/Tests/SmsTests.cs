@@ -29,6 +29,6 @@ public class SmsTests
 
         // Assert
         Assert.IsTrue(outcome, exc?.Message ?? "Failed to send sms");
-        Assert.IsTrue(result.sent, $"Failed to send SMS: { result.error }");
+        Assert.IsTrue(result.sent, $"Failed to send SMS: {result.error}");
     }
 }

@@ -8,7 +8,7 @@ using MassTransit;
 
 namespace Comms.Api.Consumers.Emails;
 
-public class SendEmailToUserConsumer: ISnowConsumer, IConsumer<SendEmailToUserRq>
+public class SendEmailToUserConsumer : ISnowConsumer, IConsumer<SendEmailToUserRq>
 {
     private readonly CommsContext _ctx;
     private readonly IEmailService _service;
@@ -24,10 +24,9 @@ public class SendEmailToUserConsumer: ISnowConsumer, IConsumer<SendEmailToUserRq
         // In rare cases, we may not have a user yet. In this case, create one
         var request = context.Message;
         var user = await _ctx.UserSettings.FindOrNullAsync(x => x.UserId == request.User.UserId);
-        if (user == null)
-        {
-            user = await _ctx.Post(new UserSetting(request.User.UserId));
-        }
+
+        // Create settings, if not found
+        user ??= await _ctx.CreateAsync(new UserSetting(request.User.UserId));
 
         // Build email queue model with provided data
         var queue = new EmailQueue

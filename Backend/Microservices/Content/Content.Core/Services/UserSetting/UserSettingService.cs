@@ -27,6 +27,6 @@ public class UserSettingService : IUserSettingService
         user.UploadEnabled = userData.UploadEnabled;
 
         // Update
-        return exists ? await _ctx.Put(user) : await _ctx.Post(user);
+        return exists ? await _ctx.UpdateAsync(user) : await _ctx.CreateAsync(user);
     }
 }

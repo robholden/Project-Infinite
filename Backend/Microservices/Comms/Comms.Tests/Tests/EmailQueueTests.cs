@@ -1,9 +1,7 @@
 ﻿
-
 using Comms.Api.Consumers.Emails;
 
 using Library.Core;
-using Library.Core.Enums;
 using Library.Service.PubSub;
 
 using MassTransit;

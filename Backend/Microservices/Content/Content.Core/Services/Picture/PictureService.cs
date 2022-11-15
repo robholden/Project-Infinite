@@ -1,12 +1,11 @@
 ﻿
 using System.Globalization;
+using System.Security.Cryptography;
 
 using Content.Core.Queries;
 using Content.Domain;
 
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 using Library.Service.PubSub;
 
 using Microsoft.AspNetCore.Http;
@@ -71,12 +70,7 @@ public class PictureService : IPictureService
         var end = start.AddHours(24);
         var uploaded = await _ctx.Pictures.CountAsync(p => p.UserId == userId && p.CreatedDate >= start && p.CreatedDate <= end);
 
-        if (uploaded >= settings.UploadLimit)
-        {
-            throw new SiteException(ErrorCode.UploadLimitReached);
-        }
-
-        return settings;
+        return uploaded >= settings.UploadLimit ? throw new SiteException(ErrorCode.UploadLimitReached) : settings;
     }
 
     public async Task<(Guid? pictureId, IList<ErrorCodeDto> errors)> Upload(IUser user, string filePath, string ipAddress)
@@ -119,7 +113,7 @@ public class PictureService : IPictureService
         picture.ConcealCoords = concealCoords;
         picture.UpdatedDate = DateTime.UtcNow;
 
-        await _ctx.Put(picture);
+        await _ctx.UpdateAsync(picture);
     }
 
     public async Task Submit(Guid pictureId)
@@ -140,14 +134,13 @@ public class PictureService : IPictureService
         // Mark picture for approval
         picture.Status = PictureStatus.PendingApproval;
         picture.UpdatedDate = DateTime.UtcNow;
-        picture = await _ctx.Put(picture);
+        picture = await _ctx.UpdateAsync(picture);
 
         // Add a moderation request for this picture
-        await _ctx.Post(new PictureModeration(picture.PictureId));
+        await _ctx.CreateAsync(new PictureModeration(picture.PictureId));
 
         // Create approval notification for moderators
         _ = _commEvents?.AddGeneralNotification(new(UserLevel.Moderator, NotificationType.NewPictureApproval, new($"{picture.PictureId}", picture.Name, picture.Path)));
-
 
     }
 
@@ -163,7 +156,7 @@ public class PictureService : IPictureService
         request.LockedBy = username;
         request.LockedAt = DateTime.UtcNow;
 
-        return await _ctx.Put(request);
+        return await _ctx.UpdateAsync(request);
     }
 
     public async Task Moderate(Guid pictureId, IUser moderatedBy, bool outcome, string notes)
@@ -187,10 +180,10 @@ public class PictureService : IPictureService
         {
             // Change the picture's status to published
             request.Picture.Status = PictureStatus.Published;
-            await _ctx.Put(request.Picture);
+            await _ctx.UpdateAsync(request.Picture);
 
             // Remove request
-            await _ctx.Delete(request);
+            await _ctx.RemoveAsync(request);
         }
 
         // Notify user of the result
@@ -228,7 +221,7 @@ public class PictureService : IPictureService
 
         // Add/remove notification
         if (liked) _commEvents?.AddNotification(new(picture.ToUserRecord(), NotificationType.NewLike, new(picture.PictureId.ToString(), picture.Name, picture.Path), triggeredUser.ToUserRecord()));
-        else _commEvents?.RemoveNotification(new(picture.UserId, NotificationType.NewLike, picture.PictureId.ToString(), triggeredUser.UserId));
+        else _commEvents?.UndoUserNotification(new(picture.UserId, NotificationType.NewLike, picture.PictureId.ToString(), triggeredUser.UserId));
     }
 
     public async Task<Picture> Delete(Guid pictureId)
@@ -255,8 +248,12 @@ public class PictureService : IPictureService
             return Enumerable.Empty<Picture>();
         }
 
+        // TODO: Add retention policy
+        //  - Mark picture as deleted
+        //  - Have background service run this code after n days
+
         // Remove pictures from db
-        await _ctx.DeleteRange(pictures);
+        await _ctx.RemoveManyAsync(pictures);
 
         // Remove pictures from disk
         Parallel.ForEach(pictures, picture => PhysicalDelete(picture.Path));
@@ -311,8 +308,7 @@ public class PictureService : IPictureService
 
         // TODO: Undo for live
         // Check hash and reject duplicate hash
-        var sha1 = System.Security.Cryptography.SHA1.Create();
-        var hash = Convert.ToBase64String(sha1.ComputeHash(bytes));
+        var hash = Convert.ToBase64String(SHA1.HashData(bytes));
         //if ((await _ctx.Pictures.FindDefaultAsync(p => p.Hash == hash)) != null)
         //{
         //    File.Delete(path);
@@ -391,7 +387,7 @@ public class PictureService : IPictureService
                         continue;
                     }
 
-                    if (colourDict.ContainsKey(shade)) colourDict[shade]++;
+                    if (colourDict.TryGetValue(shade, out int value)) value++;
                     else colourDict.Add(shade, 1);
                 }
 
@@ -425,7 +421,7 @@ public class PictureService : IPictureService
             DateTaken = dateTaken,
             Status = PictureStatus.Draft
         };
-        picture = await _ctx.Post(picture);
+        picture = await _ctx.CreateAsync(picture);
 
         try
         {
@@ -476,11 +472,11 @@ public class PictureService : IPictureService
             picture.Width = image.Width;
             picture.Height = image.Height;
 
-            picture = await _ctx.Put(picture);
+            picture = await _ctx.UpdateAsync(picture);
         }
         catch
         {
-            await _ctx.Delete(picture);
+            await _ctx.RemoveAsync(picture);
             throw;
         }
 

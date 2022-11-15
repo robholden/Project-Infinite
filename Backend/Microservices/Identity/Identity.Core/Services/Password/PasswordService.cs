@@ -27,7 +27,7 @@ public class PasswordService : IPasswordService
 
         // Apply new password
         pw.Set(newPassword);
-        await _ctx.Put(pw);
+        await _ctx.UpdateAsync(pw);
     }
 
     public async Task<bool> Check(Guid userId, string password)
@@ -48,12 +48,12 @@ public class PasswordService : IPasswordService
         if (password == null)
         {
             password = new Password(userId, text);
-            await _ctx.Post(password);
+            await _ctx.CreateAsync(password);
             return;
         }
 
         password.Set(text);
-        await _ctx.Put(password);
+        await _ctx.UpdateAsync(password);
     }
 
     public async Task Verify(Guid userId, string password)

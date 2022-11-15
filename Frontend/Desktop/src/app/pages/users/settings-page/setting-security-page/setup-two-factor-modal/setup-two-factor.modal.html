@@ -5,13 +5,13 @@
         <ng-container *ngIf="qrcode">
             <div class="card mt">
                 <label>Download App</label>
-                <small>Download and install an Authenitcator App</small>
+                <p>Download and install an Authenitcator App</p>
             </div>
 
             <div class="card mt">
                 <label>Setup</label>
-                <small>Scan the QR Code or enter the following key into your two factor authenticator app:</small>
-                <div class="pill small mt" background="light">{{ data.secret }}</div>
+                <p>Scan the QR Code or enter the following key into your two factor authenticator app:</p>
+                <div class="pill small" background="light">{{ data.secret }}</div>
                 <div><img [src]="qrcode" /></div>
             </div>
         </ng-container>
@@ -19,7 +19,7 @@
         <form (submit)="complete()" [formGroup]="form" novalidate>
             <div class="form-box mt">
                 <label>Enter the code</label>
-                <small [ngSwitch]="type">
+                <p [ngSwitch]="type">
                     <ng-container *ngSwitchCase="TwoFactorType.App"> Your two factor authenticator app will provide you with a unique code </ng-container>
 
                     <ng-container *ngSwitchCase="TwoFactorType.Email">
@@ -29,9 +29,9 @@
                     <ng-container *ngSwitchCase="TwoFactorType.Sms">
                         An sms has been sent to your registered mobile number which contains a verification code
                     </ng-container>
-                </small>
+                </p>
 
-                <input class="input mt" type="text" inputmode="tel" formControlName="code" placeholder="Code" />
+                <input class="input" type="text" inputmode="tel" formControlName="code" placeholder="Code" />
             </div>
 
             <div class="flex-row mt">

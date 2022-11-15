@@ -6,7 +6,6 @@ using Comms.Core.Queries;
 using Comms.Core.Services;
 
 using Library.Core;
-using Library.Core.Enums;
 using Library.Service.Api;
 
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +30,6 @@ public class NotificationModController : BaseController<NotificationModControlle
         _service = service;
         _queries = queries;
     }
-
 
     [HttpGet]
     public async Task<PagedList<NotificationDto>> Get([FromQuery] int page = 1)

@@ -1,5 +1,5 @@
 ﻿
-using Library.Core.Enums;
+using Library.Core;
 
 namespace Reports.Api.Dtos;
 

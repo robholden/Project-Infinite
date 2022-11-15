@@ -7,7 +7,7 @@ using MassTransit;
 
 namespace Comms.Api.Consumers.Users;
 
-public class UpdatedNameConsumer: ISnowConsumer, IConsumer<UpdatedNameRq>
+public class UpdatedNameConsumer : ISnowConsumer, IConsumer<UpdatedNameRq>
 {
     private readonly CommsContext _ctx;
 
@@ -23,7 +23,7 @@ public class UpdatedNameConsumer: ISnowConsumer, IConsumer<UpdatedNameRq>
         if (user != null)
         {
             user.Name = request.Name;
-            await _ctx.Put(user);
+            await _ctx.UpdateAsync(user);
         }
     }
 }

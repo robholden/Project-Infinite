@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using Library.Core.Models;
+using Library.Core;
 
 namespace Reports.Domain;
 

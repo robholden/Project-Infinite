@@ -1,6 +1,5 @@
 ﻿
 using Library.Core;
-using Library.Core.Enums;
 using Library.Service.Api.Auth;
 
 using Microsoft.AspNetCore.Authorization;
@@ -34,5 +33,5 @@ public class SocketHub : Hub
     }
 
     [Authorize(Roles = nameof(UserLevel.Admin))]
-    public Task SendMessageToAdmins(string message) => Clients.Group(nameof(UserLevel.Admin)).SendAsync("GroupValue", $"{ Context.User.GetClaim(UserClaimsKeys.Username) } says { message }");
+    public Task SendMessageToAdmins(string message) => Clients.Group(nameof(UserLevel.Admin)).SendAsync("GroupValue", $"{Context.User.GetClaim(UserClaimsKeys.Username)} says {message}");
 }

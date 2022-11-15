@@ -22,41 +22,27 @@ public class UserKeyService : IUserKeyService
         // Create new key model
         var userKey = new UserKey(userId, type, expires, key);
 
-        // Get old keys
-        var time = DateTime.UtcNow;
-        var oldKeys = _ctx.UserKeys.Where(
-            k => k.UserId == userId &&
-            k.Type == type &&
-            !k.UsedAt.HasValue &&
-            (!k.Expires.HasValue || k.Expires.Value < DateTime.UtcNow) &&
-            !k.Invalidated
-        );
-
-        // Invalidate old keys
-        if (await oldKeys.AnyAsync())
-        {
-            await oldKeys.ForEachAsync(k => k.Invalidated = true);
-            await _ctx.PutRange(oldKeys);
-        }
+        // Mark old keys as invalidated
+        await _ctx.UserKeys
+            .Where(
+                k => k.UserId == userId &&
+                k.Type == type &&
+                !k.UsedAt.HasValue &&
+                (!k.Expires.HasValue || k.Expires.Value < DateTime.UtcNow) &&
+                !k.Invalidated
+            )
+            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Invalidated, true));
 
         // Add and return entity
-        return await _ctx.Put(userKey);
+        return await _ctx.UpdateAsync(userKey);
     }
-
 
     public async Task InvalidateKeys(Guid userId, UserKeyType type)
     {
-        // Get keys to invalidate
-        var oldKeys = _ctx.UserKeys.Where(k => k.UserId == userId && k.Type == type && !k.Invalidated);
-
         // Invalidate old keys
-        if (!await oldKeys.AnyAsync())
-        {
-            return;
-        }
-
-        await oldKeys.ForEachAsync(k => k.Invalidated = true);
-        await _ctx.PutRange(oldKeys);
+        await _ctx.UserKeys
+            .Where(k => k.UserId == userId && k.Type == type && !k.Invalidated)
+            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Invalidated, true));
     }
 
     public async Task<UserKey> UseKey(string key, UserKeyType type)
@@ -73,7 +59,7 @@ public class UserKeyService : IUserKeyService
 
         // Redeem key
         userKey.UsedAt = DateTime.UtcNow;
-        return await _ctx.Put(userKey);
+        return await _ctx.UpdateAsync(userKey);
     }
 
     public async Task<UserKey> ValidateAndUseKey(string key, UserKeyType type)

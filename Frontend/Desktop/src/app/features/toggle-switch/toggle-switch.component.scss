@@ -1,33 +1,23 @@
-$w: 50px;
-$h: 28px;
-
-$br: 34px;
-$b_wh: 20px;
-$b_lb: 4px;
-
-$i_x: 22px;
-$r: 0.6;
-
 :host {
     position: relative;
     display: inline-block;
-    height: $h;
+    height: 28px;
 
     &.sm {
-        height: $h * $r;
+        height: 16px;
 
         .switch {
-            width: $w * $r;
+            width: 28px;
 
             .slider:before {
-                height: $b_wh * $r;
-                width: $b_wh * $r;
-                left: $b_lb * $r;
-                bottom: $b_lb * $r;
+                height: 12px;
+                width: 12px;
+                left: 2px;
+                bottom: 2px;
             }
 
             input:checked + .slider:before {
-                transform: translateX($i_x * $r);
+                transform: translateX(12px);
             }
         }
     }
@@ -36,7 +26,7 @@ $r: 0.6;
 .switch {
     position: relative;
     display: inline-block;
-    width: $w;
+    width: 50px;
     height: 100%;
 
     .slider {
@@ -48,15 +38,15 @@ $r: 0.6;
         bottom: 0;
         background-color: var(--sc-colour-medium);
         transition: 0.25s;
-        border-radius: $br;
+        border-radius: 34px;
 
         &:before {
             position: absolute;
             content: '';
-            height: $b_wh;
-            width: $b_wh;
-            left: $b_lb;
-            bottom: $b_lb;
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
             background-color: var(--sc-colour-medium-contrast);
             transition: 0.25s;
             border-radius: 50%;
@@ -72,7 +62,7 @@ $r: 0.6;
             background-color: var(--sc-colour-primary);
 
             &:before {
-                transform: translateX($i_x);
+                transform: translateX(22px);
                 background-color: var(--sc-colour-primary-contrast);
             }
         }

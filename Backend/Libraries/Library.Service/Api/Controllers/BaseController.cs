@@ -3,8 +3,6 @@
 using AutoMapper;
 
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 using Library.Service.Api.Auth;
 
 using Microsoft.AspNetCore.Mvc;

@@ -12,9 +12,8 @@
             <label for="collection-name">Name</label>
             <input id="collection-name" class="input" type="text" formControlName="name" />
 
-            <small *ngIf="form.get('name').hasError('minlength')" class="mt-s" colour="danger"> {{ 'form_errors.minlength' | trx }} </small>
-
-            <small *ngIf="form.get('name').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+            <p class="form-error" *ngIf="form.get('name').hasError('minlength')">{{ 'form_errors.minlength' | trx }}</p>
+            <p class="form-error" *ngIf="form.get('name').hasError('maxlength')">{{ 'form_errors.maxlength' | trx }}</p>
         </div>
 
         <div class="flex-row-align mt">

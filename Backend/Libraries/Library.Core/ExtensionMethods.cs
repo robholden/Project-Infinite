@@ -37,6 +37,11 @@ public static class ClaimsExtensions
     }
 }
 
+public static class ObjectExtensions
+{
+
+}
+
 public static class DictionaryExtensions
 {
     public static string ToQueryString(this IDictionary<string, string> pairs, string prefix = "")
@@ -81,7 +86,7 @@ public static class IntExtensions
     }
 }
 
-public static class StringExtensions
+public static partial class StringExtensions
 {
     public static bool IsTrue(this string value) => value?.ToLower() == "true" || value == "1";
 
@@ -100,7 +105,7 @@ public static class StringExtensions
         }
     }
 
-    public static bool IsValidUsername(this string username) => new Regex("^[a-zA-Z0-9][a-zA-Z0-9_]*$").IsMatch(username);
+    public static bool IsValidUsername(this string username) => UsernameRegex().IsMatch(username);
 
     public static string ToHash(this string value, string salt = "")
     {
@@ -119,6 +124,9 @@ public static class StringExtensions
 
         return builder.ToString();
     }
+
+    [GeneratedRegex("^[a-zA-Z0-9][a-zA-Z0-9_]*$")]
+    public static partial Regex UsernameRegex();
 }
 
 public static class DateExtensions

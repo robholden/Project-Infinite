@@ -20,7 +20,7 @@ public class LoginFacebookProvider : IExternalLoginProvider
 
             // Call facebook api to verify api token
             var proof = token.HashHmacSha256(_secret);
-            var url = $"https://graph.facebook.com/me?access_token={ token }&fields=name,email&appsecret_proof={ proof }";
+            var url = $"https://graph.facebook.com/me?access_token={token}&fields=name,email&appsecret_proof={proof}";
             var facebookUser = await http.GetAsync<FacebookUser>(url);
 
             // Validate data exists

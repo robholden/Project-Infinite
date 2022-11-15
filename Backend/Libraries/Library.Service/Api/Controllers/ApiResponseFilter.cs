@@ -17,7 +17,7 @@ public sealed class ApiResponseFilter : ExceptionFilterAttribute
     {
         var result = context.Exception.AsObjectResult();
 
-        _logger.LogError(context.Exception, context.Exception.Message);
+        _logger.LogError(context.Exception, "{Message}", context.Exception.Message);
 
         context.Result = result;
         context.HttpContext.Response.StatusCode = result.StatusCode ?? StatusCodes.Status400BadRequest;

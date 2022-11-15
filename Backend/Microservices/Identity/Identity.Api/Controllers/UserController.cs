@@ -8,8 +8,6 @@ using Identity.Core.Queries;
 using Identity.Core.Services;
 
 using Library.Core;
-using Library.Core.Enums;
-using Library.Core.Models;
 using Library.Service.Api;
 using Library.Service.Api.Auth;
 using Library.Service.PubSub;
@@ -57,7 +55,7 @@ public class UserController : BaseController<UserController>
         var user = await _userService.VerifyAndConfirmEmail(key);
 
         // Send socket update to UI
-        _ = _socketEvents.UpdatedUserField(new(LoggedInUser.Id, nameof(UserDto.EmailConfirmed), user.EmailConfirmed));
+        _ = _socketEvents.UpdatedUserField(new(user.UserId, nameof(UserDto.EmailConfirmed), user.EmailConfirmed));
     }
 
     [HttpGet("{username}")]

@@ -2,7 +2,6 @@
 using AutoMapper;
 
 using Library.Core;
-using Library.Core.Enums;
 using Library.Service.Api;
 using Library.Service.Api.Auth;
 

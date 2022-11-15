@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comms.Api.Consumers.Notifications;
 
-public class AddGeneralNotificationConsumer: ISnowConsumer, IConsumer<AddGeneralNotificationRq>
+public class AddGeneralNotificationConsumer : ISnowConsumer, IConsumer<AddGeneralNotificationRq>
 {
     private readonly IMapper _mapper;
     private readonly CommsContext _ctx;
@@ -48,7 +48,7 @@ public class AddGeneralNotificationConsumer: ISnowConsumer, IConsumer<AddGeneral
             Type = request.Type,
             ReadAt = DateTime.UtcNow
         };
-        notification = await _ctx.Post(notification);
+        notification = await _ctx.CreateAsync(notification);
 
         // Send update if not viewed
         await _service.TryToSend(notification, _mapper.Map<NotificationDto>(notification));

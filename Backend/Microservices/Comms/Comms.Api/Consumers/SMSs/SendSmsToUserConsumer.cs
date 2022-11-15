@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comms.Api.Consumers.SMSs;
 
-public class SendSmsToUserConsumer: ISnowConsumer, IConsumer<SendSmsToUserRq>
+public class SendSmsToUserConsumer : ISnowConsumer, IConsumer<SendSmsToUserRq>
 {
     private readonly CommsContext _ctx;
     private readonly ISmsProvider _smsProvider;
@@ -45,7 +45,7 @@ public class SendSmsToUserConsumer: ISnowConsumer, IConsumer<SendSmsToUserRq>
 
         sms.DateSent = DateTime.UtcNow;
         sms.Sent = sent;
-        await _ctx.Post(sms);
+        await _ctx.CreateAsync(sms);
 
         // TODO: How to trigger error
         if (!sms.Sent)

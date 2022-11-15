@@ -1,6 +1,5 @@
 ﻿
-using Library.Core.Enums;
-using Library.Core.Models;
+using Library.Core;
 
 using MassTransit;
 
@@ -26,7 +25,7 @@ public record AddGeneralNotificationRq(UserLevel UserLevel, NotificationType Typ
 
 public record UpdateGeneralNotificationRq(UserLevel UserLevel, NotificationType Type, string ContentKey, NotificationType NewType, NotificationContent NewContent);
 
-public record RemoveNotificationRq(Guid UserId, NotificationType Type, string ContentKey, Guid TriggeredUserId);
+public record UndoUserNotificationRq(Guid UserId, NotificationType Type, string ContentKey, Guid TriggeredUserId);
 
 public record DeleteNotificationsRq(IEnumerable<string> Keys);
 
@@ -54,7 +53,7 @@ public interface ICommsPubSub
 
     Task UpdateGeneralNotification(UpdateGeneralNotificationRq payload);
 
-    Task RemoveNotification(RemoveNotificationRq payload);
+    Task UndoUserNotification(UndoUserNotificationRq payload);
 
     Task DeleteNotification(string key);
 
@@ -87,7 +86,7 @@ public class CommsPubSub : BasePubSub, ICommsPubSub
 
     public async Task UpdateGeneralNotification(UpdateGeneralNotificationRq payload) => await Publish(payload);
 
-    public async Task RemoveNotification(RemoveNotificationRq payload) => await Publish(payload);
+    public async Task UndoUserNotification(UndoUserNotificationRq payload) => await Publish(payload);
 
     public async Task DeleteNotification(string key) => await DeleteNotifications(new(new List<string>() { key }));
 

@@ -3,14 +3,14 @@
         <label for="username">Email or username </label>
         <input id="username" class="input" type="text" autocomplete="username" formControlName="username" />
 
-        <small *ngIf="form.get('username').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+        <p class="form-error" *ngIf="form.get('username').hasError('maxlength')">{{ 'form_errors.maxlength' | trx }}</p>
     </div>
 
     <div class="form-section mb">
         <label for="password">Password</label>
         <input id="password" class="input" type="password" autocomplete="current-password" formControlName="password" />
 
-        <small *ngIf="form.get('password').hasError('maxlength')" class="mt-s" colour="danger"> {{ 'form_errors.maxlength' | trx }} </small>
+        <p class="form-error" *ngIf="form.get('password').hasError('maxlength')">{{ 'form_errors.maxlength' | trx }}</p>
     </div>
 
     <div class="br p-s mt" background="danger" *ngIf="error">{{ error | trx }}</div>

@@ -7,7 +7,7 @@ using Content.Core.Queries;
 using Content.Core.Services;
 using Content.Domain;
 
-using Library.Core.Enums;
+using Library.Core;
 using Library.Service.Api;
 
 using Microsoft.AspNetCore.Authorization;
