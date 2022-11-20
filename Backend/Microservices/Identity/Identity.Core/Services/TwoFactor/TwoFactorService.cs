@@ -158,7 +158,6 @@ public class TwoFactorService : ITwoFactorService
         user.TwoFactorEnabled = false;
         user.TwoFactorSecret = null;
         user.TwoFactorType = TwoFactorType.Unset;
-        user.LastActive = DateTime.UtcNow;
 
         // Update user
         await _ctx.UpdateAsync(user);

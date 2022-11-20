@@ -16,14 +16,15 @@ public class UserSettingService : IUserSettingService
 
     public async Task<UserSetting> AddOrUpdate(Guid userId, UserSetting userData)
     {
-        // Get user by opt out key
+        // Get current settings
         var (user, exists) = await _ctx.UserSettings.FindWithDefaultAsync(x => x.UserId == userId, new(userId));
 
         // Update values
         user.MaxPictureSize = userData.MaxPictureSize;
         user.MinPictureResolutionX = userData.MinPictureResolutionX;
         user.MinPictureResolutionY = userData.MinPictureResolutionY;
-        user.UploadLimit = userData.UploadLimit;
+        user.DraftLimit = userData.DraftLimit;
+        user.DailyUploadLimit = userData.DailyUploadLimit;
         user.UploadEnabled = userData.UploadEnabled;
 
         // Update

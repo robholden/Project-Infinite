@@ -49,28 +49,37 @@ public class PictureService : IPictureService
             throw new SiteException(ErrorCode.UploadNotAllowed);
         }
 
-        // Set draft limit
-        var limit = settings.UploadLimit;
-
-        // A user can only have (n) drafts at one time
-        var drafts = await _ctx.Pictures.CountAsync(p => p.UserId == userId && p.Status != PictureStatus.Published);
-        if (drafts > limit)
-        {
-            throw new SiteException(ErrorCode.DraftLimitReached, limit);
-        }
-
-        // Are they uploading too many?
-        if ((drafts + uploadCount) > limit)
-        {
-            throw new SiteException(ErrorCode.UploadWouldExceedDraftLimit, limit);
-        }
-
         // Check this user's number of uploads for today
         var start = DateTime.Now.ResetToDay();
         var end = start.AddHours(24);
         var uploaded = await _ctx.Pictures.CountAsync(p => p.UserId == userId && p.CreatedDate >= start && p.CreatedDate <= end);
 
-        return uploaded >= settings.UploadLimit ? throw new SiteException(ErrorCode.UploadLimitReached) : settings;
+        // Daily upload limit has been reached
+        if (uploaded >= settings.DailyUploadLimit)
+        {
+            throw new SiteException(ErrorCode.DailyUploadLimitReached, settings.DailyUploadLimit);
+        }
+
+        // Are they uploading too many?
+        if ((uploaded + uploadCount) > settings.DailyUploadLimit)
+        {
+            throw new SiteException(ErrorCode.UploadWouldExceedDailyLimit, settings.DailyUploadLimit - uploaded);
+        }
+
+        // A user can only have (n) drafts at one time
+        var drafts = await _ctx.Pictures.CountAsync(p => p.UserId == userId && p.Status == PictureStatus.Draft);
+        if (drafts >= settings.DraftLimit)
+        {
+            throw new SiteException(ErrorCode.DraftLimitReached, settings.DraftLimit);
+        }
+
+        // Are they uploading too many?
+        if ((drafts + uploadCount) > settings.DraftLimit)
+        {
+            throw new SiteException(ErrorCode.UploadWouldExceedDraftLimit, settings.DraftLimit - drafts);
+        }
+
+        return settings;
     }
 
     public async Task<(Guid? pictureId, IList<ErrorCodeDto> errors)> Upload(IUser user, string filePath, string ipAddress)

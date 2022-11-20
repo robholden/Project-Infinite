@@ -74,6 +74,9 @@ public class AuthService : IAuthService
             await _userService.Trigger2FA(user.UserId);
         }
 
+        // Mark user as active
+        await _userService.UpdateLastActive(user.UserId);
+
         // Return reponse
         return token;
     }
@@ -173,6 +176,7 @@ public class AuthService : IAuthService
         token.RefreshToken = GenerateRefreshToken();
         token.Refreshes++;
         token.RefreshedAt = DateTime.UtcNow;
+        token.User.LastActive = DateTime.UtcNow;
 
         // Has 2FA been disabled?
         if (!token.TwoFactorPassed && token.User.TwoFactorType == TwoFactorType.Unset)

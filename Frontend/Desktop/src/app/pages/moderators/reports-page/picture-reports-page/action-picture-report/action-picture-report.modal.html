@@ -19,7 +19,7 @@
                     2FA {{ user.twoFactorEnabled ? 'Enabled' : 'Disabled' }}
                 </span>
                 <span class="button" background="light">Member since {{ user.created | utc: 'short' }}</span>
-                <span class="button" background="light">Last active {{ user.lastActive | utc: 'short' }}</span>
+                <span class="button" background="light" *ngIf="user.lastActive">Last active {{ user.lastActive | utc: 'short' }}</span>
             </ng-container>
         </div>
 

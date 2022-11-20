@@ -57,7 +57,7 @@ export class ActionUserReportModal extends ModalComponent<boolean> implements On
                     {
                         label: 'Notes',
                         name: 'notes',
-                        type: 'text',
+                        type: 'textarea',
                     },
                     {
                         label: 'Send email to user',

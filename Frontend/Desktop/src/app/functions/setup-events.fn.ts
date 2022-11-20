@@ -1,17 +1,18 @@
 import { Injector } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { RegisterExternalComponent } from '@app/components/auth/register-external/register-external.component';
-import { AuthModal } from '@app/modals/auth-modal/auth.modal';
-import { ModifyCollectionModal } from '@app/modals/modify-collection/modify-collection.modal';
-import { PictureUploadModal } from '@app/modals/picture-upload/picture-upload.modal';
-import { ModalController } from '@app/shared/controllers/modal';
-
 import { CustomEvent } from '@shared/enums';
 import { SMap } from '@shared/models';
 import { EventService } from '@shared/services';
 import { AuthService } from '@shared/services/identity';
 import { AuthState } from '@shared/storage';
+
+import { RegisterExternalComponent } from '@app/components/auth/register-external/register-external.component';
+import { AuthModal } from '@app/modals/auth-modal/auth.modal';
+import { ModifyCollectionModal } from '@app/modals/modify-collection/modify-collection.modal';
+import { PictureUploadModal } from '@app/modals/picture-upload/picture-upload.modal';
+import { AlertController } from '@app/shared/controllers/alert';
+import { ModalController } from '@app/shared/controllers/modal';
 
 function logout(router: Router, authService: AuthService, modalCtrl: ModalController) {
     return async () => {
@@ -48,6 +49,7 @@ export function setupEvents(injector: Injector) {
     const authState = injector.get<AuthState>(AuthState);
     const events = injector.get<EventService>(EventService);
     const modalCtrl = injector.get<ModalController>(ModalController);
+    const alertCtrl = injector.get<AlertController>(AlertController);
     const authService = injector.get<AuthService>(AuthService);
 
     events.register(CustomEvent.Login, async (params) => await openModal(modalCtrl)('login-modal', AuthModal, { type: 'login', ...(params || {}) }));
@@ -65,6 +67,10 @@ export function setupEvents(injector: Injector) {
 
     events.register(CustomEvent.Upload, async () => {
         if (!authState.loggedIn || !authState.contentSettings?.uploadEnabled) return;
+
+        if (authState.user?.emailConfirmed !== true) {
+            return await alertCtrl.alert('Confirmation Required', 'You must first confirm your email address to enable uploading', 'Close');
+        }
 
         const modal = modalCtrl.add('upload-modal', PictureUploadModal);
         await modal.present();

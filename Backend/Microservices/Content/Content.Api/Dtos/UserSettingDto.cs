@@ -8,7 +8,9 @@ public class UserSettingDto
 
     public int MinPictureResolutionY { get; set; }
 
-    public int UploadLimit { get; set; }
+    public int DraftLimit { get; set; }
+
+    public int DailyUploadLimit { get; set; }
 
     public bool UploadEnabled { get; set; }
 }

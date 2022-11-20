@@ -17,6 +17,15 @@ public class UpdateUserFieldsConsumer : ISnowConsumer, IConsumer<UpdatedUserFiel
 
     public async Task Consume(ConsumeContext<UpdatedUserFieldsRq> context)
     {
-        await _hub.Clients.User($"{context.Message.UserId}").SendAsync("UpdatedUserFields", context.Message.NewValues);
+        // JSON doesn't convert keys in dictionaries
+        //  e.g. { EmailConfirmed = true } translates to { "EmailedConfirmed": true }
+        // 
+        // Ensure all properties have their first letter lowercased
+        var changes = context.Message.NewValues.ToDictionary(
+            c => char.IsUpper(c.Key[0]) ? c.Key.Length == 1 ? char.ToLower(c.Key[0]).ToString() : char.ToLower(c.Key[0]) + c.Key[1..] : c.Key,
+            c => c.Value
+        );
+
+        await _hub.Clients.User($"{context.Message.UserId}").SendAsync("UpdatedUserFields", changes);
     }
 }

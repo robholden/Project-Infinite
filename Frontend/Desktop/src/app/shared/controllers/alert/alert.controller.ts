@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Trx } from '@shared/models';
+import { AppColour } from '@shared/types';
 
 import { ModalOptions } from '../modal';
 import { ModalController } from '../modal/modal.controller';
@@ -28,7 +29,7 @@ export interface ConfirmOptions extends SharedAlertOptions {
 export class AlertController {
     constructor(private modalCtrl: ModalController) {}
 
-    async alert(title: string | Trx, message: string | Trx, closeText: string) {
+    async alert(title: string | Trx, message: string | Trx, closeText: string, colour?: AppColour) {
         await this.create({
             title,
             message,
@@ -36,7 +37,7 @@ export class AlertController {
                 {
                     text: closeText,
                     role: 'submit',
-                    colour: 'primary',
+                    colour: colour || 'primary',
                     className: 'mx-a',
                 },
             ],

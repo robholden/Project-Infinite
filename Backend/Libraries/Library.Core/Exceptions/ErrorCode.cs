@@ -82,9 +82,6 @@ public enum ErrorCode
     [Description("You are not permitted to upload any picture at this time")]
     UploadNotAllowed,
 
-    [Description("You have reached the daily upload limit")]
-    UploadLimitReached,
-
     [Description("Duplicate picture detected")]
     DuplicatePicture,
 
@@ -109,10 +106,16 @@ public enum ErrorCode
     [Description("The given path does not exist")]
     PathNotFound,
 
+    [Description("You can only upload {0} pictures per day")]
+    DailyUploadLimitReached,
+
+    [Description("You only have {0} daily upload(s) remaining")]
+    UploadWouldExceedDailyLimit,
+
     [Description("You can only have {0} drafts at any one time")]
     DraftLimitReached,
 
-    [Description("You only have {0} draft uploads remaining")]
+    [Description("You only have {0} draft(s) remaining")]
     UploadWouldExceedDraftLimit,
 
     [Description("Please upload a picture")]

@@ -28,7 +28,9 @@ public class UserSetting : IUserId
 
     public int MinPictureResolutionY { get; set; } = 300;
 
-    public int UploadLimit { get; set; } = 10;
+    public int DraftLimit { get; set; } = 12;
+
+    public int DailyUploadLimit { get; set; } = 6;
 
     public bool UploadEnabled { get; set; } = true;
 }

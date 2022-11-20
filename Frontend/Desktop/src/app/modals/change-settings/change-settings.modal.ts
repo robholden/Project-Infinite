@@ -20,7 +20,8 @@ export class ChangeSettingsModal extends ModalComponent<boolean> implements OnIn
         maxPictureSize: FormControl<number>;
         minPictureResolutionX: FormControl<number>;
         minPictureResolutionY: FormControl<number>;
-        uploadLimit: FormControl<number>;
+        draftLimit: FormControl<number>;
+        dailyUploadLimit: FormControl<number>;
         uploadEnabled: FormControl<boolean>;
     }>;
 
@@ -43,7 +44,8 @@ export class ChangeSettingsModal extends ModalComponent<boolean> implements OnIn
             maxPictureSize: new FormControl(settings.maxPictureSize, [Validators.required]),
             minPictureResolutionX: new FormControl(settings.minPictureResolutionX, [Validators.required]),
             minPictureResolutionY: new FormControl(settings.minPictureResolutionY, [Validators.required]),
-            uploadLimit: new FormControl(settings.uploadLimit, [Validators.required]),
+            draftLimit: new FormControl(settings.draftLimit, [Validators.required]),
+            dailyUploadLimit: new FormControl(settings.dailyUploadLimit, [Validators.required]),
             uploadEnabled: new FormControl(settings.uploadEnabled, []),
         });
     }
@@ -56,7 +58,8 @@ export class ChangeSettingsModal extends ModalComponent<boolean> implements OnIn
             maxPictureSize: this.form.value.maxPictureSize,
             minPictureResolutionX: this.form.value.minPictureResolutionX,
             minPictureResolutionY: this.form.value.minPictureResolutionY,
-            uploadLimit: this.form.value.uploadLimit,
+            draftLimit: this.form.value.draftLimit,
+            dailyUploadLimit: this.form.value.dailyUploadLimit,
             uploadEnabled: this.form.value.uploadEnabled,
         };
         const resp = await this.service.updateUserSettings(this.userId, settings);
