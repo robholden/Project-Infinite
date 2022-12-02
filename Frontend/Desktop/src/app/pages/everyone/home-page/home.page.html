@@ -1,8 +1,6 @@
 <sc-page>
     <sc-page-content>
         <div class="container flex-col">
-            <h2 class="mb">Explore</h2>
-
             <sc-show-pictures route="/explore" [fixedParams]="" (resultChange)="results = $event" [showFilters]="true">
                 <ng-container empty>There's nothing featured yet :(</ng-container>
             </sc-show-pictures>

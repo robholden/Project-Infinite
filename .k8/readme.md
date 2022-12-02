@@ -35,14 +35,20 @@ $ kubectl port-forward --namespace default svc/mailhog 8025:8025
 Apply manifests
 
 ```
+$ kubectl apply -f secrets.yaml
+$ kubectl apply -f config-map.yaml
+
 $ kubectl apply -f data/mssql-pvc.yaml
-$ kubectl apply -f data/secrets.yaml
 $ kubectl apply -f data/mssql.yaml
 
-$ kubectl apply -f config-map-map.yaml
-$ kubectl apply -f secrets.yaml
-$ kubectl apply -f gateway-api.yaml
-$ kubectl apply -f identity-api.yaml
+$ kubectl apply -f services/gateway-api.yaml
+$ kubectl apply -f services/comms-api.yaml
+$ kubectl apply -f services/identity-api.yaml
+$ kubectl apply -f services/content-api.yaml
+$ kubectl apply -f services/reports-api.yaml
+$ kubectl apply -f services/sockets-api.yaml
+
+$ kubectl apply -f ui/web-ui.yaml
 ```
 
 Add dev cert

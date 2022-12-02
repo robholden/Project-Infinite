@@ -1,11 +1,11 @@
 ﻿
 using AutoMapper;
 
-using Content.Api.Dtos;
 using Content.Api.Requests;
 using Content.Core.Queries;
 using Content.Core.Services;
 using Content.Domain;
+using Content.Domain.Dtos;
 
 using Library.Core;
 using Library.Service.Api;

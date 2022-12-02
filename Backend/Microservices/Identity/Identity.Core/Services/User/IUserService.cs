@@ -1,6 +1,8 @@
 ﻿
 using Identity.Domain;
 
+using Library.Core;
+
 namespace Identity.Core.Services;
 
 public interface IUserService
@@ -32,6 +34,8 @@ public interface IUserService
     Task UpdateMobile(Guid userId, string mobile);
 
     Task UpdateName(Guid userId, string name);
+
+    Task UpdateLevel(Guid userId, UserLevel level);
 
     Task<UserStatus> UpdateStatus(Guid userId, UserStatus status);
 

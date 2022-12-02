@@ -29,6 +29,8 @@ export class AuthStore {
 export class AuthState {
     private _loaded: boolean;
     roles: SMap<boolean>;
+    is_simple: boolean;
+    is_advanced: boolean;
     is_mod: boolean;
     is_admin: boolean;
 
@@ -63,6 +65,8 @@ export class AuthState {
                 else if (roles instanceof Array) roles.forEach((r) => (map[r] = true));
             }
 
+            this.is_simple = map['Simple'];
+            this.is_advanced = map['Advanced'];
             this.is_mod = map['Moderator'];
             this.is_admin = map['Admin'];
             this.roles = map;

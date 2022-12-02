@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 
 using Report.Api.Requests;
 
-using Reports.Api.Dtos;
 using Reports.Core.Queries;
 using Reports.Core.Services;
 using Reports.Domain;
+using Reports.Domain.Dtos;
 
 namespace Reports.Api.Controllers;
 

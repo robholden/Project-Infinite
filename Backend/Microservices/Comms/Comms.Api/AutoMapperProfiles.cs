@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
-using Comms.Api.Dtos;
 using Comms.Domain;
+using Comms.Domain.Dtos;
 
 namespace Comms.Api;
 

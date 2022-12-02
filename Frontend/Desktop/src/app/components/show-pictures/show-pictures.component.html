@@ -18,7 +18,7 @@
                         <button
                             class="link-title"
                             (click)="filter.countries[country.code] = !filter.countries[country.code]; setFilters(); $event.preventDefault()"
-                            [disabled]="getting.init || getting.reload"
+                            [disabled]="getting || reloading"
                         >
                             {{ 'countries.' + country.code | trx: {}:country.name }}
                             <input [id]="country.code" type="checkbox" class="no-pe ml-a" [checked]="filter.countries[country.code]" />
@@ -28,7 +28,7 @@
                             <button
                                 class="link-item"
                                 (click)="filter.locations[loc.code] = !filter.locations[loc.code]; setFilters(); $event.preventDefault()"
-                                [disabled]="getting.init || getting.reload"
+                                [disabled]="getting || reloading"
                                 *ngFor="let loc of country.locations"
                             >
                                 <input
@@ -36,7 +36,7 @@
                                     class="no-pe"
                                     type="checkbox"
                                     [checked]="filter.locations[loc.code]"
-                                    [disabled]="getting.init || getting.reload"
+                                    [disabled]="getting || reloading"
                                 />
                                 {{ 'locations.' + loc.code | trx: {}:loc.name }}
                             </button>
@@ -52,7 +52,7 @@
             <sc-drop-down position="bottomright" [width]="250">
                 <div class="link-search">
                     <div class="form-section button-attached flex-row">
-                        <input class="input" type="text" #tagInput placeholder="Search for a tag" [disabled]="getting.init || getting.reload" />
+                        <input class="input" type="text" #tagInput placeholder="Search for a tag" [disabled]="getting || reloading" />
                         <label class="button affix icon-only" background="primary"><i class="fas fa-search"></i></label>
                     </div>
                 </div>
@@ -158,48 +158,42 @@
     [selectable]="true"
     (selected)="filter.bounds = $event; setFilters()"
     [height]="25"
-    *ngIf="mapOptions && !getting.init"
+    *ngIf="mapOptions && !getting"
 ></sc-show-map>
 
-<div class="picture-grid flex-col flex-spacer" [class.reloading]="getting.reload" *ngIf="!getting.init; else loadingRef" @fade>
-    <div
-        infinite-scroll
-        [infiniteScrollDistance]="3"
-        [infiniteScrollUpDistance]="6"
-        [infiniteScrollThrottle]="150"
-        (scrolled)="nextPage()"
-        (scrolledUp)="prevPage()"
-        *ngIf="result?.totalRows; else noPictureRef"
-    >
-        <div grid=".picture">
-            <div class="picture card-shadow" *ngFor="let picture of result.rows || []; let $i = index">
-                <button
-                    class="button icon-only edit"
-                    type="button"
-                    tippy="Edit"
-                    placement="top"
-                    (click)="edit($i)"
-                    *ngIf="authState.loggedIn && picture.username === authState.user.username"
-                >
-                    <i class="icon far fa-pencil"></i>
-                </button>
+<div class="pictures-container flex-col flex-spacer" [class.reloading]="reloading" *ngIf="!getting; else loadingRef" @fade>
+    <div class="picture-grid grid mb" cols="4" *ngIf="result?.totalRows; else noPictureRef">
+        <div class="picture card-shadow" *ngFor="let picture of result.rows || []; let $i = index">
+            <button
+                class="button icon-only edit"
+                type="button"
+                tippy="Edit"
+                placement="top"
+                (click)="edit($i)"
+                *ngIf="authState.loggedIn && picture.username === authState.user.username"
+            >
+                <i class="icon far fa-pencil"></i>
+            </button>
 
-                <a [routerLink]="'/picture/' + picture.pictureId">
-                    <img [lazyLoad]="picture.path | imgUrl" [width]="picture.width" [height]="picture.height" />
-                    <div class="lazyloader"><i class="fas fa-spinner-third fa-spin"></i></div>
+            <a [routerLink]="'/picture/' + picture.pictureId">
+                <img [id]="picture.pictureId" [lazyLoad]="picture.path | imgUrl" [width]="picture.width" [height]="picture.height" />
+                <div class="lazyloader"><i class="fas fa-spinner-third fa-spin"></i></div>
 
-                    <div class="picture-section">
-                        <p class="name">{{ picture.name }}</p>
+                <div class="picture-section">
+                    <p class="name">{{ picture.name }}</p>
 
-                        <p class="location" *ngIf="picture.location">
-                            <i class="far fa-map-marker-alt"></i>
-                            {{ 'locations.' + picture.location.code | trx: {}:picture.location.name }},
-                            {{ 'countries.' + picture.location.country.code | trx: {}:picture.location.country.name }}
-                        </p>
-                    </div>
-                </a>
-            </div>
+                    <p class="location" *ngIf="picture.location">
+                        <i class="far fa-map-marker-alt"></i>
+                        {{ 'locations.' + picture.location.code | trx: {}:picture.location.name }},
+                        {{ 'countries.' + picture.location.country.code | trx: {}:picture.location.country.name }}
+                    </p>
+                </div>
+            </a>
         </div>
+    </div>
+
+    <div class="mt-a">
+        <sc-paging [rows]="result.totalRows" [pageSize]="pager.pageSize" [page]="pager.page" (pageChange)="changePage($event)"></sc-paging>
     </div>
 </div>
 

@@ -83,6 +83,15 @@ export class PictureService {
     }
 
     /**
+     * Deletes a list of pictures
+     *
+     * @param ids The picture ids
+     */
+    async deleteMany(ids: string[]): Promise<void | CustomError> {
+        return await this.api.post('/content/picture/delete-many', ids);
+    }
+
+    /**
      * Validates whether the user can upload x number of pictures
      *
      * @param uploads the number of uploads

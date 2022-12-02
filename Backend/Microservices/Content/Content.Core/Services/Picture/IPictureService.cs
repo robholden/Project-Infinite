@@ -25,6 +25,8 @@ public interface IPictureService
 
     Task Like(Guid pictureId, IUser triggeredUser, bool liked);
 
+    Task Delete(Guid[] pictureIds);
+
     Task<Picture> Delete(Guid pictureId);
 
     Task<Picture> Delete(Picture picture);

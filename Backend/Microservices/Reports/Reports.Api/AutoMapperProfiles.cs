@@ -1,8 +1,8 @@
 ﻿
 using AutoMapper;
 
-using Reports.Api.Dtos;
 using Reports.Domain;
+using Reports.Domain.Dtos;
 
 namespace Reports.Api;
 

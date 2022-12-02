@@ -115,6 +115,7 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
         }
 
         // Store page info
+        this.pager.page = page;
         this.pages.push(page);
         this.pages.sort();
         if (!pageSize) pageSize = this.pager.pageSize;
@@ -179,7 +180,7 @@ export class InfiniteComponent<T, S extends Object> implements OnChanges {
         // Emit changes to child components
         this.resultChange.emit(this.result);
         this.pagedInfo = this.result;
-        if (this.pageOptions.onResult) this.pageOptions.onResult();
+        if (this.pageOptions?.onResult) this.pageOptions.onResult();
     }
 
     sameOrderBy() {

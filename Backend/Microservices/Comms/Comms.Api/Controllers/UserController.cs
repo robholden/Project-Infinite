@@ -1,10 +1,10 @@
 ﻿
 using AutoMapper;
 
-using Comms.Api.Dtos;
 using Comms.Core.Queries;
 using Comms.Core.Services;
 using Comms.Domain;
+using Comms.Domain.Dtos;
 
 using Library.Service.Api;
 

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { buildQueryString, deepCopy, obj2QueryString, QueryType, valueHasChanged, wait, writeQueryString } from '@shared/functions';
 import { CustomError, PagedList, PageRequest, pageRequestFromQueryString, SMap } from '@shared/models';
+import { LoadingService } from '@shared/services';
 
 export interface PageChange {
     pageNumber: number;
@@ -36,6 +37,7 @@ export class PagedStore {
 @Directive()
 export class PagedComponent<T, S extends Object> implements OnChanges {
     private _initialised: boolean;
+    private _loading: LoadingService;
 
     pagerDefaults: PageRequest = this.pageOptions.pager || new PageRequest();
     pager: PageRequest = this.pageOptions.pager;
@@ -43,6 +45,7 @@ export class PagedComponent<T, S extends Object> implements OnChanges {
     @Output() resultChange = new EventEmitter<PagedList<T>>();
 
     loaded: boolean = false;
+    reloading: boolean = true;
     getting: boolean = true;
     @Output() gettingChange = new EventEmitter<boolean>();
 
@@ -61,6 +64,7 @@ export class PagedComponent<T, S extends Object> implements OnChanges {
         private componentOptions?: PagedComponentOptions
     ) {
         const ar = injector.get<ActivatedRoute>(ActivatedRoute);
+        this._loading = injector.get<LoadingService>(LoadingService);
 
         this.route = componentOptions?.route || '';
         this.pager = deepCopy(this.pagerDefaults);
@@ -97,59 +101,73 @@ export class PagedComponent<T, S extends Object> implements OnChanges {
     }
 
     async nextPage() {
-        await this.search(this.pager.page + 1);
+        await this.search({ page: this.pager.page + 1 });
     }
 
     async prevPage() {
-        await this.search(this.pager.page - 1);
+        await this.search({ page: this.pager.page - 1 });
     }
 
     async changePage(data: PageChange) {
-        await this.search(data.pageNumber, data.pageSize);
+        await this.search({ page: data.pageNumber, pageSize: data.pageSize });
     }
 
     async reload() {
         await wait(0);
 
         this.setParams(this.params);
-        this.search();
+        this.search({ reload: true });
     }
 
-    async search(page: number = 1, pageSize: number = null) {
-        this.pager.page = page;
+    async search(options: { page?: number; pageSize?: number; reload?: boolean } = { page: 1, pageSize: null, reload: false }) {
+        this.pager.page = options.page;
 
-        if (pageSize === null) pageSize = this.pager.pageSize;
-        else this.pager.pageSize = pageSize;
+        if (!options.pageSize) options.pageSize = this.pager.pageSize;
+        else this.pager.pageSize = options.pageSize;
 
+        // Check for a cache response to avoid unnecessary api calls
+        let result: PagedList<T>;
         const qstring = obj2QueryString({ ...this.params, ...this.pager });
-        if (page > 1 && this.componentOptions?.cache) {
+        if (options.page > 1 && this.componentOptions?.cache) {
             const cached = PagedStore.cache[qstring];
-            if (cached) {
-                this.result = cached;
-                this.resultChange.emit(this.result);
-            }
+            if (cached) result = cached;
         }
 
+        // Added filter params to url
         this.writeParams();
-        this.getting = true;
-        this.gettingChange.emit(true);
 
-        const resp = await this.lookupService.lookup(this.route, this.params, this.pager);
+        // If we have no result, call api
+        if (!result) {
+            // Show temporary loader
+            if (options.reload) {
+                this.reloading = true;
+                this._loading.show();
+            }
 
-        // Stop if response is an exception
-        if (resp instanceof CustomError) {
+            this.getting = true;
+            this.gettingChange.emit(true);
+
+            const resp = await this.lookupService.lookup(this.route, this.params, this.pager);
+
             this.getting = false;
-            return;
+            this.gettingChange.emit(false);
+            this.reloading = false;
+
+            // Stop if response is an exception
+            if (resp instanceof CustomError) {
+                return;
+            }
+
+            result = resp;
+            PagedStore.cache[qstring] = resp;
         }
 
-        this.result = resp;
+        // Store result
+        this.result = result;
         this.resultChange.emit(this.result);
-        PagedStore.cache[qstring] = resp;
 
-        if (this.pageOptions.onResult) this.pageOptions.onResult();
-
-        this.getting = false;
-        this.gettingChange.emit(false);
+        // Emit changes to child components
+        if (this.pageOptions?.onResult) this.pageOptions.onResult();
     }
 
     sameOrderBy() {

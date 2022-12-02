@@ -205,7 +205,7 @@ public class PictureService : IPictureService
         _ = Task.WhenAll(
             _commEvents?.AddNotification(new(picture.ToUserRecord(), type, content)),
             _commEvents?.UpdateGeneralNotification(new(UserLevel.Moderator, NotificationType.NewPictureApproval, $"{picture.PictureId}", type, content)),
-            _socketEvents?.ModeratedPicture(new(picture.PictureId, outcome))
+            _socketEvents?.ModeratedPicture(picture.PictureId, outcome)
         );
     }
 
@@ -231,6 +231,12 @@ public class PictureService : IPictureService
         // Add/remove notification
         if (liked) _commEvents?.AddNotification(new(picture.ToUserRecord(), NotificationType.NewLike, new(picture.PictureId.ToString(), picture.Name, picture.Path), triggeredUser.ToUserRecord()));
         else _commEvents?.UndoUserNotification(new(picture.UserId, NotificationType.NewLike, picture.PictureId.ToString(), triggeredUser.UserId));
+    }
+
+    public async Task Delete(Guid[] pictureIds)
+    {
+        var pictures = await _ctx.Pictures.Where(x => pictureIds.Contains(x.PictureId)).ToListAsync();
+        await Delete(pictures);
     }
 
     public async Task<Picture> Delete(Guid pictureId)

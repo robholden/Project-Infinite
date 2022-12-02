@@ -69,7 +69,7 @@ export class PicturePage implements OnInit, OnDestroy {
 
         // Watch for moderation actions
         if (this.authState.is_mod && this.picture.status !== PictureStatus.Published) {
-            this.sockets.on('ModeratedPicture', 'picture_page', async (pictureId: string, approved: boolean) => {
+            this.sockets.on('ModeratedPicture', 'picture_page', async ({ pictureId, approved }: { pictureId: string; approved: boolean }) => {
                 if (key !== pictureId) return;
 
                 if (!approved) return this.router.navigateByUrl('/');

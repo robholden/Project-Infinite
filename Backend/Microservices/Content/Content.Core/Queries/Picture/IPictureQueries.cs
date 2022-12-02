@@ -13,6 +13,8 @@ public interface IPictureQueries
 
     Task<bool> BelongsToUser(Guid userId, Guid pictureId);
 
+    Task<bool> BelongsToUser(Guid userId, Guid[] pictureIds);
+
     Task<IEnumerable<Picture>> NearBy(Guid pictureId);
 
     Task<IEnumerable<Picture>> Matches(Guid pictureId, int limit = 20);

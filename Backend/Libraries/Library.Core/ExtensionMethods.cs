@@ -127,6 +127,17 @@ public static partial class StringExtensions
 
     [GeneratedRegex("^[a-zA-Z0-9][a-zA-Z0-9_]*$")]
     public static partial Regex UsernameRegex();
+
+    public static bool IsAnInvalidUsername(this string username)
+    {
+        username = (username ?? "").ToLower().Trim();
+        var invalid_users = new string[]
+        {
+            "api"
+        };
+
+        return invalid_users.Contains(username);
+    }
 }
 
 public static class DateExtensions

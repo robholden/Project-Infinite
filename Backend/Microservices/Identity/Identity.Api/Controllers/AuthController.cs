@@ -4,7 +4,6 @@ using System.Text;
 
 using AutoMapper;
 
-using Identity.Api.Dtos;
 using Identity.Api.Requests;
 using Identity.Core;
 using Identity.Core.Queries;
@@ -12,6 +11,7 @@ using Identity.Core.Services;
 using Identity.Core.Services.Auth;
 using Identity.Core.Services.Auth.Providers;
 using Identity.Domain;
+using Identity.Domain.Dtos;
 
 using Library.Core;
 using Library.Service;
@@ -178,7 +178,7 @@ public class AuthController : BaseController<AuthController>
         }
 
         await _authService.Logout(LoggedInUser.AuthTokenId);
-        await _sockets.NewSession(new(LoggedInUser.Id));
+        await _sockets.NewSession(LoggedInUser.Id);
     }
 
     [ResponseCache(Duration = 120, VaryByHeader = "Site-Token")]
@@ -248,7 +248,7 @@ public class AuthController : BaseController<AuthController>
         var token = await _authService.Delete(sessionId);
         if (token != null)
         {
-            await _sockets.RevokeSession(new(token.UserId, token.AuthTokenId));
+            await _sockets.RevokeSession(token.UserId, token.AuthTokenId);
         }
     }
 
@@ -268,7 +268,7 @@ public class AuthController : BaseController<AuthController>
 
         // Send request to service
         await _authService.DeleteAll(LoggedInUser.Id);
-        await _sockets.RevokeSession(new(LoggedInUser.Id));
+        await _sockets.RevokeSession(LoggedInUser.Id);
     }
 
     [Authorize(Policy = "Ignore2FA")]
@@ -342,7 +342,7 @@ public class AuthController : BaseController<AuthController>
 
         if (dto.User != null && !isRefresh)
         {
-            await _sockets.NewSession(new(token.UserId));
+            await _sockets.NewSession(token.UserId);
         }
 
         return dto;

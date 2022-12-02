@@ -1,10 +1,11 @@
 ﻿
 using AutoMapper;
 
-using Content.Api.Dtos;
+using Content.Core;
 using Content.Core.Queries;
 using Content.Core.Services;
 using Content.Domain;
+using Content.Domain.Dtos;
 
 using Library.Core;
 using Library.Service.Api;
@@ -60,7 +61,7 @@ public class UserController : BaseController<UserController>
         // Send socket update to UI
         if (user != null)
         {
-            _ = _socketEvents.UpdatedUserSettings(new(user.UserId, _mapper.Map<UserSettingDto>(user)));
+            _ = _socketEvents.UpdatedUserSettings(user.UserId, _mapper.Map<UserSettingDto>(user));
         }
     }
 }

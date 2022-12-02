@@ -3,6 +3,8 @@
 public enum UserLevel
 {
     Default = 0,
+    Admin,
     Moderator,
-    Admin
+    Advanced,
+    Simple
 }

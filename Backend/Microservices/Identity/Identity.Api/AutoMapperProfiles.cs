@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
-using Identity.Api.Dtos;
 using Identity.Domain;
+using Identity.Domain.Dtos;
 
 namespace Identity.Api;
 

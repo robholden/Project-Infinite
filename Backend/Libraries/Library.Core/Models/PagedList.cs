@@ -57,6 +57,7 @@ public class PagedList<T>
     public PagedList<O> ToDto<O>(IMapper mapper) => new()
     {
         PageNumber = PageNumber,
+        PageSize = PageSize,
         Rows = mapper.Map<IEnumerable<O>>(Rows),
         TotalPages = TotalPages,
         TotalRows = TotalRows,
@@ -66,6 +67,7 @@ public class PagedList<T>
     public PagedList<O> ToDto<O>(Func<IEnumerable<T>, IEnumerable<O>> mapper) => new()
     {
         PageNumber = PageNumber,
+        PageSize = PageSize,
         Rows = mapper.Invoke(Rows),
         TotalPages = TotalPages,
         TotalRows = TotalRows,

@@ -56,7 +56,7 @@ export class LocationsPage extends PagedComponent<Location, LocationSearch> impl
     }
 
     async loadMore() {
-        await this.search(this.pager.page + 1);
+        await this.search({ page: this.pager.page + 1 });
     }
 
     async edit(index: number, field: 'name' | 'code') {

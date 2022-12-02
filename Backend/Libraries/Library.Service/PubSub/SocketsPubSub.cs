@@ -7,49 +7,44 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Library.Service.PubSub;
 
-public record InvalidateUsersRq();
+public interface ISendMessageRq
+{
+    string Method { get; }
+    Guid? UserId { get; }
+    object Data { get; }
+}
 
-public record NewSessionRq(Guid UserId);
+public class SendMessageRq : ISendMessageRq
+{
+    public string Method { get; init; }
+    public Guid? UserId { get; init; }
+    public UserLevel? UserLevel { get; init; }
+    public object Data { get; init; }
 
-public record RevokeSessionRq(Guid UserId, Guid? AuthToken = null);
+    public SendMessageRq() { }
 
-public record RefreshUserRq(Guid UserId, string CurrentHash);
+    public SendMessageRq(string method, Guid? userId, UserLevel? level, object data)
+    {
+        Method = method;
+        UserId = userId;
+        Data = data;
+        UserLevel = level;
+    }
 
-public record UpdatedUserFieldRq(Guid UserId, string Property, object Value);
+    public SendMessageRq(string method, Guid userId, object data) : this(method, userId, null, data) { }
 
-public record UpdatedUserFieldsRq(Guid UserId, Dictionary<string, object> NewValues);
+    public SendMessageRq(string method, UserLevel level, object data) : this(method, null, level, data) { }
 
-public record UpdatedUserSettingsRq(Guid UserId, object Settings);
+    public SendMessageRq(string method, object data) : this(method, null, null, data) { }
 
-public record UpdatedUserPreferencesRq(Guid UserId, object Preferences);
+    public SendMessageRq(string method, Guid userId) : this(method, userId, null, null) { }
 
-public record NewNotificationRq(Guid UserId, object Notification, UserLevel? UserLevel = null);
-
-public record NewLocationRq(Guid UserId, Guid PictureId, string Name, string Country, decimal Lat, decimal Lng);
-
-public record ModeratedPictureRq(Guid PictureId, bool Approved);
+    public SendMessageRq(string method) : this(method, null, null, null) { }
+}
 
 public interface ISocketsPubSub
 {
-    Task InvalidateUsers();
-
-    Task NewSession(NewSessionRq payload);
-
-    Task RevokeSession(RevokeSessionRq payload);
-
-    Task UpdatedUserField(UpdatedUserFieldRq payload);
-
-    Task UpdatedUserFields(UpdatedUserFieldsRq payload);
-
-    Task UpdatedUserSettings(UpdatedUserSettingsRq payload);
-
-    Task UpdatedUserPreferences(UpdatedUserPreferencesRq payload);
-
-    Task NewNotification(NewNotificationRq payload);
-
-    Task NewLocation(NewLocationRq payload);
-
-    Task ModeratedPicture(ModeratedPictureRq payload);
+    Task Send(SendMessageRq payload);
 }
 
 public class SocketsPubSub : BasePubSub, ISocketsPubSub
@@ -58,27 +53,5 @@ public class SocketsPubSub : BasePubSub, ISocketsPubSub
     {
     }
 
-    public async Task InvalidateUsers() => await Publish(new InvalidateUsersRq());
-
-    public async Task NewSession(NewSessionRq payload) => await Publish(payload);
-
-    public async Task RevokeSession(RevokeSessionRq payload) => await Publish(payload);
-
-    public async Task UpdatedUserField(UpdatedUserFieldRq payload) => await UpdatedUserFields(new(payload.UserId, new() { { payload.Property, payload.Value } }));
-
-    public async Task UpdatedUserFields(UpdatedUserFieldsRq payload) => await Publish(payload);
-
-    public async Task UpdatedUserSettings(UpdatedUserSettingsRq payload) => await Publish(payload);
-
-    public async Task UpdatedUserPreferences(UpdatedUserPreferencesRq payload) => await Publish(payload);
-
-    public async Task NewNotification(NewNotificationRq payload) => await Publish(payload);
-
-    public async Task NewLocation(NewLocationRq payload) => await Publish(payload);
-
-    public async Task ModeratedPicture(ModeratedPictureRq payload) => await Publish(payload);
-
-    public static void AddRequestClients(IBusRegistrationConfigurator configurator)
-    {
-    }
+    public async Task Send(SendMessageRq payload) => await Publish(payload);
 }

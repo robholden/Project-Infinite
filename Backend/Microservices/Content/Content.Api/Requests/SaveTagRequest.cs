@@ -1,5 +1,4 @@
-﻿
-using Content.Api.Dtos;
+﻿using Content.Domain.Dtos;
 
 namespace Content.Api.Requests;
 

@@ -1,11 +1,11 @@
 ﻿
 using AutoMapper;
 
-using Identity.Api.Dtos;
 using Identity.Api.Requests;
 using Identity.Core;
 using Identity.Core.Services;
 using Identity.Domain;
+using Identity.Domain.Dtos;
 
 using Library.Core;
 using Library.Service.Api;
@@ -62,7 +62,7 @@ public class TwoFactorController : BaseController<TwoFactorController>
         var user = await _userService.Disable2FA(LoggedInUser.Id);
 
         // Send socket update to refresh user
-        _ = _sockets.UpdatedUserField(new(LoggedInUser.Id, nameof(UserDto.TwoFactorEnabled), user.TwoFactorEnabled));
+        _ = _sockets.UpdatedUserFields(LoggedInUser.Id, new UserFieldChange(nameof(UserDto.TwoFactorEnabled), user.TwoFactorEnabled));
     }
 
     [ReCaptcha]
@@ -79,7 +79,7 @@ public class TwoFactorController : BaseController<TwoFactorController>
         var codes = await _twoFactorService.GenerateRecoveryCodes(LoggedInUser.Id);
 
         // Send socket update to refresh user
-        _ = _sockets.UpdatedUserFields(new(LoggedInUser.Id, new() { { nameof(UserDto.TwoFactorEnabled), user.TwoFactorEnabled }, { nameof(UserDto.TwoFactorType), user.TwoFactorType } }));
+        _ = _sockets.UpdatedUserFields(LoggedInUser.Id, new UserFieldChange(nameof(UserDto.TwoFactorEnabled), user.TwoFactorEnabled), new UserFieldChange(nameof(UserDto.TwoFactorType), user.TwoFactorType));
 
         return _mapper.Map<IEnumerable<RecoveryCodeDto>>(codes);
     }

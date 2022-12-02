@@ -416,6 +416,16 @@ public class UserService : IUserService
         return status;
     }
 
+    public async Task UpdateLevel(Guid userId, UserLevel level)
+    {
+        // Fetch user
+        var user = await _ctx.Users.FindAsync(u => u.UserId == userId);
+
+        // Update name property
+        user.UserLevel = level;
+        await _ctx.UpdateAsync(user);
+    }
+
     public async Task<User> VerifyAndConfirmEmail(string key)
     {
         // Verify and consume key
@@ -455,20 +465,28 @@ public class UserService : IUserService
         await _identityEvents?.DeletedUser(new(userId));
 
         // Logout all sessions
-        _ = _socketEvents?.RevokeSession(new(user.UserId));
+        _ = _socketEvents?.RevokeSession(user.UserId);
 
         return user;
     }
 
     private async Task ValidateUsername(string username)
     {
+        // Ensure format is valid
         if (!StringExtensions.UsernameRegex().IsMatch(username))
         {
             throw new SiteException(ErrorCode.InvalidUsername);
         }
 
+        // Invalid users
+        username = username.ToLower().Trim();
+        if (username.IsAnInvalidUsername())
+        {
+            throw new SiteException(ErrorCode.InvalidUsername);
+        }
+
         // Check username is unique
-        if (await _ctx.Users.FindOrNullAsync(u => u.Username.ToLower() == username.ToLower().Trim()) != null)
+        if (await _ctx.Users.FindOrNullAsync(u => u.Username.ToLower() == username) != null)
         {
             throw new SiteException(ErrorCode.UsernameTaken);
         }

@@ -1,9 +1,9 @@
 ﻿
 using AutoMapper;
 
-using Content.Api.Dtos;
 using Content.Api.Results;
 using Content.Domain;
+using Content.Domain.Dtos;
 
 using Library.Core;
 using Library.Service.Api;

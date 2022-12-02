@@ -1,9 +1,9 @@
 ﻿
 using AutoMapper;
 
-using Comms.Api.Dtos;
 using Comms.Core.Queries;
 using Comms.Core.Services;
+using Comms.Domain.Dtos;
 
 using Library.Core;
 using Library.Service.Api;

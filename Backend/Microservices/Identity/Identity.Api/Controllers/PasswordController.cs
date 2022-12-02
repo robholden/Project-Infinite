@@ -2,6 +2,7 @@
 using AutoMapper;
 
 using Identity.Api.Requests;
+using Identity.Core;
 using Identity.Core.Services;
 using Identity.Domain;
 
@@ -84,7 +85,7 @@ public class PasswordController : BaseController<PasswordController>
         if (request.Clear)
         {
             await _authService.DeleteAll(user.UserId);
-            await _sockets.RevokeSession(new(user.UserId));
+            await _sockets.RevokeSession(user.UserId);
         }
     }
 

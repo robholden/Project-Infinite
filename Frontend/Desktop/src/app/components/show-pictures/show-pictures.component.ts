@@ -7,7 +7,7 @@ import { EventService } from '@shared/services';
 import { FiltersService, PictureService } from '@shared/services/content';
 import { AuthState } from '@shared/storage';
 
-import { InfiniteComponent } from '@app/features/infinite-component.helper';
+import { PagedComponent } from '@app/features/paged-component.helper';
 import { fade } from '@app/functions/animations.fn';
 import { boundryToBounds, LeafletMapOptions, pictureMarkers } from '@app/functions/leaflet.fn';
 import { PictureEditModal } from '@app/modals/picture-edit/picture-edit.modal';
@@ -35,7 +35,7 @@ interface Filters {
     styleUrls: ['./show-pictures.component.scss'],
     animations: [fade],
 })
-export class ShowPicturesComponent extends InfiniteComponent<Picture, PictureSearch> implements OnInit {
+export class ShowPicturesComponent extends PagedComponent<Picture, PictureSearch> implements OnInit {
     readonly enum_values = enumValues(PictureOrderBy, PictureOrderBy.None);
 
     @Input() showFilters: boolean;

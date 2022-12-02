@@ -1,8 +1,8 @@
 ﻿
 using AutoMapper;
 
-using Content.Api.Dtos;
 using Content.Domain;
+using Content.Domain.Dtos;
 
 namespace Content.Api;
 

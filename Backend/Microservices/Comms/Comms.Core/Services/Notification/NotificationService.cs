@@ -1,5 +1,6 @@
 ﻿
 using Comms.Domain;
+using Comms.Domain.Dtos;
 
 using Library.Core;
 using Library.Service.PubSub;
@@ -55,7 +56,7 @@ public class NotificationService : INotificationService
         await _ctx.Notifications.Where(x => x.NotificationId == id).ExecuteDeleteAsync();
     }
 
-    public async Task<bool> TryToSend(Notification notification, object payload)
+    public async Task<bool> TryToSend(Notification notification, NotificationDto dto)
     {
         // Get action
         var action = NotificationAction.Create(notification);
@@ -72,7 +73,7 @@ public class NotificationService : INotificationService
         }
 
         // Send ui update
-        _ = _socketEvents?.NewNotification(new(notification.UserId, payload, notification.UserLevel));
+        _ = _socketEvents?.NewNotification(notification.UserId, dto, notification.UserLevel);
 
         // Send email to user
         if (notification.Username != null)

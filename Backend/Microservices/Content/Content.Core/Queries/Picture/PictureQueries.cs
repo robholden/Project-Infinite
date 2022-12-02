@@ -58,6 +58,11 @@ public class PictureQueries : IPictureQueries
         return _ctx.Pictures.AsNoTracking().AnyAsync(x => x.PictureId == pictureId && x.UserId == userId);
     }
 
+    public Task<bool> BelongsToUser(Guid userId, Guid[] pictureIds)
+    {
+        return _ctx.Pictures.AsNoTracking().AnyAsync(x => pictureIds.Contains(x.PictureId) && x.UserId == userId);
+    }
+
     public async Task<IEnumerable<Picture>> NearBy(Guid pictureId)
     {
         var picture = await _ctx.Pictures.FindAsync(x => x.PictureId == pictureId);

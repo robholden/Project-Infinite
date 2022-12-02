@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 
-using Comms.Api.Dtos;
 using Comms.Core.Services;
 using Comms.Domain;
+using Comms.Domain.Dtos;
 
 using Library.Core;
 using Library.Service.PubSub;

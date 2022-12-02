@@ -131,7 +131,7 @@ public class LocationService : ILocationService
     private void SendLocationToClients(IEnumerable<Picture> pictures)
     {
         // Send socket message to all pictures waiting for their picture location
-        var tasks = pictures.Select(async x => await _socketEvents?.NewLocation(new(x.UserId, x.PictureId, x.Location.Name, x.Location.Country.Name, x.Location.Lat, x.Location.Lng)));
+        var tasks = pictures.Select(async x => await _socketEvents?.NewLocation(x.UserId, x.PictureId, x.Location.Name, x.Location.Country.Name, x.Location.Lat, x.Location.Lng));
 
         // Execute tasks in the background
         _ = Task.Factory.StartNew(async () => await Task.WhenAll(tasks), TaskCreationOptions.LongRunning);

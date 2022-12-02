@@ -1,12 +1,12 @@
 ﻿
 using AutoMapper;
 
-using Content.Api.Dtos;
 using Content.Api.Requests;
 using Content.Api.Results;
 using Content.Core.Queries;
 using Content.Core.Services;
 using Content.Domain;
+using Content.Domain.Dtos;
 
 using Library.Core;
 using Library.Service.Api;
@@ -229,6 +229,20 @@ public class PictureController : BaseController<PictureController>
     {
         var picture = await GetAndVerifyPicture(id, true);
         await _service.Delete(picture.PictureId);
+    }
+
+    [Authorize(Roles = nameof(UserLevel.Advanced))]
+    [HttpPost("delete-many")]
+    public async Task BulkDelete([FromBody] Guid[] pictureIds)
+    {
+        var belongs = await _pictureQueries.BelongsToUser(LoggedInUser.Id, pictureIds);
+        if (!belongs)
+        {
+            ThrowNotFound();
+            return;
+        }
+
+        await _service.Delete(pictureIds);
     }
 
     [Authorize]

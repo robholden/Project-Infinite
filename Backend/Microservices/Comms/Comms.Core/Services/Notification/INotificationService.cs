@@ -1,4 +1,5 @@
 ﻿using Comms.Domain;
+using Comms.Domain.Dtos;
 
 using Library.Core;
 
@@ -14,5 +15,5 @@ public interface INotificationService
 
     Task Delete(Guid id);
 
-    Task<bool> TryToSend(Notification notification, object payload);
+    Task<bool> TryToSend(Notification notification, NotificationDto payload);
 }
