@@ -1,8 +1,10 @@
-# Snow Capture
+# Project Infinite
+
+A never ending project I keep maintaining for fun!
 
 ## Frontend
 
-Stack: `Angular 14` for desktop and `Ionic 6` for Mobile/PWA
+Stack: `Angular 15` for desktop and `Ionic 6` for Mobile/PWA
 
 1. Install [Node.js](https://nodejs.org/en/download/)
 2. Install Angular CLI `npm install -g @angular/cli`
