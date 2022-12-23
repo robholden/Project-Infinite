@@ -4,11 +4,10 @@ on:
   push:
     branches: [main]
     paths:
-      - 'Frontend/Desktop/**.ts'
-      - 'Frontend/Desktop/nginx-custom.conf'
-      - 'Frontend/Desktop/Dockerfile'
-      - 'Frontend/Desktop/angular.json'
-      - 'Frontend/Shared/**.ts'
+      - 'Frontend/Angular/Desktop/**.ts'
+      - 'Frontend/Angular/Desktop/Dockerfile'
+      - 'Frontend/Angular/Desktop/angular.json'
+      - 'Frontend/Angular/Shared/**.ts'
   workflow_dispatch:
 
 jobs:
@@ -28,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with:
           context: ./Frontend
-          file: ./Frontend/Desktop/Dockerfile
+          file: ./Frontend/Angular/Desktop/Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/project-infinite-ui-web:latest
           push: true
           build-args: |
