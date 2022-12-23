@@ -13,6 +13,6 @@ public static class Program
 
     public static async Task Main(string[] args)
     {
-        await CreateWebHostBuilder(args).Build().MigrateDbContext<ContentContext>(ctx => ctx.Seed()).RunAsync();
+        await CreateWebHostBuilder(args).Build().MigrateDbContext<ContentContext>().RunAsync();
     }
 }

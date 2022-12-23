@@ -1,4 +1,4 @@
-name: snow-capture
+name: project-infinite
 services:
   - name: rabbit
     image: rabbitmq:3-management
@@ -10,4 +10,4 @@ services:
     image: redis
     bindings:
       - port: 6379
-        connectionString: "${host}:${port}"
+        connectionString: '${host}:${port}'

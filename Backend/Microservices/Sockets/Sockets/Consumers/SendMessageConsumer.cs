@@ -4,7 +4,7 @@ using MassTransit;
 
 using Microsoft.AspNetCore.SignalR;
 
-namespace Sockets.Api.Consumers;
+namespace Sockets.Consumers;
 
 public class SendMessageConsumer : ISnowConsumer, IConsumer<SendMessageRq>
 {

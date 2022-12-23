@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "Backend/Shared/Libraries/**.cs"
-      - "Backend/Microservices/Sockets/**.cs"
-      - "Backend/Microservices/Sockets/**.csproj"
-      - "Backend/Microservices/Sockets/Sockets/Dockerfile"
-      - "Backend/Microservices/Sockets/Sockets/appsettings.json"
+      - 'Backend/Shared/Libraries/**.cs'
+      - 'Backend/Microservices/Sockets/**.cs'
+      - 'Backend/Microservices/Sockets/**.csproj'
+      - 'Backend/Microservices/Sockets/Sockets/Dockerfile'
+      - 'Backend/Microservices/Sockets/Sockets/appsettings.json'
   workflow_dispatch:
 
 jobs:
@@ -29,5 +29,5 @@ jobs:
         with:
           context: ./Backend
           file: ./Backend/Microservices/Sockets/Sockets/Dockerfile
-          tags: ${{ secrets.DOCKER_USERNAME }}/sc-api-sockets:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/project-infinite-api-sockets:latest
           push: true

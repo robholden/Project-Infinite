@@ -19,6 +19,8 @@ public class IdentityContext : DbContext
 
     public DbSet<UserKey> UserKeys { get; set; }
 
+    public DbSet<UserPreference> UserPreferences { get; set; }
+
     public DbSet<User> Users { get; set; }
 
     public DbSet<FailedLogin> FailedLogins { get; set; }
@@ -56,5 +58,11 @@ public class IdentityContext : DbContext
             .WithMany(x => x.RecoveryCodes)
             .IsRequired()
             .HasForeignKey(x => x.UserId);
+
+        // User Preferences
+        modelBuilder.Entity<UserPreference>()
+            .HasOne(x => x.User)
+            .WithOne(x => x.Preferences)
+            .HasForeignKey<UserPreference>(x => x.UserId);
     }
 }

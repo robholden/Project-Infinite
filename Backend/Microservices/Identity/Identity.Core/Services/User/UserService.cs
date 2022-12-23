@@ -74,52 +74,53 @@ public class UserService : IUserService
         await ValidateUsername(user.Username);
         await ValidateEmail(user.Email);
 
-        using (var transaction = await _ctx.Database.BeginTransactionAsync())
+        // Add user to db
+        user = await _ctx.CreateAsync(user);
+
+        // Send email confirmation
+        if (user.ExternalProvider == ExternalProvider.Unset && !user.EmailConfirmed)
         {
-            try
-            {
-                // Add user to db
-                user = await _ctx.CreateAsync(user);
-
-                // Publish new user event
-                await _commEvents.AddUser(new(user.ToUserRecord(), user.Name, user.Email, register.AllowMarketing));
-
-                // Send email confirmation
-                if (user.ExternalProvider == ExternalProvider.Unset && !user.EmailConfirmed)
-                {
-                    await SendEmailConfirmation(user.UserId);
-                }
-
-                await transaction.CommitAsync();
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+            await SendEmailConfirmation(user.UserId);
         }
 
         return user;
     }
 
-    public async Task<UserStatus> LoginAttempted(User user, bool pass)
+    public async Task<UserStatus> LoginAttempted(User user, bool pass, ClientIdentity identity)
     {
         if (!pass)
         {
             await _ctx.CreateAsync(new FailedLogin(user.UserId));
         }
 
+        // Lockout user if they've made too many failed attempts
         var attempts = await _ctx.FailedLogins.CountAsync(l => l.UserId == user.UserId && l.Created > DateTime.UtcNow.AddMinutes(-_settings.FailedLoginDuration));
         if (attempts > _settings.FailedLoginAttempts)
         {
             return await UpdateStatus(user.UserId, UserStatus.Locked);
         }
-        else if (user.Status == UserStatus.Locked)
+
+        // Unlock account
+        var status = user.Status;
+        if (user.Status == UserStatus.Locked)
         {
-            return await UpdateStatus(user.UserId, UserStatus.Enabled);
+            status = await UpdateStatus(user.UserId, UserStatus.Enabled);
         }
 
-        return user.Status;
+        // Notify user that a new location has logged in
+        var known = await _ctx.AuthTokens.AnyAsync(t => t.UserId == user.UserId && t.IpAddress == identity.IpAddress && t.Created > DateTime.UtcNow.AddMonths(-6));
+        if (!known)
+        {
+            var body = @$"
+                This email was generated because a new log-in has occurred for the account {user.Username} on {DateTime.UtcNow:MMMM dd, yyyy hh:mm:ss t} UTC originating from:
+                    •	Platform: {identity.Platform}
+                    •	IP address: {identity.IpAddress}
+            ";
+            var email = new SendEmailToUserRq(user.ToUserRecord(), "", "Your account - Successful Log-in", true, identity.Key);
+            _ = _commEvents?.AddNotification(new(user.ToUserRecord(), identity.IpAddress, NotificationType.NewLogin, Content: new(), Email: email));
+        }
+
+        return status;
     }
 
     public async Task ForgotPassword(string email)
@@ -145,7 +146,7 @@ public class UserService : IUserService
                 <p>You've requested a password reset. Please click this link to reset your password (it will expire after 24 hours):</p>
                 <p>###SITE_URL###/reset-password/{userKey.Key}</p>
             ";
-        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject, EmailType.System));
+        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
     }
 
     public async Task<string> Setup2FA(Guid userId, TwoFactorType type, string param = null)
@@ -222,12 +223,12 @@ public class UserService : IUserService
                     body = $"<p>You recently tried to setup email two-factor authentication. In order to complete your setup, please use the following code:</p> {code}";
                 }
 
-                _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), body, subject, EmailType.Instant));
+                _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), body, subject, true));
                 break;
 
             case TwoFactorType.SMS:
                 var message = $"Your Snow Capture one time password is {code}";
-                _ = _commEvents?.SendSmsToUser(new(user.ToUserRecord(), user.Mobile, message, SmsType.TwoFactor));
+                _ = _commEvents?.SendSmsToUser(new(user.ToUserRecord(), "2fa", user.Mobile, message));
 
                 break;
         }
@@ -260,7 +261,7 @@ public class UserService : IUserService
         // Send email to user for confirmation
         var subject = "You've disabled two-factor authentication";
         var message = "<p>We're informing you that you have successfully disabled two-factor authentication.</p>";
-        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject, EmailType.System));
+        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
 
         return user;
     }
@@ -290,7 +291,7 @@ public class UserService : IUserService
         // Send email to user for confirmation
         var subject = "You've enabled two-factor authentication";
         var message = "<p>We're informing you that you have successfully setup two-factor authentication.</p>";
-        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject, EmailType.System));
+        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
 
         return user;
     }
@@ -322,7 +323,7 @@ public class UserService : IUserService
                 <p>To complete the registration process, please confirm your email address by clicking the link below:</p>
                 <p>###SITE_URL###/confirm-email/{userKey.Key}</p>
             ";
-            _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject, EmailType.System));
+            _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
         }
 
         return userKey.Key;
@@ -447,7 +448,7 @@ public class UserService : IUserService
         // Send email about change
         var subject = "Password Reset";
         var message = "<p>You've successfully changed your password.</p>";
-        _ = _commEvents?.SendEmailToUser(new(userKey.User.ToUserRecord(), message, subject, EmailType.System));
+        _ = _commEvents?.SendEmailToUser(new(userKey.User.ToUserRecord(), message, subject));
 
         return userKey.User;
     }

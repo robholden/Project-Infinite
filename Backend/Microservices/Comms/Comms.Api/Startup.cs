@@ -42,12 +42,10 @@ public class Startup
         services.Configure<TextMagicSettings>(Configuration.GetSection("TextMagicSettings"));
 
         // Inject services
-        services.AddTransient<IUserSettingService, UserSettingService>();
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<INotificationService, NotificationService>();
 
         // Inject queries
-        services.AddTransient<IUserSettingQueries, UserSettingQueries>();
         services.AddTransient<INotificationQueries, NotificationQueries>();
 
         // Add sms provider

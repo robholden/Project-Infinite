@@ -18,7 +18,7 @@ namespace Comms.Tests;
 
 internal class Helper
 {
-    public readonly UserSetting User;
+    public readonly UserRecord User = new(Guid.NewGuid(), "tester");
 
     public Helper()
     {
@@ -31,15 +31,12 @@ internal class Helper
                     .Options
         );
 
-        // Create test base user
-        User = AddUserData("TestUser");
-
         var emailOptions = Options.Create<EmailSettings>(new());
         var mockCommEvents = new Mock<ICommsPubSub>().Object;
         var mockSocketEvents = new Mock<ISocketsPubSub>().Object;
 
         NotificationQueries = new NotificationQueries(Context);
-        NotificationService = new NotificationService(Context, emailOptions, mockCommEvents, mockSocketEvents);
+        NotificationService = new NotificationService(Context, emailOptions, mockSocketEvents, EmailService);
 
         EmailService = new EmailService(Context, emailOptions);
 
@@ -75,29 +72,12 @@ internal class Helper
         return configuration;
     }
 
-    public UserRecord AddUser(string username)
-    {
-        var user = Context.UserSettings.Add(new() { UserId = Guid.NewGuid(), Email = "tester@example.com", Username = username, Name = "Tester" }).Entity;
-        Context.SaveChanges();
-
-        return new(user.UserId, username);
-    }
-
-    public UserSetting AddUserData(string name)
-    {
-        var user = Context.UserSettings.Add(new() { Email = "tester@example.com", Name = name }).Entity;
-        Context.SaveChanges();
-
-        return user;
-    }
-
     public Notification AddTestNotification(string key = "0", Guid? userId = null)
     {
         var entity = new Notification()
         {
             UserId = userId ?? User.UserId,
-            ContentKey = key,
-            Type = NotificationType.None
+            Identifier = key
         };
 
         entity = Context.Notifications.Add(entity).Entity;

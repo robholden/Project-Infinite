@@ -1,7 +1,5 @@
 ﻿using Content.Api.Templates;
 using Content.Core;
-using Content.Core.Queries;
-using Content.Core.Services;
 using Content.Domain;
 
 using Library.Service.Api;
@@ -42,22 +40,10 @@ public class Startup
 
         // Inject settings
         services.Configure<ContentSettings>(Configuration.GetSection("ContentSettings"));
-        services.Configure<PictureSettings>(Configuration.GetSection("PictureSettings"));
 
         // Inject services
-        services.AddTransient<IUserSettingService, UserSettingService>();
-        services.AddTransient<ILocationService, LocationService>();
-        services.AddTransient<IPictureService, PictureService>();
-        services.AddTransient<ICollectionService, CollectionService>();
-        services.AddTransient<ITagService, TagService>();
 
         // Inject queries
-        services.AddTransient<IUserSettingQueries, UserSettingQueries>();
-        services.AddTransient<ILocationQueries, LocationQueries>();
-        services.AddTransient<IPictureQueries, PictureQueries>();
-        services.AddTransient<IPictureModerationQueries, PictureModerationQueries>();
-        services.AddTransient<ICollectionQueries, CollectionQueries>();
-        services.AddTransient<ITagQueries, TagQueries>();
 
         // Add identity db
         services.AddDatabase<ContentContext>(Configuration, typeof(Startup).Assembly.GetName().Name);

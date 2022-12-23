@@ -59,12 +59,10 @@ public static class PubSubExtensions
         CommsPubSub.AddRequestClients(configurator);
         ContentPubSub.AddRequestClients(configurator);
         IdentityPubSub.AddRequestClients(configurator);
-        ReportPubSub.AddRequestClients(configurator);
 
         services.AddTransient<ICommsPubSub, CommsPubSub>();
         services.AddTransient<IContentPubSub, ContentPubSub>();
         services.AddTransient<IIdentityPubSub, IdentityPubSub>();
-        services.AddTransient<IReportPubSub, ReportPubSub>();
         services.AddTransient<ISocketsPubSub, SocketsPubSub>();
     }
 }

@@ -33,6 +33,8 @@ public class User : IUser
 
     public virtual ICollection<RecoveryCode> RecoveryCodes { get; set; }
 
+    public virtual UserPreference Preferences { get; set; }
+
     public bool TwoFactorEnabled { get; set; }
 
     [MaxLength(100)]

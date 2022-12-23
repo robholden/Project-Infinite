@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "Frontend/Desktop/**.ts"
-      - "Frontend/Desktop/nginx-custom.conf"
-      - "Frontend/Desktop/Dockerfile"
-      - "Frontend/Desktop/angular.json"
-      - "Frontend/Shared/**.ts"
+      - 'Frontend/Desktop/**.ts'
+      - 'Frontend/Desktop/nginx-custom.conf'
+      - 'Frontend/Desktop/Dockerfile'
+      - 'Frontend/Desktop/angular.json'
+      - 'Frontend/Shared/**.ts'
   workflow_dispatch:
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
         with:
           context: ./Frontend
           file: ./Frontend/Desktop/Dockerfile
-          tags: ${{ secrets.DOCKER_USERNAME }}/sc-ui-web:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/project-infinite-ui-web:latest
           push: true
           build-args: |
             FONTAWESOME_NPM_AUTH_TOKEN=${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}

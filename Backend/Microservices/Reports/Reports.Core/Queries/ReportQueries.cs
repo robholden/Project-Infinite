@@ -25,14 +25,6 @@ public class ReportQueries : IReportQueries
             .AnyAsync(x => x.UserId == userId && x.UserReport.UserId == reportedUserId);
     }
 
-    public Task<bool> HasReportedPicture(Guid userId, Guid reportedPictureId)
-    {
-        return _ctx.PictureReportInstances
-            .AsNoTracking()
-            .Include(x => x.PictureReport)
-            .AnyAsync(x => x.UserId == userId && x.PictureReport.PictureId == reportedPictureId);
-    }
-
     public async Task<PagedList<T>> Lookup<T, I>(IPagedListRequest<ReportQueryOptions> pageRequest) where T : Report<I> where I : ReportInstance
     {
         // Default options

@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "Backend/Shared/Libraries/Library.Service/**.cs"
-      - "Backend/Gateway/**.cs"
-      - "Backend/Gateway/**.csproj"
-      - "Backend/Gateway/Dockerfile"
-      - "Backend/Gateway/appsettings.json"
+      - 'Backend/Shared/Libraries/Library.Service/**.cs'
+      - 'Backend/Gateway/**.cs'
+      - 'Backend/Gateway/**.csproj'
+      - 'Backend/Gateway/Dockerfile'
+      - 'Backend/Gateway/appsettings.json'
   workflow_dispatch:
 
 jobs:
@@ -29,5 +29,5 @@ jobs:
         with:
           context: ./Backend
           file: ./Backend/Gateway/Dockerfile
-          tags: ${{ secrets.DOCKER_USERNAME }}/sc-api-gateway:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/project-infinite-api-gateway:latest
           push: true

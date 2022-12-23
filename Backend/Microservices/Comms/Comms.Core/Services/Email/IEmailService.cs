@@ -9,7 +9,11 @@ public interface IEmailService
 
     Task Send(EmailQueue queue);
 
+    Task Send(Guid queueId);
+
     Task DeleteQueues(IEnumerable<Guid> queueIds);
 
-    Task<EmailQueue> Add(EmailQueue model);
+    Task<EmailQueue> CreateAndSend(EmailQueue model);
+
+    Task<EmailQueue> Queue(EmailQueue model);
 }

@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "Backend/Shared/Libraries/**.cs"
-      - "Backend/Microservices/Identity/**.cs"
-      - "Backend/Microservices/Identity/**.csproj"
-      - "Backend/Microservices/Identity/Identity.Api/Dockerfile"
-      - "Backend/Microservices/Identity/Identity.Api/appsettings.json"
+      - 'Backend/Shared/Libraries/**.cs'
+      - 'Backend/Microservices/Identity/**.cs'
+      - 'Backend/Microservices/Identity/**.csproj'
+      - 'Backend/Microservices/Identity/Identity.Api/Dockerfile'
+      - 'Backend/Microservices/Identity/Identity.Api/appsettings.json'
   workflow_dispatch:
 
 jobs:
@@ -29,5 +29,5 @@ jobs:
         with:
           context: ./Backend
           file: ./Backend/Microservices/Identity/Identity.Api/Dockerfile
-          tags: ${{ secrets.DOCKER_USERNAME }}/sc-api-identity:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/project-infinite-api-identity:latest
           push: true

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 using Library.Core;
+using Library.Service.PubSub;
 
 namespace Comms.Domain;
 
@@ -13,8 +14,6 @@ public class EmailQueue : IUser
 
     public Guid UserId { get; set; }
 
-    public virtual UserSetting User { get; set; }
-
     [MinLength(3), MaxLength(50)]
     public string Username { get; set; }
 
@@ -23,6 +22,8 @@ public class EmailQueue : IUser
 
     [MaxLength(100)]
     public string Name { get; set; }
+
+    public bool Sendable { get; set; }
 
     [MaxLength(500)]
     public string IdentityHash { get; set; }
@@ -36,8 +37,6 @@ public class EmailQueue : IUser
     [Required, MaxLength(255)]
     public string Subject { get; set; }
 
-    public EmailType Type { get; set; }
-
     public virtual Email Email { get; set; }
 
     public Guid? OwnedBy { get; set; }
@@ -46,6 +45,18 @@ public class EmailQueue : IUser
 
     public DateTime? CompletedAt { get; set; }
 
+    public string OptOutKey { get; set; }
+
     [Timestamp]
     public byte[] RowVersion { get; set; }
+
+    public static EmailQueue FromUserReq(SendEmailToUserRq request) => request == null ? null : new()
+    {
+        Message = request.Message,
+        Subject = request.Subject,
+        UserId = request.User.UserId,
+        Username = request.User.Username,
+        IdentityHash = string.IsNullOrEmpty(request.IdentityHash) ? request.Subject : request.IdentityHash,
+        Sendable = request.SendInstantly
+    };
 }

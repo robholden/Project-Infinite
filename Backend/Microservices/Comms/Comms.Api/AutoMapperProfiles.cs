@@ -9,7 +9,6 @@ public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
     {
-        CreateMap<UserSettingDto, UserSetting>().ReverseMap();
         CreateMap<NotificationDto, Notification>().ReverseMap()
             .ForMember(dest => dest.Users, opt => opt.MapFrom(src => CountUsers(src)))
             .ForMember(dest => dest.IsGlobal, opt => opt.MapFrom(src => src.UserId == new System.Guid()));

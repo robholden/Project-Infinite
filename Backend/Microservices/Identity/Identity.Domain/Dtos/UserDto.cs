@@ -26,6 +26,8 @@ public class UserDto : SimpleUserDto
     public DateTime? LastActive { get; set; }
 
     public DateTime Created { get; set; }
+
+    public UserPreferencesDto Preferences { get; set; }
 }
 
 public class AdminUserDto : UserDto

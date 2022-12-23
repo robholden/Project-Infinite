@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace Identity.Api.Controllers.TwoFactor;
+namespace Identity.Api.Controllers;
 
 [Route("2FA")]
 [Authorize]

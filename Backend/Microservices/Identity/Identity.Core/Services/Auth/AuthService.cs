@@ -34,7 +34,7 @@ public class AuthService : IAuthService
         var loggedIn = await _passwordService.Check(user.UserId, password);
 
         // Go to user service to handle failed login attempts
-        var status = await _userService.LoginAttempted(user, loggedIn);
+        var status = await _userService.LoginAttempted(user, loggedIn, identity);
         EnsureAccountIsEnabled(status);
 
         if (!loggedIn)

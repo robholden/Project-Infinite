@@ -1,0 +1,49 @@
+<div class="empty" *ngIf="loading">
+    <i class="fas fa-spinner-third fa-spin"></i>
+</div>
+
+<div class="empty" *ngIf="!loading && !results?.totalRows">No Notifications</div>
+
+<ng-container *ngIf="!loading && results?.totalRows > 0">
+    <div class="notification-header flex-row-align">
+        <div class="mr-a">{{ mod ? 'Moderator ' : '' }}Notifications</div>
+
+        <span
+            role="button"
+            background="default"
+            hover="light"
+            class="button as-link less-pad icon-only"
+            tippy="Mark {{ unread }} as read"
+            placement="bottom"
+            (click)="markAllAsRead()"
+            *ngIf="unread"
+        >
+            <i class="far fa-envelope-open icon"></i>
+        </span>
+
+        <!-- &nbsp;
+
+        <span role="button" background="default" hover="light" class="button as-link less-pad icon-only" tippy="Settings" placement="bottom">
+            <i class="far fa-cogs icon"></i>
+        </span> -->
+    </div>
+
+    <div class="notifications">
+        <div class="notification" *ngFor="let notif of results.rows" [class.unread]="!notif.read" [ngSwitch]="notif.type" (click)="markAsRead(notif)">
+            <div class="unread-bar" *ngIf="!notif.isGlobal"></div>
+
+            <div class="inner-notif" *ngSwitchCase="NotificationType.NewLogin">
+                <div class="img-icon" colour="danger"><i class="far fa-map-marker-times"></i></div>
+                <div class="notif-text">
+                    New successful login from {{ notif.identifier }}
+
+                    <div class="timestamp">{{ notif.date | timeago }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ta-c mb-s" *ngIf="results.hasNextPage">
+            <span role="button" id="load-more-btn" class="button small as-link" background="light" (click)="loadMore()">Load More</span>
+        </div>
+    </div>
+</ng-container>

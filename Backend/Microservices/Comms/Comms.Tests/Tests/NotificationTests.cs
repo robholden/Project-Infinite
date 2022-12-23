@@ -25,12 +25,12 @@ public class NotificationTests
     public void Should_Add()
     {
         // Arrange
-        var user = helper.AddUser("RandomUser1");
+        var user = new UserRecord(Guid.NewGuid(), "test");
+        var identifier = Guid.NewGuid().ToString();
         var type = NotificationType.None;
-        var key = "0";
 
         var contextMoq = new Mock<ConsumeContext<AddNotificationRq>>();
-        contextMoq.Setup(c => c.Message).Returns(new AddNotificationRq(user, type, new(Key: key)));
+        contextMoq.Setup(c => c.Message).Returns(new AddNotificationRq(user, identifier, type, new()));
 
         // Act
         var consumer = new AddNotificationConsumer(new Mock<IMapper>().Object, helper.Context, helper.NotificationService);
@@ -47,16 +47,16 @@ public class NotificationTests
     {
         // Arrange
         var userLevel = UserLevel.Moderator;
+        var identifier = Guid.NewGuid().ToString();
         var type = NotificationType.None;
-        var key = "mod-notification";
 
         var contextMoq = new Mock<ConsumeContext<AddGeneralNotificationRq>>();
-        contextMoq.Setup(c => c.Message).Returns(new AddGeneralNotificationRq(userLevel, type, new(Key: key)));
+        contextMoq.Setup(c => c.Message).Returns(new AddGeneralNotificationRq(userLevel, identifier, type, new()));
 
         // Act
         var consumer = new AddGeneralNotificationConsumer(new Mock<IMapper>().Object, helper.Context, helper.NotificationService);
         var outcome = consumer.Consume(contextMoq.Object).TryRunTask(out var ex);
-        var notification = helper.Context.Notifications.FirstOrDefault(x => x.UserLevel == userLevel && x.ContentKey == key);
+        var notification = helper.Context.Notifications.FirstOrDefault(x => x.UserLevel == userLevel && x.Identifier == identifier);
 
         // Assert
         Assert.IsTrue(outcome, ex?.Message ?? "Failed to add generic notification");
@@ -67,13 +67,13 @@ public class NotificationTests
     public void Should_Add_With_Entries()
     {
         // Arrange
-        var user = helper.AddUser("RandomUser2");
-        var triggeredUser = helper.AddUser("TriggeredByUser");
+        var user = new UserRecord(Guid.NewGuid(), "source");
+        var triggeredUser = new UserRecord(Guid.NewGuid(), "trigger");
+        var identifier = Guid.NewGuid().ToString();
         var type = NotificationType.None;
-        var key = "0";
 
         var contextMoq = new Mock<ConsumeContext<AddNotificationRq>>();
-        contextMoq.Setup(c => c.Message).Returns(new AddNotificationRq(user, type, new(Key: key), triggeredUser));
+        contextMoq.Setup(c => c.Message).Returns(new AddNotificationRq(user, identifier, type, new(), triggeredUser));
 
         // Act
         var consumer = new AddNotificationConsumer(new Mock<IMapper>().Object, helper.Context, helper.NotificationService);

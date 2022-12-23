@@ -1,0 +1,34 @@
+<form class="form" (submit)="verify()" [formGroup]="form" novalidate="novalidate" *ngIf="authState.observe('twoFactor') | async as twoFactorType">
+    <p class="mb" [ngSwitch]="twoFactorType">
+        <ng-container *ngSwitchCase="TwoFactorType.App">
+            Your two factor authenticator app will provide you with a unique code. Enter the code in the confirmation box below.
+        </ng-container>
+
+        <ng-container *ngSwitchCase="TwoFactorType.Email">
+            An email has been sent to your registered email address which contains a verification code. Enter the code in the confirmation box below.
+        </ng-container>
+
+        <ng-container *ngSwitchCase="TwoFactorType.Sms">
+            An SMS has been sent to your registered phone number which contains a verification code. Enter the code in the confirmation box below.
+        </ng-container>
+    </p>
+
+    <div class="form-section mb">
+        <label for="code">Code</label>
+        <input id="code" class="input" type="text" inputmode="tel" autocomplete="code" formControlName="code" />
+    </div>
+
+    <div class="flex-row-align mb">
+        <sc-toggle-switch name="doNotAskAgain" [parent]="form"></sc-toggle-switch>
+        <label class="ml" for="doNotAskAgain"> Do not ask again for this location </label>
+    </div>
+
+    <div class="flex-row-align">
+        <button type="button" class="button" (click)="recover()" background="danger">Recover Account</button>
+        <button type="button" class="button ml" background="light" (click)="resend()" *ngIf="twoFactorType !== TwoFactorType.App">Resend Code</button>
+
+        <div class="flex-spacer"></div>
+
+        <button id="continue-btn" class="button" background="primary" type="submit" [disabled]="form.invalid">Continue</button>
+    </div>
+</form>

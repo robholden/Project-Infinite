@@ -32,14 +32,14 @@ public class UpdateGeneralNotificationConsumer : ISnowConsumer, IConsumer<Update
     {
         // Make sure the one old exists
         var request = context.Message;
-        var notification = await _ctx.Notifications.FindOrNullAsync(x => x.UserLevel == request.UserLevel && x.Type == request.Type && x.ContentKey == request.ContentKey);
+        var notification = await _ctx.Notifications.FindOrNullAsync(x => x.UserLevel == request.UserLevel && x.Identifier == request.Identifier && x.Type == request.Type);
         if (notification == null)
         {
             return;
         }
 
         // Ensure there's no notification with the new key info
-        var exists = await _ctx.Notifications.AnyAsync(x => x.UserLevel == request.UserLevel && x.Type == request.NewType && x.ContentKey == request.NewContent.Key);
+        var exists = await _ctx.Notifications.AnyAsync(x => x.UserLevel == request.UserLevel && x.Identifier == request.Identifier && x.Type == request.NewType);
         if (exists)
         {
             return;
@@ -47,9 +47,8 @@ public class UpdateGeneralNotificationConsumer : ISnowConsumer, IConsumer<Update
 
         // Create new notification
         notification.Type = request.NewType;
-        notification.ContentKey = request.NewContent.Key;
-        notification.ContentMessage = request.NewContent.Message;
-        notification.ContentImage = request.NewContent.Image;
+        notification.ContentRoute = request.NewContent.Route;
+        notification.ContentImageUrl = request.NewContent.ImageUrl;
         notification.ViewedAt = DateTime.UtcNow;
         notification.Date = DateTime.UtcNow;
 

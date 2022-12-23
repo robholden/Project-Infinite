@@ -12,7 +12,7 @@ using Library.Service.PubSub;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Identity.Api.Controllers.Password;
+namespace Identity.Api.Controllers;
 
 public class PasswordController : BaseController<PasswordController>
 {

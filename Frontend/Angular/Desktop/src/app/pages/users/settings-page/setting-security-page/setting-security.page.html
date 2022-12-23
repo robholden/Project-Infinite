@@ -1,0 +1,72 @@
+<div class="form-box flex-row-align pb mb-l" *ngIf="!provider">
+    <div>
+        <span class="label">Password</span>
+        <p>Improve your security with a strong password</p>
+    </div>
+
+    <div class="flex-spacer"></div>
+
+    <button id="password-btn" class="button ml" background="primary" (click)="changePassword()">Change Password</button>
+</div>
+
+<h2>Two-Factor Authentication</h2>
+<div class="mb-s">
+    <p>Increase your security by enabling two-factor authentication</p>
+</div>
+
+<div class="form-box" *ngIf="!!provider">Two-factor authentication capabilities are not enabled for external login providers</div>
+
+<div class="form-box" *ngIf="!user?.emailConfirmed && !provider">You must have a verified email to enable two-factor authentication capabilities</div>
+
+<ng-container *ngIf="user?.emailConfirmed && !provider">
+    <div class="form-box flex-row-align">
+        <div>
+            <span class="label">Authenticator App</span>
+            <p>When you sign in you'll be required to use the security code provided by your Authenticator App</p>
+        </div>
+
+        <div class="flex-spacer"></div>
+
+        <button id="remove-btn" class="button ml" background="danger" (click)="remove()" *ngIf="usingApp">Remove</button>
+
+        <button id="enable-1-btn" class="button ml" background="primary" (click)="setupApp()" *ngIf="!usingApp && !usingAny">Enable</button>
+    </div>
+
+    <div class="form-box flex-row-align mt-s">
+        <div>
+            <span class="label">Email Authentication</span>
+            <p>When you sign in you'll be required to use the security code provided in your email</p>
+        </div>
+
+        <div class="flex-spacer"></div>
+
+        <button id="remove-btn" class="button ml" background="danger" (click)="remove()" *ngIf="usingEmail">Remove</button>
+
+        <button id="enable-2-btn" class="button ml" background="primary" (click)="setupEmail()" *ngIf="!usingEmail && !usingAny">Enable</button>
+    </div>
+
+    <div class="form-box flex-row-align mt-s">
+        <div>
+            <span class="label">SMS Authentication</span>
+            <p>When you sign in you'll be required to use the security code provided via an SMS</p>
+        </div>
+
+        <div class="flex-spacer"></div>
+
+        <button id="remove-btn" class="button ml" background="danger" (click)="remove()" *ngIf="usingSms">Remove</button>
+
+        <button id="enable-3-btn" class="button ml" background="primary" (click)="setupSms()" *ngIf="!usingSms && !usingAny">Enable</button>
+    </div>
+</ng-container>
+
+<h2 class="mt mb-s pt">Delete Account</h2>
+<div class="form-box flex-row-align">
+    <div>
+        <span class="label">If you wish to leave us, we won't stop you</span>
+        <p colour="danger">Deletion is immediate, and you will not be able to recover your account once deleted</p>
+    </div>
+
+    <div class="flex-spacer"></div>
+
+    <button class="button" background="danger" (click)="deleteAccount()">Delete Account</button>
+</div>

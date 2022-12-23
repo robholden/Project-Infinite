@@ -40,7 +40,10 @@ public class AddNotificationConsumer : ISnowConsumer, IConsumer<AddNotificationR
         // Find existing notification
         var notification = await _ctx.Notifications
             .Include(x => x.Entries)
-            .FirstOrDefaultAsync(x => x.UserId == request.User.UserId && x.Type == request.Type && x.ContentKey == request.Content.Key);
+            .FirstOrDefaultAsync(x => x.UserId == request.User.UserId && x.Type == request.Type && x.Identifier == request.Identifier);
+
+        // Create email
+        var email = EmailQueue.FromUserReq(request.Email);
 
         // Create notification if there isn't one
         if (notification == null)
@@ -49,16 +52,17 @@ public class AddNotificationConsumer : ISnowConsumer, IConsumer<AddNotificationR
             {
                 UserId = request.User.UserId,
                 Username = request.User.Username,
-                ContentKey = request.Content.Key,
-                ContentMessage = request.Content.Message,
-                ContentImage = request.Content.Image,
+                Identifier = request.Identifier,
                 Type = request.Type,
-                Entries = new List<NotificationEntry>()
+                ContentRoute = request.Content?.Route,
+                ContentImageUrl = request.Content?.ImageUrl,
+                Entries = new List<NotificationEntry>(),
+                EmailQueue = email
             };
 
             if (request.TriggeredUser != null)
             {
-                notification.Entries.Add(new(request.TriggeredUser));
+                notification.Entries.Add(new(request.TriggeredUser.UserId, request.TriggeredUser.Username));
             }
 
             notification = await _ctx.CreateAsync(notification);
@@ -71,6 +75,7 @@ public class AddNotificationConsumer : ISnowConsumer, IConsumer<AddNotificationR
             notification.ReadAt = null;
             notification.Date = DateTime.UtcNow;
             notification.Hidden = false;
+            notification.EmailQueue = email;
 
             // Add or update user entry
             if (request.TriggeredUser != null)
@@ -85,7 +90,7 @@ public class AddNotificationConsumer : ISnowConsumer, IConsumer<AddNotificationR
                 // Create new entry
                 else
                 {
-                    entry = new(notification.NotificationId, request.TriggeredUser);
+                    entry = new(notification.NotificationId, request.TriggeredUser.UserId, request.TriggeredUser.Username);
                     notification.Entries.Add(entry);
                 }
             }

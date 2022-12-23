@@ -19,7 +19,7 @@ public class ReportInstanceDto
 {
     public string Username { get; set; }
 
-    public int Reason { get; set; }
+    public string Reason { get; set; }
 
     public DateTime Date { get; set; }
 }

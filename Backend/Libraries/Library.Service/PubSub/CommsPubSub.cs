@@ -7,43 +7,25 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Library.Service.PubSub;
 
-public record AddCommsUserRq(UserRecord User, string Name, string Email, bool Marketing);
-
-public record SendConfirmationEmailToUserRq(UserRecord User, string ConfirmationKey);
-
 public record SendEmailDirectlyRq(string Name, string Email, string Message, string Subject, string IdentityHash = "");
 
-public record SendEmailToUserRq(UserRecord User, string Message, string Subject, EmailType Type, string IdentityHash = "");
+public record SendEmailToUserRq(UserRecord User, string Message, string Subject, bool SendInstantly = false, string IdentityHash = "");
 
-public record UpdateEmailTypeRq(string IdentityHash, EmailType Type);
+public record SendSmsToUserRq(UserRecord User, string Type, string Mobile, string Message);
 
-public record SendSmsToUserRq(UserRecord User, string Mobile, string Message, SmsType Type);
+public record AddNotificationRq(UserRecord User, string Identifier, NotificationType Type, NotificationContent Content = null, UserRecord TriggeredUser = null, SendEmailToUserRq Email = null);
 
-public record AddNotificationRq(UserRecord User, NotificationType Type, NotificationContent Content, UserRecord TriggeredUser = null);
+public record AddGeneralNotificationRq(UserLevel UserLevel, string Identifier, NotificationType Type, NotificationContent Content);
 
-public record AddGeneralNotificationRq(UserLevel UserLevel, NotificationType Type, NotificationContent Content);
+public record UpdateGeneralNotificationRq(UserLevel UserLevel, string Identifier, NotificationType Type, NotificationType NewType, NotificationContent NewContent);
 
-public record UpdateGeneralNotificationRq(UserLevel UserLevel, NotificationType Type, string ContentKey, NotificationType NewType, NotificationContent NewContent);
-
-public record UndoUserNotificationRq(Guid UserId, NotificationType Type, string ContentKey, Guid TriggeredUserId);
-
-public record DeleteNotificationsRq(IEnumerable<string> Keys);
-
-public record OptOutUserRq(Guid UserId);
+public record UndoUserNotificationRq(Guid UserId, string Identifier, NotificationType Type, Guid TriggeredUserId);
 
 public interface ICommsPubSub
 {
-    Task AddUser(AddCommsUserRq payload);
-
-    Task SendConfirmationEmailToUser(SendConfirmationEmailToUserRq payload);
-
     Task SendEmailDirectly(SendEmailDirectlyRq payload);
 
     Task SendEmailToUser(SendEmailToUserRq payload);
-
-    Task UpdateEmailType(UpdateEmailTypeRq payload);
-
-    Task OptOutUser(OptOutUserRq payload);
 
     Task SendSmsToUser(SendSmsToUserRq payload);
 
@@ -54,10 +36,6 @@ public interface ICommsPubSub
     Task UpdateGeneralNotification(UpdateGeneralNotificationRq payload);
 
     Task UndoUserNotification(UndoUserNotificationRq payload);
-
-    Task DeleteNotification(string key);
-
-    Task DeleteNotifications(DeleteNotificationsRq payload);
 }
 
 public class CommsPubSub : BasePubSub, ICommsPubSub
@@ -66,17 +44,9 @@ public class CommsPubSub : BasePubSub, ICommsPubSub
     {
     }
 
-    public async Task AddUser(AddCommsUserRq payload) => await PublishWithResult(payload);
-
-    public async Task SendConfirmationEmailToUser(SendConfirmationEmailToUserRq payload) => await Publish(payload);
-
     public async Task SendEmailDirectly(SendEmailDirectlyRq payload) => await Publish(payload);
 
     public async Task SendEmailToUser(SendEmailToUserRq payload) => await Publish(payload);
-
-    public async Task UpdateEmailType(UpdateEmailTypeRq payload) => await Publish(payload);
-
-    public async Task OptOutUser(OptOutUserRq payload) => await Publish(payload);
 
     public async Task SendSmsToUser(SendSmsToUserRq payload) => await Publish(payload);
 
@@ -88,12 +58,7 @@ public class CommsPubSub : BasePubSub, ICommsPubSub
 
     public async Task UndoUserNotification(UndoUserNotificationRq payload) => await Publish(payload);
 
-    public async Task DeleteNotification(string key) => await DeleteNotifications(new(new List<string>() { key }));
-
-    public async Task DeleteNotifications(DeleteNotificationsRq payload) => await Publish(payload);
-
     public static void AddRequestClients(IBusRegistrationConfigurator configurator)
     {
-        configurator.AddRequestClient<AddCommsUserRq>();
     }
 }

@@ -38,19 +38,13 @@ public class SendEmailsTask : BackgroundTask<SendEmailsTask>
         {
             // Retrieve 50 emails from queue
             var queues = await ctx.EmailQueue
-                .Include(x => x.User)
                 .Include(x => x.Email)
                 .Where(x =>
-                    x.User != null && !string.IsNullOrEmpty(x.User.Email)
+                    x.Sendable && !string.IsNullOrEmpty(x.EmailAddress)
                     && !x.Completed
                     && !x.OwnedBy.HasValue
-                    && (
-                        (x.Email == null && x.Type != EmailType.Instant) ||
-                        (x.Email != null && !x.Email.DateSent.HasValue)
-                    )
-                    && (x.Type != EmailType.Marketing || x.User.MarketingEmail)
+                    && (x.Email != null && !x.Email.DateSent.HasValue)
                 )
-                .OrderBy(x => (int)x.Type)
                 .Take(50)
                 .ToListAsync();
 

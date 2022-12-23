@@ -168,6 +168,6 @@ public class TwoFactorService : ITwoFactorService
         // Send email to user for confirmation
         var subject = "Your account has been recovered";
         var message = "<p>We're informing you that you have successfully recovered your account and disabled your two-factor authentication.</p>";
-        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject, EmailType.System));
+        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
     }
 }

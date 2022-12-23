@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import './styles/reset';
+@import './styles/variables';
+@import './styles/base';
+@import './styles/helpers';
+
+@import '../../Shared/src/styles/units';
+@import '../../Shared/src/styles/flex-utils';
+
+@import './styles/grid';
+@import './styles/table';
+@import './styles/form';
+@import './styles/button';
+@import './styles/modal';
+@import './styles/content';
+@import './styles/dropdown';
+@import './styles/layout';
+
+@import '~@fortawesome/fontawesome-pro/css/all.css';
+@import '~tippy.js/dist/tippy.css';
+@import '~tippy.js/animations/scale.css';
+@import '~tippy.js/animations/shift-away.css';
+@import '~tippy.js/themes/light.css';
+
+.grecaptcha-badge {
+    visibility: collapse !important;
+}
+
+.sc-spin {
+    animation: sc-spin 2s linear infinite;
+}
+
+@keyframes sc-spin {
+    0% {
+        transform: rotate3d(0, 0, -1, 0deg);
+    }
+    100% {
+        transform: rotate3d(0, 0, -1, 1turn);
+    }
+}

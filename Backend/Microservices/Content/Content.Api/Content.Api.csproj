@@ -20,7 +20,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Markdig" Version="0.30.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

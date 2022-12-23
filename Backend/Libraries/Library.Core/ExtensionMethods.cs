@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Reflection;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -39,7 +40,30 @@ public static class ClaimsExtensions
 
 public static class ObjectExtensions
 {
+    // extension method to compare the values of the properties of two objects
+    // and return a list of the changed properties and their old and new values
+    public static List<KeyValuePair<string, Tuple<object, object>>> CompareProperties<T>(this T obj1, T obj2, params string[] excludedFields)
+    {
+        var changedProperties = new List<KeyValuePair<string, Tuple<object, object>>>();
 
+        Type type = typeof(T);
+        foreach (PropertyInfo property in type.GetProperties())
+        {
+            if (excludedFields.Contains(property.Name))
+            {
+                continue;
+            }
+
+            object value1 = property.GetValue(obj1, null);
+            object value2 = property.GetValue(obj2, null);
+            if (!Equals(value1, value2))
+            {
+                changedProperties.Add(new KeyValuePair<string, Tuple<object, object>>(property.Name, Tuple.Create(value1, value2)));
+            }
+        }
+
+        return changedProperties;
+    }
 }
 
 public static class DictionaryExtensions
@@ -110,10 +134,7 @@ public static partial class StringExtensions
     public static string ToHash(this string value, string salt = "")
     {
         // Create a SHA256
-        using SHA256 hash = SHA256.Create();
-
-        // ComputeHash - returns byte array
-        byte[] bytes = hash.ComputeHash(Encoding.UTF8.GetBytes(value + salt));
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(value + salt));
 
         // Convert byte array to a string
         StringBuilder builder = new();
@@ -227,6 +248,7 @@ public static class ByteExtensions
         {
             sbinary += buff[i].ToString("x2");
         }
+
         return sbinary;
     }
 

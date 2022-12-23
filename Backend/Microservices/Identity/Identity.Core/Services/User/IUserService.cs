@@ -9,7 +9,7 @@ public interface IUserService
 {
     Task<User> Register(RegisterRequest register);
 
-    Task<UserStatus> LoginAttempted(User user, bool pass);
+    Task<UserStatus> LoginAttempted(User user, bool pass, ClientIdentity identity);
 
     Task ForgotPassword(string email);
 

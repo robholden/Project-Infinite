@@ -1,5 +1,4 @@
-﻿
-using Library.Core;
+﻿using Library.Core;
 
 namespace Comms.Domain.Dtos;
 
@@ -7,11 +6,13 @@ public class NotificationDto
 {
     public Guid NotificationId { get; set; }
 
-    public string ContentKey { get; set; }
+    public string Identifier { get; set; }
 
-    public string ContentMessage { get; set; }
+    public NotificationType Type { get; set; }
 
-    public string ContentImage { get; set; }
+    public string ContentRoute { get; set; }
+
+    public string ContentImageUrl { get; set; }
 
     public int Users { get; set; }
 
@@ -20,8 +21,6 @@ public class NotificationDto
     public bool Viewed { get; set; }
 
     public bool Read { get; set; }
-
-    public NotificationType Type { get; set; }
 
     public bool IsGlobal { get; set; }
 }

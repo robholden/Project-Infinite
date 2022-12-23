@@ -1,4 +1,4 @@
-name: snow-capture
+name: project-infinite
 services:
   - name: rabbit
     image: rabbitmq:3-management

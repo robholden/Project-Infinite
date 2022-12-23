@@ -31,9 +31,7 @@ public class Helper
 
         var options = Options.Create(Settings);
 
-        var mockCommEvents = new Mock<ICommsPubSub>();
-        mockCommEvents.Setup(x => x.AddUser(It.IsAny<AddCommsUserRq>())).Returns(Task.CompletedTask);
-
+        var mockCommEvents = new Mock<ICommsPubSub>().Object;
         var mockIdentityEvents = new Mock<IIdentityPubSub>().Object;
         var mockSocketEvents = new Mock<ISocketsPubSub>().Object;
 
@@ -41,8 +39,8 @@ public class Helper
 
         PasswordService = new PasswordService(Context);
         UserKeyService = new UserKeyService(Context);
-        TwoFactorService = new TwoFactorService(Context, options, UserKeyService, mockCommEvents.Object);
-        UserService = new UserService(Context, options, UserKeyService, PasswordService, TwoFactorService, mockIdentityEvents, mockCommEvents.Object, mockSocketEvents);
+        TwoFactorService = new TwoFactorService(Context, options, UserKeyService, mockCommEvents);
+        UserService = new UserService(Context, options, UserKeyService, PasswordService, TwoFactorService, mockIdentityEvents, mockCommEvents, mockSocketEvents);
         AuthService = new AuthService(Context, UserService, PasswordService, TwoFactorService);
     }
 

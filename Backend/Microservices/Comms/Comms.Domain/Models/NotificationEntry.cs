@@ -17,17 +17,9 @@ public class NotificationEntry : IUser
         Username = username;
     }
 
-    public NotificationEntry(IUser user) : this(user.UserId, user.Username)
-    {
-    }
-
     public NotificationEntry(Guid notificationId, Guid userId, string username) : this(userId, username)
     {
         NotificationId = notificationId;
-    }
-
-    public NotificationEntry(Guid notificationId, IUser user) : this(notificationId, user.UserId, user.Username)
-    {
     }
 
     [Key]

@@ -8,4 +8,9 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Libraries\Library.Core\Library.Core.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Dtos\" />
+	  <Folder Include="Models\" />
+	</ItemGroup>
 </Project>

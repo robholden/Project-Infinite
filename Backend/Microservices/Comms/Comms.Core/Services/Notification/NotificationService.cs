@@ -13,20 +13,18 @@ namespace Comms.Core.Services;
 public class NotificationService : INotificationService
 {
     private readonly CommsContext _ctx;
-
     private readonly EmailSettings _emailSettings;
 
     private readonly ISocketsPubSub _socketEvents;
-    private readonly ICommsPubSub _commEvents;
+    private readonly IEmailService _emailService;
 
-    public NotificationService(CommsContext ctx, IOptions<EmailSettings> emailOptions, ICommsPubSub commEvents, ISocketsPubSub socketEvents)
+    public NotificationService(CommsContext ctx, IOptions<EmailSettings> emailOptions, ISocketsPubSub socketEvents, IEmailService emailService)
     {
         _ctx = ctx;
-
         _emailSettings = emailOptions.Value;
 
-        _commEvents = commEvents;
         _socketEvents = socketEvents;
+        _emailService = emailService;
     }
 
     public async Task MarkAllAsRead(Guid userId, UserLevel? level = null)
@@ -58,15 +56,10 @@ public class NotificationService : INotificationService
 
     public async Task<bool> TryToSend(Notification notification, NotificationDto dto)
     {
-        // Get action
-        var action = NotificationAction.Create(notification);
-        if (action == null) return false;
-
         // Delay sending if required
-        var delay = NotificationAction.DelayBeforeSending();
-        if (delay > 0)
+        if (notification.Delay > 0)
         {
-            await Task.Delay(delay);
+            await Task.Delay(notification.Delay);
 
             var stillExists = await _ctx.Notifications.AnyAsync(x => x.NotificationId == notification.NotificationId && !x.Hidden);
             if (!stillExists) return false;
@@ -76,43 +69,11 @@ public class NotificationService : INotificationService
         _ = _socketEvents?.NewNotification(notification.UserId, dto, notification.UserLevel);
 
         // Send email to user
-        if (notification.Username != null)
+        if (notification.EmailQueueId.HasValue)
         {
-            await EmailNotification(action);
+            await _emailService.Send(notification.EmailQueueId.Value);
         }
 
         return true;
-    }
-
-    private async Task EmailNotification(NotificationAction action)
-    {
-        // Stop if action doesn't require emailing
-        if (action is not IEmailAction emailAction) return;
-
-        // If action is stacked, update entries to sent
-        if (action is IStackedNotification stacked)
-        {
-
-            // Assign notification as sent to prevent re-sending
-            var affected = await _ctx.NotificationEntries
-                .Where(x => x.NotificationId == action.Notification.NotificationId && !x.Sent)
-                .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Sent, true));
-
-            // If no notifications were affected, stop
-            if (!stacked.TrySetAffected(affected)) return;
-        }
-
-        // Fetch user preferences
-        var (preferences, _) = await _ctx.UserSettings.FindWithDefaultAsync(x => x.UserId == action.Notification.UserId, new());
-
-        // Get email content from action
-        var content = emailAction.GetContent(_emailSettings, preferences);
-
-        // Send email when we have content
-        if (content != null)
-        {
-            var request = new SendEmailToUserRq(action.Notification.ToUserRecord(), content.Body, content.Subject, EmailType.System, $"{action.Notification.ContentKey}_{action.Notification.Type}");
-            _ = _commEvents?.SendEmailToUser(request);
-        }
     }
 }

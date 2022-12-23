@@ -20,7 +20,7 @@ public class SendEmailDirectlyConsumer : ISnowConsumer, IConsumer<SendEmailDirec
     {
         // Build email queue model with provided data
         var request = context.Message;
-        var queue = new EmailQueue
+        var entry = new EmailQueue
         {
             Message = request.Message,
             Subject = request.Subject,
@@ -28,12 +28,6 @@ public class SendEmailDirectlyConsumer : ISnowConsumer, IConsumer<SendEmailDirec
             Name = request.Name,
             IdentityHash = string.IsNullOrEmpty(request.IdentityHash) ? request.Subject : request.IdentityHash
         };
-        queue = await _service.Add(queue);
-
-        // Send email immediately
-        if (queue != null)
-        {
-            await _service.Send(queue);
-        }
+        await _service.CreateAndSend(entry);
     }
 }

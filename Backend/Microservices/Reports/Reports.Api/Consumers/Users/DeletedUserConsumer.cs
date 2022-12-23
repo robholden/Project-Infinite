@@ -23,7 +23,6 @@ public class DeletedUserConsumer : ISnowConsumer, IConsumer<DeletedUserRq>
         using var transaction = await _ctx.Database.BeginTransactionAsync();
 
         await _ctx.DeleteUserAsync<UserReport>(request.UserId);
-        await _ctx.DeleteUserAsync<PictureReport>(request.UserId);
         await _ctx.DeleteUserAsync<ReportAction>(request.UserId);
 
         await transaction.CommitAsync();

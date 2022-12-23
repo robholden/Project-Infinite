@@ -4,5 +4,6 @@ public enum UserKeyType
 {
     PasswordReset = 1,
     TwoFactor,
-    ConfirmEmail
+    ConfirmEmail,
+    MarketingOptOut
 }

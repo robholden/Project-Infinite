@@ -1,0 +1,47 @@
+<sc-page>
+    <sc-page-header *ngIf="user || loading">
+        <div *ngIf="user && !loading" @fade>
+            <div class="flex-row-align">
+                <div class="flex-row-align">
+                    <sc-avatar [name]="user.username" [size]="38" bg="var(--sc-colour-primary-contrast)" fg="var(--sc-colour-primary)"></sc-avatar>
+                    <div class="ml-s">
+                        <h2>{{ user.username | titlecase }}</h2>
+                    </div>
+                </div>
+
+                <div class="flex-spacer"></div>
+
+                <button
+                    *ngIf="(!author && authState.loggedIn && !reported) || authState.is_admin"
+                    class="settings-icon dropdown-toggle ml"
+                    colour-contrast="primary"
+                >
+                    <i class="far fa-ellipsis-h"></i>
+
+                    <sc-drop-down position="bottomleft" [width]="200" [y]="-12">
+                        <div class="link-section">
+                            <button type="button" (click)="report()" *ngIf="!author">Report</button>
+                        </div>
+                    </sc-drop-down>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex-row-align" *ngIf="loading">
+            <sc-skeleton-text height="35px" width="35px" radius="50%" [animated]="true"></sc-skeleton-text>
+            <sc-skeleton-text height="25px" width="200px" [animated]="true" class="ml"></sc-skeleton-text>
+        </div>
+    </sc-page-header>
+
+    <sc-page-content>
+        <div class="container flex-col" *ngIf="user else loadingRef">This is the user page :)</div>
+    </sc-page-content>
+</sc-page>
+
+<ng-template #loadingRef>
+    <div *ngIf="!loading" class="full-content">hmm, we couldn't find this user</div>
+
+    <div *ngIf="loading" class="container flex-row">
+        <sc-skeleton-text height="25px" width="200px" [animated]="true" class="mt"></sc-skeleton-text>
+    </div>
+</ng-template>

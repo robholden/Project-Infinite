@@ -32,7 +32,7 @@ public class AddGeneralNotificationConsumer : ISnowConsumer, IConsumer<AddGenera
     {
         // Find existing notification
         var request = context.Message;
-        var notification = await _ctx.Notifications.FirstOrDefaultAsync(x => x.UserLevel == request.UserLevel && x.Type == request.Type && x.ContentKey == request.Content.Key);
+        var notification = await _ctx.Notifications.FirstOrDefaultAsync(x => x.UserLevel == request.UserLevel && x.Identifier == request.Identifier && x.Type == request.Type);
         if (notification != null)
         {
             return;
@@ -42,10 +42,10 @@ public class AddGeneralNotificationConsumer : ISnowConsumer, IConsumer<AddGenera
         notification = new()
         {
             UserLevel = request.UserLevel,
-            ContentKey = request.Content.Key,
-            ContentMessage = request.Content.Message,
-            ContentImage = request.Content.Image,
+            Identifier = request.Identifier,
             Type = request.Type,
+            ContentRoute = request.Content.Route,
+            ContentImageUrl = request.Content.ImageUrl,
             ReadAt = DateTime.UtcNow
         };
         notification = await _ctx.CreateAsync(notification);

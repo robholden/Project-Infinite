@@ -11,6 +11,7 @@ public class AutoMapperProfiles : Profile
     {
         CreateMap<AuthTokenDto, AuthToken>().ReverseMap();
         CreateMap<RecoveryCodeDto, RecoveryCode>().ReverseMap();
+        CreateMap<UserPreferencesDto, UserPreference>().ReverseMap();
         CreateMap<UserDto, User>().ReverseMap();
         CreateMap<SimpleUserDto, User>().ReverseMap();
         CreateMap<AdminUserDto, User>().ReverseMap();

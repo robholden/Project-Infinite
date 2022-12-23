@@ -23,6 +23,12 @@ public class EmailService : IEmailService
 
     public Task Send(EmailQueue queue) => Send(new List<EmailQueue>() { queue });
 
+    public async Task Send(Guid queueId)
+    {
+        var queue = await _ctx.EmailQueue.FindAsync(e => e.EmailQueueId == queueId && !e.Completed);
+        if (queue != null) await Send(queue);
+    }
+
     public async Task Send(IEnumerable<EmailQueue> queues)
     {
         // Find existing email entry or create one
@@ -36,17 +42,16 @@ public class EmailService : IEmailService
 
             // Set opting out text
             var optOutText = string.Empty;
-            if (queue.User?.MarketingOptOutKey != null)
+            if (queue.OptOutKey != null)
             {
-                optOutText = $"<p>If you no longer wish to receive these emails, click to <a href='###SITE_URL###/unsubscribe/{queue.User.MarketingOptOutKey}'>unsubscribe</a>.</p>";
+                optOutText = $"<p>If you no longer wish to receive these emails, click to <a href='###SITE_URL###/unsubscribe/{queue.OptOutKey}'>unsubscribe</a>.</p>";
             }
 
             // Create html body text
-            // TODO: Use template
             var body = $@"
                     <div style='font-family: Arial, Helvetica, sans-serif;'
                         <p>
-                            Hello {queue.User?.Name ?? queue.Name},
+                            Hello {queue.Name},
                         </p>
                         <p>
                             {queue.Message}
@@ -108,7 +113,7 @@ public class EmailService : IEmailService
                     mm.Body = email.Body;
 
                     // Verify email we are sending too
-                    if (!MailAddress.TryCreate(email.EmailQueue.User?.Email ?? email.EmailQueue.EmailAddress, out var toEmail))
+                    if (!MailAddress.TryCreate(email.EmailQueue.EmailAddress, out var toEmail))
                     {
                         email.Errors = "Invalid email address";
                     }
@@ -151,7 +156,15 @@ public class EmailService : IEmailService
         await _ctx.Emails.Where(e => queueIds.Contains(e.EmailQueueId)).ExecuteDeleteAsync();
     }
 
-    public async Task<EmailQueue> Add(EmailQueue model)
+    public async Task<EmailQueue> CreateAndSend(EmailQueue model)
+    {
+        var email = await Queue(model);
+        await Send(email);
+
+        return email;
+    }
+
+    public async Task<EmailQueue> Queue(EmailQueue model)
     {
         // Stop if we have sent already
         if (!await CanSend(model))
@@ -160,15 +173,7 @@ public class EmailService : IEmailService
         }
 
         // Build email queue model
-        var queue = await _ctx.CreateAsync(model);
-
-        // Send email when typeof instant
-        if (model.Type == EmailType.Instant)
-        {
-            await Send(queue);
-        }
-
-        return queue;
+        return await _ctx.CreateAsync(model);
     }
 
     private async Task<bool> CanSend(EmailQueue queue)
@@ -184,12 +189,7 @@ public class EmailService : IEmailService
         await existing.Where(x => x.Completed && !x.CompletedAt.HasValue).ExecuteDeleteAsync();
 
         // Check for recently sent email
-        var threshold = queue.Type switch
-        {
-            EmailType.Instant => DateTime.UtcNow.AddSeconds(-30),
-            EmailType.System => DateTime.UtcNow.AddMinutes(-1),
-            _ => DateTime.UtcNow.AddHours(-12),
-        };
+        var threshold = DateTime.UtcNow.AddSeconds(-30);
         if (await existing.AnyAsync(x => x.CompletedAt > threshold))
         {
             return false;

@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "Backend/Shared/Libraries/**.cs"
-      - "Backend/Microservices/Comms/**.cs"
-      - "Backend/Microservices/Comms/**.csproj"
-      - "Backend/Microservices/Comms/Comms.Api/Dockerfile"
-      - "Backend/Microservices/Comms/Comms.Api/appsettings.json"
+      - 'Backend/Shared/Libraries/**.cs'
+      - 'Backend/Microservices/Comms/**.cs'
+      - 'Backend/Microservices/Comms/**.csproj'
+      - 'Backend/Microservices/Comms/Comms.Api/Dockerfile'
+      - 'Backend/Microservices/Comms/Comms.Api/appsettings.json'
   workflow_dispatch:
 
 jobs:
@@ -29,5 +29,5 @@ jobs:
         with:
           context: ./Backend
           file: ./Backend/Microservices/Comms/Comms.Api/Dockerfile
-          tags: ${{ secrets.DOCKER_USERNAME }}/sc-api-comms:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/project-infinite-api-comms:latest
           push: true

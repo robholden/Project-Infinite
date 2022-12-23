@@ -23,7 +23,7 @@ public class UndoUserNotificationConsumer : ISnowConsumer, IConsumer<UndoUserNot
         var request = context.Message;
         await _ctx.NotificationEntries
             .Where(x =>
-                x.Notification.UserId == request.TriggeredUserId && x.Notification.Type == request.Type && x.Notification.ContentKey == request.ContentKey
+                x.Notification.UserId == request.TriggeredUserId && x.Notification.Type == request.Type
                 && x.UserId == request.UserId && !x.Deleted
             )
             .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Deleted, true));
@@ -31,7 +31,7 @@ public class UndoUserNotificationConsumer : ISnowConsumer, IConsumer<UndoUserNot
         // If notification has no visible children, hide it
         await _ctx.Notifications
             .Where(x =>
-                x.UserId == request.TriggeredUserId && x.Type == request.Type && x.ContentKey == request.ContentKey
+                x.UserId == request.TriggeredUserId && x.Type == request.Type && x.Identifier == request.Identifier
                 && x.Entries.All(e => e.Deleted)
             )
             .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Hidden, true));

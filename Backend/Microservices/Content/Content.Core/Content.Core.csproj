@@ -6,12 +6,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Libraries\Library.Core\Library.Core.csproj" />
 		<ProjectReference Include="..\..\..\Libraries\Library.Service\Library.Service.csproj" />
 		<ProjectReference Include="..\Content.Domain\Content.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Queries\" />
+	  <Folder Include="Services\" />
 	</ItemGroup>
 </Project>

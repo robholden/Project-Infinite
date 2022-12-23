@@ -1,0 +1,50 @@
+<sc-modal-wrapper (closed)="dismiss()">
+    <h2 class="mb">Review User</h2>
+
+    <div class="report">
+        <div class="mb">
+            <span class="button" background="light">{{ report.name }}</span>
+
+            <a class="button" background="light" [routerLink]="'/user/' + report.username" target="_blank" rel="noopener">
+                @{{ report.username }}
+                <i class="far fa-external-link ml-s"></i>
+            </a>
+
+            <ng-container *ngIf="user">
+                <span class="button" background="light">{{ user.email }}</span>
+                <span class="button" [attr.background]="user.emailConfirmed ? 'success' : 'warning'">
+                    Email {{ user.emailConfirmed ? 'Confirmed' : 'Unconfirmed' }}
+                </span>
+                <span class="button" [attr.background]="user.twoFactorEnabled ? 'success' : 'warning'">
+                    2FA {{ user.twoFactorEnabled ? 'Enabled' : 'Disabled' }}
+                </span>
+                <span class="button" background="light">Member since {{ user.created | utc: 'short' }}</span>
+                <span class="button" background="light">Last active {{ user.lastActive | utc: 'short' }}</span>
+            </ng-container>
+        </div>
+        <div>
+            <div class="flex-row-align">
+                <h4>Reports</h4>
+                <span class="button small ml-s"> <i class="far fa-clock icon" position="left"></i> {{ report.date | utc: 'dd/MM/yyyy HH:mm:ss' }} </span>
+            </div>
+            <div class="button mt-s" background="light" *ngFor="let r of report.stats" [ngSwitch]="r.reason">
+                <ng-container *ngSwitchCase="ReportReason.Offensive">({{ r.total }}) Offensive content</ng-container>
+                <ng-container *ngSwitchCase="ReportReason.Impersonation">({{ r.total }}) Copying or impersonating someone else</ng-container>
+                <ng-container *ngSwitchDefault>({{ r.total }}) Unknown reason</ng-container>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-row-align mt">
+        <button type="button" class="button" background="light" (click)="dismiss()" [disabled]="executing">Cancel</button>
+
+        <div class="flex-spacer"></div>
+
+        <button type="button" id="confirm-report-btn" class="button" background="danger" [disabled]="!user || executing" (click)="confirmReport()">
+            Confirm Report
+        </button>
+        <button type="button" id="ignore-report-btn" class="button ml-s" background="light" [disabled]="!user || executing" (click)="ignoreReport()">
+            Ignore Report
+        </button>
+    </div>
+</sc-modal-wrapper>

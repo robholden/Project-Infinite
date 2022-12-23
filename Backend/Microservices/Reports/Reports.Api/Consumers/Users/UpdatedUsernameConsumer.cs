@@ -23,7 +23,6 @@ public class UpdatedUsernameConsumer : ISnowConsumer, IConsumer<UpdatedUsernameR
         using var transaction = await _ctx.Database.BeginTransactionAsync();
 
         await _ctx.UpdateUsernameAsync<UserReport>(request.UserId, request.Username);
-        await _ctx.UpdateUsernameAsync<PictureReport>(request.UserId, request.Username);
         await _ctx.UpdateUsernameAsync<ReportAction>(request.UserId, request.Username);
 
         await transaction.CommitAsync();

@@ -20,14 +20,18 @@ public class Notification : IUser
     [MinLength(3), MaxLength(50)]
     public string Username { get; set; }
 
-    [MaxLength(255)]
-    public string ContentKey { get; set; }
+    [MaxLength(50)]
+    [Required]
+    public string Identifier { get; set; }
+
+    [Required]
+    public NotificationType Type { get; set; }
 
     [MaxLength(255)]
-    public string ContentImage { get; set; }
+    public string ContentRoute { get; set; }
 
     [MaxLength(255)]
-    public string ContentMessage { get; set; }
+    public string ContentImageUrl { get; set; }
 
     [Required]
     public DateTime Date { get; set; } = DateTime.UtcNow;
@@ -42,9 +46,13 @@ public class Notification : IUser
     [NotMapped]
     public bool Read => ReadAt.HasValue;
 
-    public NotificationType Type { get; set; }
-
     public bool Hidden { get; set; }
+
+    public Guid? EmailQueueId { get; set; }
+
+    public virtual EmailQueue EmailQueue { get; set; }
+
+    public int Delay { get; set; }
 
     public virtual ICollection<NotificationEntry> Entries { get; set; }
 }
