@@ -2,6 +2,8 @@
 
 using Microsoft.EntityFrameworkCore;
 
+using static Library.Core.DatabaseExtensions;
+
 namespace Library.Core;
 
 public static class DatabaseExtensions
@@ -131,16 +133,51 @@ public static class DatabaseExtensions
         var set = ctx.Set<U>();
 
         // Update record immediately
-        var data = await set.Where(x => x.UserId == userId).ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Username, username));
-
+        var data = await set
+            .Where(x => x.UserId == userId)
+            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Username, username));
     }
 
-    public static async Task DeleteUserAsync<U>(this DbContext ctx, Guid userId) where U : class, IUserId
+    public static Task DeleteUserAsync<U>(this DbContext ctx, Guid userId) where U : class, IUserId
     {
-        // Get user set
+        return ctx.ExecuteDeleteAsync<U>(u => u.UserId == userId);
+    }
+
+    public static async Task ExecuteUpdateAsync<U>(this DbContext ctx, Expression<Func<U, bool>> expression, Action<U> updateAction) where U : class
+    {
+        // Get db set
         var set = ctx.Set<U>();
 
-        // Delete records immediately
-        await set.Where(x => x.UserId == userId).ExecuteDeleteAsync();
+        // Get data from db
+        var entries = await set.Where(expression).ToListAsync();
+
+        foreach (var entry in entries)
+        {
+            updateAction.Invoke(entry);
+        }
+
+        await UpdateManyAsync(ctx, entries);
+    }
+
+    public static async Task ExecuteDeleteAsync<U>(this DbContext ctx, Expression<Func<U, bool>> expression) where U : class
+    {
+        // Get db set
+        var set = ctx.Set<U>();
+
+        // Get data from db
+        var results = set.Where(expression);
+
+        // This does not work when using in memory
+        if (!ctx.Database.IsInMemory())
+        {
+            await results.ExecuteDeleteAsync();
+        }
+
+        // Do it the old way
+        else
+        {
+            set.RemoveRange(results);
+            await ctx.SaveChangesAsync();
+        }
     }
 }

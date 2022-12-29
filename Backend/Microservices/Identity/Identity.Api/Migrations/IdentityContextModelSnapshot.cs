@@ -6,364 +6,392 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Identity.Api.Migrations;
+#nullable disable
 
-[DbContext(typeof(IdentityContext))]
-partial class IdentityContextModelSnapshot : ModelSnapshot
+namespace Identity.Api.Migrations
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    [DbContext(typeof(IdentityContext))]
+    partial class IdentityContextModelSnapshot : ModelSnapshot
     {
+        protected override void BuildModel(ModelBuilder modelBuilder)
+        {
 #pragma warning disable 612, 618
-        modelBuilder
-            .HasAnnotation("Relational:MaxIdentifierLength", 128)
-            .HasAnnotation("ProductVersion", "6.0.0-preview.2.21154.2")
-            .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-        modelBuilder.Entity("Identity.Domain.AuthToken", b =>
-            {
-                b.Property<Guid>("AuthTokenId")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-                b.Property<DateTime>("Created")
-                    .HasColumnType("datetime2");
+            modelBuilder.Entity("Identity.Domain.AuthToken", b =>
+                {
+                    b.Property<Guid>("AuthTokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<bool>("Deleted")
-                    .HasColumnType("bit");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                b.Property<string>("IdentityKey")
-                    .IsRequired()
-                    .HasMaxLength(256)
-                    .HasColumnType("nvarchar(256)");
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
-                b.Property<string>("IpAddress")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("nvarchar(50)");
+                    b.Property<string>("IdentityKey")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                b.Property<string>("Platform")
-                    .HasMaxLength(50)
-                    .HasColumnType("nvarchar(50)");
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                b.Property<string>("PlatformRaw")
-                    .HasMaxLength(200)
-                    .HasColumnType("nvarchar(200)");
+                    b.Property<string>("Platform")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                b.Property<string>("RefreshToken")
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .HasColumnType("nvarchar(255)");
+                    b.Property<string>("PlatformRaw")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                b.Property<DateTime>("RefreshedAt")
-                    .HasColumnType("datetime2");
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                b.Property<int>("Refreshes")
-                    .HasColumnType("int");
+                    b.Property<DateTime>("RefreshedAt")
+                        .HasColumnType("datetime2");
 
-                b.Property<bool>("RememberIdentityForTwoFactor")
-                    .HasColumnType("bit");
+                    b.Property<int>("Refreshes")
+                        .HasColumnType("int");
 
-                b.Property<bool>("TouchIdEnabled")
-                    .HasColumnType("bit");
+                    b.Property<bool>("RememberIdentityForTwoFactor")
+                        .HasColumnType("bit");
 
-                b.Property<bool>("TwoFactorPassed")
-                    .HasColumnType("bit");
+                    b.Property<bool>("TouchIdEnabled")
+                        .HasColumnType("bit");
 
-                b.Property<DateTime?>("Updated")
-                    .HasColumnType("datetime2");
+                    b.Property<bool>("TwoFactorPassed")
+                        .HasColumnType("bit");
 
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
 
-                b.HasKey("AuthTokenId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.HasIndex("UserId");
+                    b.HasKey("AuthTokenId");
 
-                b.ToTable("AuthTokens");
-            });
+                    b.HasIndex("UserId");
 
-        modelBuilder.Entity("Identity.Domain.FailedLogin", b =>
-            {
-                b.Property<Guid>("FailedLoginId")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                    b.ToTable("AuthTokens");
+                });
 
-                b.Property<DateTime>("Created")
-                    .HasColumnType("datetime2");
+            modelBuilder.Entity("Identity.Domain.FailedLogin", b =>
+                {
+                    b.Property<Guid>("FailedLoginId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                b.HasKey("FailedLoginId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.HasIndex("UserId");
+                    b.HasKey("FailedLoginId");
 
-                b.ToTable("FailedLogins");
-            });
+                    b.HasIndex("UserId");
 
-        modelBuilder.Entity("Identity.Domain.Password", b =>
-            {
-                b.Property<Guid>("PasswordId")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                    b.ToTable("FailedLogins");
+                });
 
-                b.Property<byte[]>("PasswordHash")
-                    .IsRequired()
-                    .HasColumnType("varbinary(max)");
+            modelBuilder.Entity("Identity.Domain.Password", b =>
+                {
+                    b.Property<Guid>("PasswordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<byte[]>("PasswordSalt")
-                    .IsRequired()
-                    .HasColumnType("varbinary(max)");
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
-                b.HasKey("PasswordId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.HasIndex("UserId");
+                    b.HasKey("PasswordId");
 
-                b.ToTable("Passwords");
-            });
+                    b.HasIndex("UserId");
 
-        modelBuilder.Entity("Identity.Domain.RecoveryCode", b =>
-            {
-                b.Property<Guid>("RecoveryCodeId")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                    b.ToTable("Passwords");
+                });
 
-                b.Property<DateTime>("Created")
-                    .HasColumnType("datetime2");
+            modelBuilder.Entity("Identity.Domain.RecoveryCode", b =>
+                {
+                    b.Property<Guid>("RecoveryCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<DateTime?>("UsedAt")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("datetime2");
 
-                b.Property<string>("Value")
-                    .IsRequired()
-                    .HasMaxLength(500)
-                    .HasColumnType("nvarchar(500)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.HasKey("RecoveryCodeId");
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                b.HasIndex("UserId");
+                    b.HasKey("RecoveryCodeId");
 
-                b.ToTable("RecoveryCodes");
-            });
+                    b.HasIndex("UserId");
 
-        modelBuilder.Entity("Identity.Domain.TwoFactor", b =>
-            {
-                b.Property<int>("TwoFactorId")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int")
-                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.ToTable("RecoveryCodes");
+                });
 
-                b.Property<string>("Code")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+            modelBuilder.Entity("Identity.Domain.TwoFactor", b =>
+                {
+                    b.Property<int>("TwoFactorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                b.Property<long?>("TimeStamp")
-                    .IsRequired()
-                    .HasColumnType("bigint");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TwoFactorId"));
 
-                b.Property<int>("Type")
-                    .HasColumnType("int");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<long?>("TimeStamp")
+                        .IsRequired()
+                        .HasColumnType("bigint");
 
-                b.HasKey("TwoFactorId");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
-                b.HasIndex("UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.ToTable("TwoFactors");
-            });
+                    b.HasKey("TwoFactorId");
 
-        modelBuilder.Entity("Identity.Domain.User", b =>
-            {
-                b.Property<Guid>("UserId")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                    b.HasIndex("UserId");
 
-                b.Property<DateTime>("Created")
-                    .HasColumnType("datetime2");
+                    b.ToTable("TwoFactors");
+                });
 
-                b.Property<string>("Email")
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .HasColumnType("nvarchar(255)");
+            modelBuilder.Entity("Identity.Domain.User", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<bool>("EmailConfirmed")
-                    .HasColumnType("bit");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                b.Property<int>("ExternalProvider")
-                    .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                b.Property<string>("ExternalProviderIdentifier")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
-                b.Property<string>("ExternalProviderToken")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ExternalProvider")
+                        .HasColumnType("int");
 
-                b.Property<DateTime?>("LastActive")
-                    .HasColumnType("datetime2");
+                    b.Property<string>("ExternalProviderIdentifier")
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<string>("Mobile")
-                    .HasMaxLength(50)
-                    .HasColumnType("nvarchar(50)");
+                    b.Property<DateTime?>("LastActive")
+                        .HasColumnType("datetime2");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnType("nvarchar(100)");
+                    b.Property<string>("Mobile")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                b.Property<int>("Status")
-                    .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                b.Property<bool>("TwoFactorEnabled")
-                    .HasColumnType("bit");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
-                b.Property<string>("TwoFactorSecret")
-                    .HasMaxLength(100)
-                    .HasColumnType("nvarchar(100)");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
-                b.Property<int>("TwoFactorType")
-                    .HasColumnType("int");
+                    b.Property<string>("TwoFactorSecret")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                b.Property<int>("UserLevel")
-                    .HasColumnType("int");
+                    b.Property<int>("TwoFactorType")
+                        .HasColumnType("int");
 
-                b.Property<string>("Username")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("nvarchar(50)");
+                    b.Property<int>("UserLevel")
+                        .HasColumnType("int");
 
-                b.HasKey("UserId");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                b.HasIndex("Email")
-                    .IsUnique();
+                    b.HasKey("UserId");
 
-                b.HasIndex("Username")
-                    .IsUnique();
+                    b.HasIndex("Email")
+                        .IsUnique();
 
-                b.ToTable("Users");
-            });
+                    b.HasIndex("Username")
+                        .IsUnique();
 
-        modelBuilder.Entity("Identity.Domain.UserKey", b =>
-            {
-                b.Property<Guid>("UserKeyId")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                    b.ToTable("Users");
+                });
 
-                b.Property<DateTime>("Created")
-                    .HasColumnType("datetime2");
+            modelBuilder.Entity("Identity.Domain.UserKey", b =>
+                {
+                    b.Property<Guid>("UserKeyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<DateTime?>("Expires")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                b.Property<bool>("Invalidated")
-                    .HasColumnType("bit");
+                    b.Property<DateTime?>("Expires")
+                        .HasColumnType("datetime2");
 
-                b.Property<string>("Key")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(450)");
+                    b.Property<bool>("Invalidated")
+                        .HasColumnType("bit");
 
-                b.Property<int>("Type")
-                    .HasColumnType("int");
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                b.Property<DateTime?>("UsedAt")
-                    .HasColumnType("datetime2");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
-                b.Property<Guid>("UserId")
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("datetime2");
 
-                b.HasKey("UserKeyId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.HasIndex("Key")
-                    .IsUnique();
+                    b.HasKey("UserKeyId");
 
-                b.HasIndex("UserId");
+                    b.HasIndex("Key")
+                        .IsUnique();
 
-                b.ToTable("UserKeys");
-            });
+                    b.HasIndex("UserId");
 
-        modelBuilder.Entity("Identity.Domain.AuthToken", b =>
-            {
-                b.HasOne("Identity.Domain.User", "User")
-                    .WithMany("AuthTokens")
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.ToTable("UserKeys");
+                });
 
-                b.Navigation("User");
-            });
+            modelBuilder.Entity("Identity.Domain.UserPreference", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-        modelBuilder.Entity("Identity.Domain.FailedLogin", b =>
-            {
-                b.HasOne("Identity.Domain.User", "User")
-                    .WithMany()
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.Property<bool>("MarketingEmails")
+                        .HasColumnType("bit");
 
-                b.Navigation("User");
-            });
+                    b.HasKey("UserId");
 
-        modelBuilder.Entity("Identity.Domain.Password", b =>
-            {
-                b.HasOne("Identity.Domain.User", "User")
-                    .WithMany("Passwords")
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.ToTable("UserPreferences");
+                });
 
-                b.Navigation("User");
-            });
+            modelBuilder.Entity("Identity.Domain.AuthToken", b =>
+                {
+                    b.HasOne("Identity.Domain.User", "User")
+                        .WithMany("AuthTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("Identity.Domain.RecoveryCode", b =>
-            {
-                b.HasOne("Identity.Domain.User", "User")
-                    .WithMany("RecoveryCodes")
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.Navigation("User");
+                });
 
-                b.Navigation("User");
-            });
+            modelBuilder.Entity("Identity.Domain.FailedLogin", b =>
+                {
+                    b.HasOne("Identity.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("Identity.Domain.TwoFactor", b =>
-            {
-                b.HasOne("Identity.Domain.User", "User")
-                    .WithMany()
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.Navigation("User");
+                });
 
-                b.Navigation("User");
-            });
+            modelBuilder.Entity("Identity.Domain.Password", b =>
+                {
+                    b.HasOne("Identity.Domain.User", "User")
+                        .WithMany("Passwords")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("Identity.Domain.UserKey", b =>
-            {
-                b.HasOne("Identity.Domain.User", "User")
-                    .WithMany("UserKeys")
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.Navigation("User");
+                });
 
-                b.Navigation("User");
-            });
+            modelBuilder.Entity("Identity.Domain.RecoveryCode", b =>
+                {
+                    b.HasOne("Identity.Domain.User", "User")
+                        .WithMany("RecoveryCodes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("Identity.Domain.User", b =>
-            {
-                b.Navigation("AuthTokens");
+                    b.Navigation("User");
+                });
 
-                b.Navigation("Passwords");
+            modelBuilder.Entity("Identity.Domain.TwoFactor", b =>
+                {
+                    b.HasOne("Identity.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                b.Navigation("RecoveryCodes");
+                    b.Navigation("User");
+                });
 
-                b.Navigation("UserKeys");
-            });
+            modelBuilder.Entity("Identity.Domain.UserKey", b =>
+                {
+                    b.HasOne("Identity.Domain.User", "User")
+                        .WithMany("UserKeys")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Identity.Domain.UserPreference", b =>
+                {
+                    b.HasOne("Identity.Domain.User", "User")
+                        .WithOne("Preferences")
+                        .HasForeignKey("Identity.Domain.UserPreference", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Identity.Domain.User", b =>
+                {
+                    b.Navigation("AuthTokens");
+
+                    b.Navigation("Passwords");
+
+                    b.Navigation("Preferences");
+
+                    b.Navigation("RecoveryCodes");
+
+                    b.Navigation("UserKeys");
+                });
 #pragma warning restore 612, 618
+        }
     }
 }

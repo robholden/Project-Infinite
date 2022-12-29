@@ -8,18 +8,15 @@ export class DesktopEnvironment implements Environment {
     production: boolean;
     recaptchaKey?: string = '6Le8ynMUAAAAADOWORojoFlX_AHuHdYTQaTnLCqY';
 
-    locationIQ = {
-        token: 'pk.5fc6b053493bde59c3c62e1cfe451cb5',
-    };
     facebook = {
         appId: '1111781849247647',
     };
     apple = {
-        clientId: 'com.snowcapture.web',
-        redirectUrl: 'https://snowcapture.eu.ngrok.io/login/apple',
+        clientId: 'com.rholden.project-infinite.web',
+        redirectUrl: 'https://project-infinite.eu.ngrok.io/login/apple',
     };
     google = {
-        clientId: '862560448504-tuqume8imv1ueme6jkm91me52t138jm7.apps.googleusercontent.com',
+        clientId: '779342722703-b2jo58nlk3linqhi2akqp8iehuqs37op.apps.googleusercontent.com',
     };
 
     constructor(env: Environment) {

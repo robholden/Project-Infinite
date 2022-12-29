@@ -18,21 +18,8 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 
-import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
-        FeaturesModule,
-        LazyLoadImageModule,
-        PipesModule,
-        DirectivesModule,
-        InfiniteScrollModule,
-    ],
+    imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, FeaturesModule, PipesModule, DirectivesModule],
     declarations: [
         HeaderComponent,
         FooterComponent,
@@ -46,7 +33,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
         TranslateModule,
         PipesModule,
         DirectivesModule,
-        LazyLoadImageModule,
         HeaderComponent,
         FooterComponent,
         NotificationsComponent,

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthState } from '@shared/storage';
 
 @Component({
-    selector: 'sc-moderator',
+    selector: 'pi-moderator',
     templateUrl: 'moderator.page.html',
     styleUrls: ['moderator.page.scss'],
 })

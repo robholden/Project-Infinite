@@ -1,12 +1,11 @@
 <div class="container flex-row-align">
     <h1 class="logo">
-        <a class="header-link logo-link" routerLink="/">Snow Capture</a>
+        <a class="header-link logo-link" routerLink="/">Project Infinite</a>
     </h1>
 
     <div class="flex-spacer"></div>
 
-    <i class="fas fa-spinner-third fa-spin icon-loader" colour="success" [class.show]="loading.visible"></i>
-    <i class="fad fa-snowflakes icon-logo" [class.hide]="loading.visible"></i>
+    <i class="fas fa-infinity icon-logo"></i>
 
     <div class="flex-spacer"></div>
 
@@ -24,9 +23,9 @@
             <i class="icon fas fa-shield" [class.alerted]="alerted['mod']"></i>
             <span *ngIf="unread['mod'] as modUnread">{{ modUnread }}</span>
 
-            <sc-drop-down position="bottomleft" [y]="7" [x]="-5" [width]="350" (opened)="viewNotifications('mod')">
-                <sc-notifications #modNotif (latest)="newNotification('mod', $event)" [mod]="true"></sc-notifications>
-            </sc-drop-down>
+            <pi-drop-down position="bottomleft" [y]="7" [x]="-5" [width]="350" (opened)="viewNotifications('mod')">
+                <pi-notifications #modNotif (latest)="newNotification('mod', $event)" [mod]="true"></pi-notifications>
+            </pi-drop-down>
         </button>
 
         <button
@@ -41,20 +40,20 @@
             <i class="icon fas fa-bell" [class.alerted]="alerted['user']"></i>
             <span *ngIf="unread['user'] as userUnread">{{ userUnread }}</span>
 
-            <sc-drop-down position="bottomleft" [y]="7" [x]="-5" [width]="350" (opened)="viewNotifications('user')">
-                <sc-notifications #userNotif (latest)="newNotification('user', $event)"></sc-notifications>
-            </sc-drop-down>
+            <pi-drop-down position="bottomleft" [y]="7" [x]="-5" [width]="350" (opened)="viewNotifications('user')">
+                <pi-notifications #userNotif (latest)="newNotification('user', $event)"></pi-notifications>
+            </pi-drop-down>
         </button>
 
         <button type="button" class="header-link dropdown-toggle" *ngIf="authState.observe('user') | async as user">
             <div class="user-info">
-                <sc-avatar [name]="user.username" [size]="28" bg="var(--sc-colour-primary)" fg="var(--sc-colour-primary-contrast)"></sc-avatar>
+                <pi-avatar [name]="user.username" [size]="28" bg="var(--pi-colour-primary)" fg="var(--pi-colour-primary-contrast)"></pi-avatar>
             </div>
 
-            <sc-drop-down position="bottomleft" [y]="10" [x]="-5">
+            <pi-drop-down position="bottomleft" [y]="10" [x]="-5">
                 <a class="link-title" [routerLink]="'/user/' + user.username">
                     <div class="user-info">
-                        <sc-avatar [name]="user.username" [size]="28" bg="var(--sc-colour-primary)" fg="var(--sc-colour-primary-contrast)"></sc-avatar>
+                        <pi-avatar [name]="user.username" [size]="28" bg="var(--pi-colour-primary)" fg="var(--pi-colour-primary-contrast)"></pi-avatar>
 
                         <div>
                             <h4>{{ user.name }}</h4>
@@ -62,25 +61,6 @@
                         </div>
                     </div>
                 </a>
-
-                <div class="link-section">
-                    <a [routerLink]="'/user/' + user.username + '/drafts'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        Drafts
-                        <i class="far fa-pencil-ruler"></i>
-                    </a>
-                    <a [routerLink]="'/user/' + user.username" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        Pictures
-                        <i class="far fa-images"></i>
-                    </a>
-                    <a [routerLink]="'/user/' + user.username + '/collections'" routerLinkActive="active">
-                        Collections
-                        <i class="far fa-layer-group"></i>
-                    </a>
-                    <a [routerLink]="'/user/' + user.username + '/likes'" routerLinkActive="active">
-                        Likes
-                        <i class="far fa-heart"></i>
-                    </a>
-                </div>
 
                 <div class="link-section" *ngIf="authState.is_admin || authState.is_mod">
                     <a routerLink="/mod" routerLinkActive="active">
@@ -104,7 +84,7 @@
                         <i class="far fa-sign-out-alt"></i>
                     </a>
                 </div>
-            </sc-drop-down>
+            </pi-drop-down>
         </button>
     </ng-container>
 </div>

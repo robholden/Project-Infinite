@@ -52,13 +52,13 @@ export class LoadingController {
 
     private async setButtonState(btn: HTMLElement, load: boolean, error: boolean = null) {
         if (!btn) return;
-        btn.classList.add('sc-loading');
+        btn.classList.add('pi-loading');
 
         if (load) {
             const content = btn.innerHTML;
             const loadingContent = '<span><i class="fas fa-spinner-third fa-spin icon" position="middle"></i></span>';
 
-            if (!btn.classList.contains('sc-loading')) btn.classList.add('sc-loading');
+            if (!btn.classList.contains('pi-loading')) btn.classList.add('pi-loading');
 
             btn.setAttribute('data-content', content);
 
@@ -97,7 +97,7 @@ export class LoadingController {
                 btn.innerHTML = html;
             }
 
-            btn.classList.remove('sc-loading');
+            btn.classList.remove('pi-loading');
         }
     }
 }

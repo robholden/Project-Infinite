@@ -21,21 +21,9 @@
     },
     "settings": {
         "preferences": {
-            "marketing_email": {
+            "marketing_emails": {
                 "title": "Marketing",
                 "subtitle": "Keep up to date on the latest news from us"
-            },
-            "picture_approved_email": {
-                "title": "Picture Approved",
-                "subtitle": "Whether your picture has been approved or not"
-            },
-            "picture_unapproved_email": {
-                "title": "Picture Rejected",
-                "subtitle": "Whether your picture has been rejected or not"
-            },
-            "picture_liked_email": {
-                "title": "Picture Liked",
-                "subtitle": "When your picture has been liked by another user"
             }
         }
     },

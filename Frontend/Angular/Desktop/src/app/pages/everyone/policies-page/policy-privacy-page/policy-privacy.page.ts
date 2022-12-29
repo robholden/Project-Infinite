@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'sc-policy-privacy',
+    selector: 'pi-policy-privacy',
     templateUrl: 'policy-privacy.page.html',
     styleUrls: ['policy-privacy.page.scss'],
 })

@@ -12,7 +12,7 @@ const routes: Routes = [
         component: ModeratorPage,
         data: { title: 'Mod' },
         children: [
-            { path: '', redirectTo: 'approvals', pathMatch: 'full' },
+            { path: '', redirectTo: 'reports', pathMatch: 'full' },
             { path: 'reports', loadChildren: () => import('./reports-page/reports.module').then((m) => m.ReportsPageModule) },
         ],
     },

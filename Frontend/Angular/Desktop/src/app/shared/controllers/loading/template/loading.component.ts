@@ -14,7 +14,7 @@ export interface ILoadingComponent extends IControllerComponent {
 }
 
 @Component({
-    selector: 'sc-loading-component',
+    selector: 'pi-loading-component',
     templateUrl: './loading.component.html',
     styleUrls: ['./loading.component.scss'],
 })

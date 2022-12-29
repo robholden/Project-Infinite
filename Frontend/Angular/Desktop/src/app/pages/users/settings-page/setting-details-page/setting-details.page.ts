@@ -14,7 +14,7 @@ import { AlertController } from '@app/shared/controllers/alert';
 import { LoadingController } from '@app/shared/controllers/loading';
 
 @Component({
-    selector: 'sc-setting-details',
+    selector: 'pi-setting-details',
     templateUrl: './setting-details.page.html',
     styleUrls: ['./setting-details.page.scss'],
 })

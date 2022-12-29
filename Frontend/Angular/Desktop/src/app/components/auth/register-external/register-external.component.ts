@@ -1,15 +1,16 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { CustomError, ProviderResult, Trx, User, userValidators } from '@shared/models';
+import { CustomError, ErrorCode, ProviderResult, Trx, User, userValidators } from '@shared/models';
 import { EventService } from '@shared/services';
 import { AuthService, UserService } from '@shared/services/identity';
 
 import { LoadingController } from '@app/shared/controllers/loading';
 import { ModalComponent, ModalController } from '@app/shared/controllers/modal';
+import { ToastController } from '@app/shared/controllers/toast';
 
 @Component({
-    selector: 'sc-register-external',
+    selector: 'pi-register-external',
     templateUrl: './register-external.component.html',
     styleUrls: ['./register-external.component.scss'],
 })
@@ -26,6 +27,7 @@ export class RegisterExternalComponent extends ModalComponent<boolean> implement
         public events: EventService,
         private userService: UserService,
         private authService: AuthService,
+        private toastCtrl: ToastController,
         private modalCtrl: ModalController,
         private loadingCtrl: LoadingController
     ) {
@@ -44,7 +46,7 @@ export class RegisterExternalComponent extends ModalComponent<boolean> implement
 
     async register() {
         // Tell ui we're loading
-        const loading = this.loadingCtrl.addBtn('register-btn');
+        const loading = this.loadingCtrl.addBtn('ext-register-btn');
         loading.present();
         this.form.disable();
         this.regError = null;
@@ -56,7 +58,12 @@ export class RegisterExternalComponent extends ModalComponent<boolean> implement
         // Stop if response is an exception
         if (regResp instanceof CustomError) {
             loading.dismiss();
-            this.regError = regResp;
+
+            if (regResp.code === ErrorCode.HttpUnauthorized) {
+                this.dismiss();
+                this.toastCtrl.add('The session has expired, please try again', 'danger').present(5000);
+            } else this.regError = regResp;
+
             return;
         }
 

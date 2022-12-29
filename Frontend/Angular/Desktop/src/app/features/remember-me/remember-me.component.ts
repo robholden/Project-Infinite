@@ -6,7 +6,7 @@ import { AuthState } from '@shared/storage';
 import { CookieConsentService } from '@app/services/cookie-consent.service';
 
 @Component({
-    selector: 'sc-remember-me',
+    selector: 'pi-remember-me',
     templateUrl: './remember-me.component.html',
     styleUrls: ['remember-me.component.scss'],
 })

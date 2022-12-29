@@ -1,4 +1,4 @@
-<sc-modal-wrapper (closed)="closeWarn()" background="light">
+<pi-modal-wrapper (closed)="closeWarn()" background="light">
     <h2>{{ !recoveryCodes ? 'Setup Two-Factor Authentication' : 'Setup Completed' }}</h2>
 
     <ng-container *ngIf="!recoveryCodes">
@@ -66,4 +66,4 @@
             <button class="button mx-a" background="primary" (click)="closeWarn()">Close Setup</button>
         </div>
     </ng-container>
-</sc-modal-wrapper>
+</pi-modal-wrapper>

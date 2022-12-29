@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 
-import { nameof } from '@shared/functions';
+import { pascalToScores } from '@shared/functions';
 import { INJ_STORAGE } from '@shared/injectors';
 import { Storage, StorageOptions } from '@shared/interfaces';
 import { SMap } from '@shared/models';
@@ -137,7 +137,7 @@ export class CustomStore<TSchema> extends CustomBaseStore<TSchema> {
 
         // Add store name as prefix
         const stateKey = key as string;
-        const storeKey = options.keyName ?? `${nameof(this)}_${stateKey}`;
+        const storeKey = this.getKeyName(stateKey);
 
         // Get value from storage
         return await this.storage.find(storeKey, { ...options, defaultValue: def });
@@ -145,8 +145,8 @@ export class CustomStore<TSchema> extends CustomBaseStore<TSchema> {
 
     set<U extends keyof TSchema>(key: U, updatedValue: TSchema[U], options?: StorageOptions<TSchema[U]>): CustomStore<TSchema> {
         if (options) {
-            this.config[key] = {
-                ...(this.config[key] || {}),
+            this.config[key as string] = {
+                ...(this.config[key as string] || {}),
                 ...options,
             };
         }
@@ -165,7 +165,7 @@ export class CustomStore<TSchema> extends CustomBaseStore<TSchema> {
             }
 
             // Add store name as prefix
-            const storeKey = options.keyName ?? `${nameof(this)}_${key}`;
+            const storeKey = this.getKeyName(key);
 
             // Find data from storage
             const data = options.store ? await this.storage.find(storeKey, options) : value;
@@ -177,12 +177,17 @@ export class CustomStore<TSchema> extends CustomBaseStore<TSchema> {
             // Watch for changes and update storage
             if (options.store) {
                 const watcher = this.observe(key as keyof TSchema, false);
-                watcher.subscribe(async (value) => await this.storage.set(storeKey, value, options));
+                watcher.subscribe(async (value) => await this.storage.set(storeKey, value, this.config[key as string]));
             }
         });
 
         await Promise.all(proms);
 
         this.onload.next(true);
+    }
+
+    private getKeyName(key: string) {
+        const options = this.config[key];
+        return pascalToScores(options?.keyName ?? key);
     }
 }

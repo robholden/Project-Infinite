@@ -7,7 +7,7 @@ import { UserService } from '@shared/services/identity';
 import { AuthState } from '@shared/storage';
 
 @Component({
-    selector: 'sc-update-email',
+    selector: 'pi-update-email',
     templateUrl: './update-email.modal.html',
     styleUrls: ['./update-email.modal.scss'],
 })

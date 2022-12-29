@@ -19,7 +19,7 @@ import { ToastController } from '@app/shared/controllers/toast';
 import { SetupTwoFactorModal } from './setup-two-factor-modal/setup-two-factor.modal';
 
 @Component({
-    selector: 'sc-setting-security',
+    selector: 'pi-setting-security',
     templateUrl: './setting-security.page.html',
     styleUrls: ['./setting-security.page.scss'],
 })

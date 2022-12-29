@@ -10,7 +10,7 @@ import { EventService } from '@shared/services';
 import { AuthService } from '@shared/services/identity';
 
 @Component({
-    selector: 'sc-auth',
+    selector: 'pi-auth',
     templateUrl: './auth.modal.html',
     styleUrls: ['./auth.modal.scss'],
 })

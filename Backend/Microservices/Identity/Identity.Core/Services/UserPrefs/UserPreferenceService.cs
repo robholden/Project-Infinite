@@ -1,4 +1,5 @@
 ﻿using Identity.Domain;
+using Identity.Domain.Dtos;
 
 using Library.Core;
 
@@ -15,17 +16,17 @@ public class UserPreferenceService : IUserPreferenceService
         _ctx = ctx;
     }
 
-    public async Task SetMarketing(Guid userId, bool enabled)
+    public async Task AddOrUpdate(Guid userId, UserPreferencesDto data)
     {
         var prefs = await _ctx.UserPreferences.FindOrNullAsync(u => u.UserId == userId);
         if (prefs == null)
         {
-            prefs = new UserPreference(userId, enabled);
+            prefs = new UserPreference(userId, data);
             prefs = await _ctx.CreateAsync(prefs);
         }
         else
         {
-            prefs.MarketingEmails = enabled;
+            prefs.MarketingEmails = data.MarketingEmails;
             await _ctx.UpdateAsync(prefs);
         }
     }

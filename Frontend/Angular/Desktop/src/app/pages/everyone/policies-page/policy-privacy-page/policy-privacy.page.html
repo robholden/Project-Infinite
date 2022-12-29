@@ -1,8 +1,8 @@
-<sc-page-content *ngIf="'privacy' | remoteContent: 'policy' | async as html else loadingRef">
+<pi-page-content *ngIf="'assets/content/policy.privacy.md' | remoteContent | async as html else loadingRef">
     <div class="container">
         <div class="text-content" [innerHTML]="html | markdown"></div>
     </div>
-</sc-page-content>
+</pi-page-content>
 
 <ng-template #loadingRef>
     <div class="full-content">

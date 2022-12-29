@@ -11,7 +11,7 @@ import { AuthState } from '@shared/storage';
 import { LoadingController } from '@app/shared/controllers/loading';
 
 @Component({
-    selector: 'sc-notifications',
+    selector: 'pi-notifications',
     templateUrl: './notifications.component.html',
     styleUrls: ['./notifications.component.scss'],
 })

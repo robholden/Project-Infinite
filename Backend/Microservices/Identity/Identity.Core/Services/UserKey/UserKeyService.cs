@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-using Identity.Domain;
+﻿using Identity.Domain;
 
 using Library.Core;
 
@@ -23,15 +21,14 @@ public class UserKeyService : IUserKeyService
         var userKey = new UserKey(userId, type, expires, key);
 
         // Mark old keys as invalidated
-        await _ctx.UserKeys
-            .Where(
-                k => k.UserId == userId &&
-                k.Type == type &&
-                !k.UsedAt.HasValue &&
-                (!k.Expires.HasValue || k.Expires.Value < DateTime.UtcNow) &&
-                !k.Invalidated
-            )
-            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Invalidated, true));
+        await _ctx.ExecuteUpdateAsync<UserKey>(
+            k => k.UserId == userId
+                && k.Type == type
+                && !k.UsedAt.HasValue
+                && (!k.Expires.HasValue || k.Expires.Value < DateTime.UtcNow)
+                && !k.Invalidated,
+            entry => entry.Invalidated = true
+        );
 
         // Add and return entity
         return await _ctx.UpdateAsync(userKey);
@@ -40,9 +37,10 @@ public class UserKeyService : IUserKeyService
     public async Task InvalidateKeys(Guid userId, UserKeyType type)
     {
         // Invalidate old keys
-        await _ctx.UserKeys
-            .Where(k => k.UserId == userId && k.Type == type && !k.Invalidated)
-            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Invalidated, true));
+        await _ctx.ExecuteUpdateAsync<UserKey>(
+            k => k.UserId == userId && k.Type == type && !k.Invalidated,
+            entry => entry.Invalidated = true
+        );
     }
 
     public async Task<UserKey> UseKey(string key, UserKeyType type)

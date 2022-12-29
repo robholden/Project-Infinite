@@ -26,10 +26,11 @@ internal class Helper
         Context = new CommsContext(
             new DbContextOptionsBuilder<CommsContext>()
                     .UseInMemoryDatabase("CommsDbTest")
-                    .UseLazyLoadingProxies(false)
                     .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
                     .Options
         );
+
+        //Context.Database.Migrate();
 
         var emailOptions = Options.Create<EmailSettings>(new());
         var mockCommEvents = new Mock<ICommsPubSub>().Object;

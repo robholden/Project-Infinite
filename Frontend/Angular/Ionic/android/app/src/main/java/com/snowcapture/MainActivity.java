@@ -1,4 +1,4 @@
-package com.snowcapture;
+package com.rholden.project-infinite;
 
 import com.getcapacitor.BridgeActivity;
 

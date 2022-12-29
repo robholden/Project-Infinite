@@ -1,18 +1,18 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Validators } from '@angular/forms';
 
-import { AlertController } from '@app/shared/controllers/alert';
-
 import { CustomEvent } from '@shared/enums';
 import { waitThen } from '@shared/functions';
 import { SMap } from '@shared/models';
-import { EventService, LoadingService, SocketService } from '@shared/services';
+import { EventService, SocketService } from '@shared/services';
 import { AuthState } from '@shared/storage';
+
+import { AlertController } from '@app/shared/controllers/alert';
 
 import { NotificationsComponent } from '../notifications/notifications.component';
 
 @Component({
-    selector: 'sc-header',
+    selector: 'pi-header',
     templateUrl: './header.component.html',
     styleUrls: ['header.component.scss'],
 })
@@ -25,13 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     readonly CustomEvent = CustomEvent;
 
-    constructor(
-        private sockets: SocketService,
-        private alertCtrl: AlertController,
-        public authState: AuthState,
-        public events: EventService,
-        public loading: LoadingService
-    ) {}
+    constructor(private sockets: SocketService, private alertCtrl: AlertController, public authState: AuthState, public events: EventService) {}
 
     ngOnInit() {}
 

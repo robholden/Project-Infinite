@@ -18,7 +18,7 @@ export class ProviderResult {
 }
 
 @Component({
-    selector: 'sc-register-external',
+    selector: 'pi-register-external',
     templateUrl: './register-external.modal.html',
     styleUrls: ['./register-external.modal.scss'],
 })

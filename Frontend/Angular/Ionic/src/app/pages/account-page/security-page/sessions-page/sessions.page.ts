@@ -17,7 +17,7 @@ import { AuthState } from '@shared/storage';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 @Component({
-    selector: 'sc-sessions',
+    selector: 'pi-sessions',
     templateUrl: './sessions.page.html',
     styleUrls: ['./sessions.page.scss'],
     animations: [

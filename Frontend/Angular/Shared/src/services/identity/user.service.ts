@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { CustomError, PasswordRequest, ReportUserReason, User, UserField } from '@shared/models';
+import { CustomError, PasswordRequest, ReportUserReason, User, UserField, UserPrefs } from '@shared/models';
 import { AuthState } from '@shared/storage';
 
 import { ApiOptions, HttpApiService } from '../';
@@ -40,7 +40,7 @@ export class UserService {
         // Go to api
         const command = { [field]: value };
         const user = await this.api.put<void>(
-            '/identity/user/update/' + (field ? field : ''),
+            '/identity/user/' + (field ? field : ''),
             passwordRequest?.password ? { ...passwordRequest, command } : command,
             {
                 recaptchaAction: 'user_update_' + field,
@@ -141,5 +141,15 @@ export class UserService {
     async unsubscribe(key: string): Promise<void | CustomError> {
         const resp = await this.api.put<void>('/identity/user/unsubscribe/' + key, {}, { toastError: false });
         if (resp instanceof CustomError) return resp;
+    }
+
+    /**
+     * Updates the logged in user's preferences
+     *
+     * @param preferences New preferences
+     */
+    async updatePreferences(preferences: UserPrefs): Promise<boolean> {
+        const resp = await this.api.put<void>('/identity/user/preferences', preferences);
+        return !(resp instanceof CustomError);
     }
 }

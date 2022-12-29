@@ -7,7 +7,7 @@ using MassTransit;
 
 namespace Comms.Api.Consumers.Emails;
 
-public class SendEmailDirectlyConsumer : ISnowConsumer, IConsumer<SendEmailDirectlyRq>
+public class SendEmailDirectlyConsumer : IRabbitConsumer, IConsumer<SendEmailDirectlyRq>
 {
     private readonly IEmailService _service;
 

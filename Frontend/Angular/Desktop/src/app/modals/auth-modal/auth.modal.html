@@ -1,4 +1,4 @@
-<sc-modal-wrapper (closed)="dismiss()" [ngSwitch]="type">
+<pi-modal-wrapper (closed)="dismiss()" [ngSwitch]="type">
     <div class="auth-links mb">
         <button [class.active]="type === 'login'" (click)="type = 'login'" *ngIf="type !== 'two-factor'">Login</button>
         <button [class.active]="type === 'two-factor'" (click)="type = 'two-factor'" *ngIf="type === 'two-factor'">Login</button>
@@ -6,9 +6,9 @@
     </div>
 
     <div class="form-wrapper">
-        <sc-register *ngSwitchCase="'register'" (completed)="reload()"></sc-register>
-        <sc-two-factor *ngSwitchCase="'two-factor'" (completed)="reload()"></sc-two-factor>
-        <sc-login *ngSwitchDefault (completed)="$event === false ? type = 'two-factor' : reload()"></sc-login>
+        <pi-register *ngSwitchCase="'register'" (completed)="reload()"></pi-register>
+        <pi-two-factor *ngSwitchCase="'two-factor'" (completed)="reload()"></pi-two-factor>
+        <pi-login *ngSwitchDefault (completed)="$event === false ? type = 'two-factor' : reload()"></pi-login>
 
         <div class="loading-overlay" *ngIf="loading"></div>
     </div>
@@ -26,4 +26,4 @@
             <span class="provider-text">{{ type === 'login' ? 'Sign in' : 'Sign up' }} with {{ provider | titlecase }}</span>
         </button>
     </div>
-</sc-modal-wrapper>
+</pi-modal-wrapper>

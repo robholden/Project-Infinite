@@ -15,18 +15,18 @@
         <div class="ion-padding-top">
             <ion-card-title color="primary">Register with {{ providerResult.provider | titlecase }}</ion-card-title>
             <ion-text>
-                You are about to create a new account on Snow Capture using a login from <strong>{{ providerResult.provider | titlecase }}</strong>
+                You are about to create a new account on Project Infinite using a login from <strong>{{ providerResult.provider | titlecase }}</strong>
             </ion-text>
 
-            <sc-custom-field class="ion-margin-vertical" label="Your Email">
+            <pi-custom-field class="ion-margin-vertical" label="Your Email">
                 <ion-input type="email" [value]="user.email" readonly></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
 
-            <sc-custom-field class="ion-margin-bottom" label="Your Name" [field]="name" [errors]="['maxlength']">
+            <pi-custom-field class="ion-margin-bottom" label="Your Name" [field]="name" [errors]="['maxlength']">
                 <ion-input type="text" formControlName="name" placeholder="..."></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
 
-            <sc-custom-field
+            <pi-custom-field
                 class="ion-margin-bottom"
                 label="Your Username"
                 [field]="username"
@@ -34,7 +34,7 @@
                 [trxParams]="{ pattern: 'username' }"
             >
                 <ion-input type="text" formControlName="username" placeholder="..."></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
 
             <div class="flex-row-align flex-shrink-0">
                 <ion-label class="toggle-text text-wrap flex-grow-1">

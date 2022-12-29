@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comms.Api.Consumers.SMSs;
 
-public class SendSmsToUserConsumer : ISnowConsumer, IConsumer<SendSmsToUserRq>
+public class SendSmsToUserConsumer : IRabbitConsumer, IConsumer<SendSmsToUserRq>
 {
     private readonly CommsContext _ctx;
     private readonly ISmsProvider _smsProvider;

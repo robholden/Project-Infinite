@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-    appId: 'com.snowcapture',
-    appName: 'Snow Capture',
+    appId: 'com.rholden.project-infinite',
+    appName: 'Project Infinite',
     webDir: 'www',
     bundledWebRuntime: false,
     plugins: {

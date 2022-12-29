@@ -9,6 +9,8 @@ public class ContentContext : DbContext
     {
     }
 
+    public DbSet<Post> Posts { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
     }

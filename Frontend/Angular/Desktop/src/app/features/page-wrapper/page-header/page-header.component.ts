@@ -7,7 +7,7 @@ export interface PageLink {
 }
 
 @Component({
-    selector: 'sc-page-header',
+    selector: 'pi-page-header',
     templateUrl: './page-header.component.html',
     styleUrls: ['page-header.component.scss'],
 })

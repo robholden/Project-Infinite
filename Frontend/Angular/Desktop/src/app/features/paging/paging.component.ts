@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageChange } from '@app/features/paged-component.helper';
 
 @Component({
-    selector: 'sc-paging',
+    selector: 'pi-paging',
     templateUrl: './paging.component.html',
     styleUrls: ['./paging.component.scss'],
 })

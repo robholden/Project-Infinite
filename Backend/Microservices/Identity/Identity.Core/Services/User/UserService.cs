@@ -116,7 +116,7 @@ public class UserService : IUserService
                     •	Platform: {identity.Platform}
                     •	IP address: {identity.IpAddress}
             ";
-            var email = new SendEmailToUserRq(user.ToUserRecord(), "", "Your account - Successful Log-in", true, identity.Key);
+            var email = new SendEmailToUserRq(user.ToUserRecord(), user.Email, body, "Successful Log-in", true, identity.Key);
             _ = _commEvents?.AddNotification(new(user.ToUserRecord(), identity.IpAddress, NotificationType.NewLogin, Content: new(), Email: email));
         }
 
@@ -146,7 +146,7 @@ public class UserService : IUserService
                 <p>You've requested a password reset. Please click this link to reset your password (it will expire after 24 hours):</p>
                 <p>###SITE_URL###/reset-password/{userKey.Key}</p>
             ";
-        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
+        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), user.Email, message, subject));
     }
 
     public async Task<string> Setup2FA(Guid userId, TwoFactorType type, string param = null)
@@ -223,11 +223,11 @@ public class UserService : IUserService
                     body = $"<p>You recently tried to setup email two-factor authentication. In order to complete your setup, please use the following code:</p> {code}";
                 }
 
-                _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), body, subject, true));
+                _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), user.Email, body, subject, true));
                 break;
 
             case TwoFactorType.SMS:
-                var message = $"Your Snow Capture one time password is {code}";
+                var message = $"Your Project Infinite one time password is {code}";
                 _ = _commEvents?.SendSmsToUser(new(user.ToUserRecord(), "2fa", user.Mobile, message));
 
                 break;
@@ -254,14 +254,15 @@ public class UserService : IUserService
         user = await _ctx.UpdateAsync(user);
 
         // Forget token identity
-        await _ctx.AuthTokens
-            .Where(t => t.UserId == userId && t.RememberIdentityForTwoFactor)
-            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.RememberIdentityForTwoFactor, false));
+        await _ctx.ExecuteUpdateAsync<AuthToken>(
+            t => t.UserId == userId && t.RememberIdentityForTwoFactor,
+            entry => entry.RememberIdentityForTwoFactor = false
+        );
 
         // Send email to user for confirmation
         var subject = "You've disabled two-factor authentication";
         var message = "<p>We're informing you that you have successfully disabled two-factor authentication.</p>";
-        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
+        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), user.Email, message, subject));
 
         return user;
     }
@@ -291,7 +292,7 @@ public class UserService : IUserService
         // Send email to user for confirmation
         var subject = "You've enabled two-factor authentication";
         var message = "<p>We're informing you that you have successfully setup two-factor authentication.</p>";
-        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
+        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), user.Email, message, subject));
 
         return user;
     }
@@ -323,7 +324,7 @@ public class UserService : IUserService
                 <p>To complete the registration process, please confirm your email address by clicking the link below:</p>
                 <p>###SITE_URL###/confirm-email/{userKey.Key}</p>
             ";
-            _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
+            _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), user.Email, message, subject));
         }
 
         return userKey.Key;
@@ -448,7 +449,7 @@ public class UserService : IUserService
         // Send email about change
         var subject = "Password Reset";
         var message = "<p>You've successfully changed your password.</p>";
-        _ = _commEvents?.SendEmailToUser(new(userKey.User.ToUserRecord(), message, subject));
+        _ = _commEvents?.SendEmailToUser(new(userKey.User.ToUserRecord(), userKey.User.Email, message, subject));
 
         return userKey.User;
     }

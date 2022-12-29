@@ -10,7 +10,7 @@ import { UserService } from '@shared/services/identity';
 import { ReportService } from '@shared/services/reports';
 
 @Component({
-    selector: 'sc-action-user-report',
+    selector: 'pi-action-user-report',
     templateUrl: './action-user-report.modal.html',
     styleUrls: ['./action-user-report.modal.scss'],
 })

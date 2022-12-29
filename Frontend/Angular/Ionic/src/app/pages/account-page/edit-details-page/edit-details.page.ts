@@ -11,7 +11,7 @@ import { UpdateNameModal } from './modals/update-name/update-name.modal';
 import { UpdateUsernameModal } from './modals/update-username/update-username.modal';
 
 @Component({
-    selector: 'sc-edit-details',
+    selector: 'pi-edit-details',
     templateUrl: './edit-details.page.html',
     styleUrls: ['./edit-details.page.scss'],
 })

@@ -27,11 +27,7 @@ public class LoginGoogleProvider : IExternalLoginProvider
             // Validate jwt token
 
             var jwtHandler = new JwtSecurityTokenHandler();
-            var jwt = jwtHandler.ReadJwtToken(token);
-            if (jwt == null)
-            {
-                throw new Exception("Failed to read token");
-            }
+            var jwt = jwtHandler.ReadJwtToken(token) ?? throw new Exception("Failed to read token");
 
             // Source: https://ncona.com/2015/02/consuming-a-google-id-token-from-a-server/
             //

@@ -3,7 +3,7 @@ import { Component, HostBinding, Input } from '@angular/core';
 import { AppColour } from '@shared/types';
 
 @Component({
-    selector: 'sc-page',
+    selector: 'pi-page',
     templateUrl: './page-wrapper.component.html',
     styleUrls: ['page-wrapper.component.scss'],
 })

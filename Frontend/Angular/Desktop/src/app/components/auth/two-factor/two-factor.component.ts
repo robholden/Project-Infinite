@@ -12,7 +12,7 @@ import { ToastController } from '@app/shared/controllers/toast';
 import { DesktopStore } from '@app/storage/desktop.store';
 
 @Component({
-    selector: 'sc-two-factor',
+    selector: 'pi-two-factor',
     templateUrl: './two-factor.component.html',
     styleUrls: ['./two-factor.component.scss'],
 })

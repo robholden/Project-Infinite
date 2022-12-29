@@ -14,17 +14,17 @@
     <form class="flex-col h-100" (submit)="register()" [formGroup]="form" novalidate="novalidate">
         <div class="ion-padding">
             <ion-card-title color="primary">Register</ion-card-title>
-            <ion-text>Join our snowy catalogue</ion-text>
+            <ion-text>Join the project of infinite</ion-text>
 
-            <sc-custom-field class="ion-margin-vertical" label="Your Name" [field]="name" [errors]="['maxlength']">
+            <pi-custom-field class="ion-margin-vertical" label="Your Name" [field]="name" [errors]="['maxlength']">
                 <ion-input type="text" formControlName="name" placeholder="..."></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
 
-            <sc-custom-field class="ion-margin-bottom" label="Your Email" [field]="email" [errors]="['maxlength', 'email']">
+            <pi-custom-field class="ion-margin-bottom" label="Your Email" [field]="email" [errors]="['maxlength', 'email']">
                 <ion-input type="email" formControlName="email" placeholder="..."></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
 
-            <sc-custom-field
+            <pi-custom-field
                 class="ion-margin-bottom"
                 label="Your Username"
                 [field]="username"
@@ -32,17 +32,17 @@
                 [trxParams]="{ pattern: 'username' }"
             >
                 <ion-input type="text" formControlName="username" placeholder="..."></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
 
-            <sc-custom-field class="ion-margin-bottom" label="Your Password" [field]="password" [errors]="['minlength', 'maxlength']">
+            <pi-custom-field class="ion-margin-bottom" label="Your Password" [field]="password" [errors]="['minlength', 'maxlength']">
                 <ion-input type="password" [clearInput]="true" formControlName="password" placeholder="..."></ion-input>
 
                 <ng-container *ngIf="pwStrength" custom-errors>
                     <ion-text [color]="pwStrength.colour">{{ pwStrength.message }}</ion-text>
                 </ng-container>
-            </sc-custom-field>
+            </pi-custom-field>
 
-            <sc-custom-field
+            <pi-custom-field
                 class="ion-margin-bottom"
                 label="Confirm Password"
                 [field]="confirmPassword"
@@ -50,7 +50,7 @@
                 [trxParams]="{ 'mismatch': { name: 'Passwords' } }"
             >
                 <ion-input type="password" [clearInput]="true" formControlName="confirmPassword" placeholder="..."></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
 
             <div class="flex-row-align flex-shrink-0">
                 <ion-label class="toggle-text text-wrap flex-grow-1">
@@ -69,7 +69,7 @@
             <div class="ion-padding-top">
                 <ion-button type="submit" expand="block" [disabled]="form.invalid"> Create Account </ion-button>
 
-                <sc-external-logins class="ion-margin-top" type="register" [ref]="ref" [presentingElement]="presentingElement"></sc-external-logins>
+                <pi-external-logins class="ion-margin-top" type="register" [ref]="ref" [presentingElement]="presentingElement"></pi-external-logins>
             </div>
         </div>
 

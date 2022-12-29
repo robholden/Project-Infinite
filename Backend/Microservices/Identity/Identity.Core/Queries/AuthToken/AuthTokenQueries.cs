@@ -21,7 +21,7 @@ public class AuthTokenQueries : IAuthTokenQueries
     {
         return _ctx.AuthTokens
             .AsNoTracking()
-            .Include(a => a.User)
+            .Include(a => a.User).ThenInclude(u => u.Preferences)
             .FindOrNullAsync(t => t.AuthTokenId == authTokenId);
     }
 
@@ -29,7 +29,7 @@ public class AuthTokenQueries : IAuthTokenQueries
     {
         return _ctx.AuthTokens
             .AsNoTracking()
-            .Include(a => a.User)
+            .Include(a => a.User).ThenInclude(u => u.Preferences)
             .FindOrNullAsync(t =>
                 t.UserId == userId &&
                 t.IdentityKey == identityKey &&

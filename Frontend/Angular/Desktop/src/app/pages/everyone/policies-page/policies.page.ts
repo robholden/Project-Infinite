@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'sc-policies',
+    selector: 'pi-policies',
     templateUrl: 'policies.page.html',
     styleUrls: ['policies.page.scss'],
 })

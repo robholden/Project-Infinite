@@ -9,16 +9,16 @@
     top: 0;
     left: 0;
     z-index: 99;
-    height: var(--sc-header-height);
+    height: var(--pi-header-height);
 
-    // border-bottom: 2px solid var(--sc-colour-light);
-    box-shadow: 0 2px 4px rgba(var(--sc-colour-dark-rgb), 0.05);
+    // border-bottom: 2px solid var(--pi-colour-light);
+    box-shadow: 0 2px 4px rgba(var(--pi-colour-dark-rgb), 0.05);
 
-    background-color: var(--sc-colour-default);
-    color: var(--sc-colour-default-contrast);
+    background-color: var(--pi-colour-default);
+    color: var(--pi-colour-default-contrast);
 
     &.with-shadow {
-        box-shadow: 0 2px 4px rgba(var(--sc-colour-dark-rgb), 0.05);
+        box-shadow: 0 2px 4px rgba(var(--pi-colour-dark-rgb), 0.05);
         border-bottom: none;
     }
 
@@ -56,7 +56,7 @@
     .header-link {
         display: flex;
         align-items: center;
-        color: var(--sc-colour-default-contrast);
+        color: var(--pi-colour-default-contrast);
         margin: 0 0.75rem;
         border: none;
         background: none;
@@ -64,14 +64,14 @@
         font-size: 16px;
 
         &:disabled {
-            color: var(--sc-colour-default-shade);
+            color: var(--pi-colour-default-shade);
             cursor: not-allowed;
         }
 
         &:hover,
         &:focus,
         &.active {
-            color: var(--sc-colour-primary);
+            color: var(--pi-colour-primary);
             opacity: 1;
         }
 
@@ -125,8 +125,8 @@
             right: -2px;
             top: 0px;
             min-width: 15px;
-            background: var(--sc-colour-secondary);
-            color: var(--sc-colour-danger-contrast);
+            background: var(--pi-colour-secondary);
+            color: var(--pi-colour-danger-contrast);
             font-weight: bold;
             font-size: 10px;
             padding: 1px 3px;

@@ -42,7 +42,7 @@ form {
     label {
         display: block;
         margin-bottom: 5px;
-        color: var(--sc-colour-medium);
+        color: var(--pi-colour-medium);
     }
 
     .input {
@@ -70,7 +70,7 @@ form {
             display: inline-flex !important;
             box-shadow: none;
             margin: 0 !important;
-            border-radius: var(--sc-br);
+            border-radius: var(--pi-br);
         }
 
         .affix {
@@ -83,7 +83,7 @@ form {
             border-bottom-right-radius: 0;
 
             & + .input {
-                border-radius: 0 var(--sc-br) var(--sc-br) 0;
+                border-radius: 0 var(--pi-br) var(--pi-br) 0;
             }
         }
 
@@ -98,8 +98,8 @@ form {
 
 .input {
     padding: 8px;
-    border: 1.25px solid var(--sc-colour-light-shade);
-    border-radius: var(--sc-br);
+    border: 1.25px solid var(--pi-colour-light-shade);
+    border-radius: var(--pi-br);
     outline: none;
     transition: 0.25s ease;
 
@@ -114,11 +114,11 @@ form {
 
     &.has-error,
     &.ng-invalid:not(.ng-untouched) {
-        border-color: var(--sc-colour-danger);
+        border-color: var(--pi-colour-danger);
     }
 
     &:focus {
-        border-color: var(--sc-colour-primary);
+        border-color: var(--pi-colour-primary);
     }
 
     &.block {
@@ -126,18 +126,18 @@ form {
     }
 
     &.light {
-        background-color: var(--sc-colour-light);
-        border-color: var(--sc-colour-light);
+        background-color: var(--pi-colour-light);
+        border-color: var(--pi-colour-light);
 
         &:focus {
-            border-color: var(--sc-colour-primary);
+            border-color: var(--pi-colour-primary);
         }
     }
 }
 
 .form-errors > *,
 .form-error {
-    color: var(--sc-colour-danger);
+    color: var(--pi-colour-danger);
     margin-top: 5px;
 }
 
@@ -164,7 +164,7 @@ form {
     .input {
         &:read-only,
         &.readonly {
-            background-color: var(--sc-colour-light);
+            background-color: var(--pi-colour-light);
             border: none;
             cursor: default;
 

@@ -11,7 +11,7 @@ import { UserService } from '@shared/services/identity';
 import { AuthState } from '@shared/storage';
 
 @Component({
-    selector: 'sc-remove-account',
+    selector: 'pi-remove-account',
     templateUrl: './remove-account.modal.html',
     styleUrls: ['./remove-account.modal.scss'],
 })

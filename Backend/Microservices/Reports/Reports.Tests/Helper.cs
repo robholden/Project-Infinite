@@ -25,7 +25,6 @@ internal class Helper
         Context = new ReportContext(
             new DbContextOptionsBuilder<ReportContext>()
                     .UseInMemoryDatabase("ReportDbTest")
-                    .UseLazyLoadingProxies(false)
                     .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
                     .Options
         );

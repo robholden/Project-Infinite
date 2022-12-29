@@ -6,7 +6,7 @@ import { CustomEvent } from '@shared/enums';
 import { EventService } from '@shared/services';
 
 @Component({
-    selector: 'sc-legal',
+    selector: 'pi-legal',
     templateUrl: './legal.page.html',
     styleUrls: ['./legal.page.scss'],
 })

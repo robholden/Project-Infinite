@@ -5,14 +5,14 @@
     height: 0;
     opacity: 0;
     z-index: 10;
-    border-radius: var(--sc-br);
-    box-shadow: 0px 1px 4px rgba(var(--sc-colour-dark-rgb), 0.1);
+    border-radius: var(--pi-br);
+    box-shadow: 0px 1px 4px rgba(var(--pi-colour-dark-rgb), 0.1);
     overflow: auto;
     margin: 0;
 
     transition: ease 0.25s;
-    background-color: var(--sc-colour-default);
-    color: var(--sc-colour-default-contrast);
+    background-color: var(--pi-colour-default);
+    color: var(--pi-colour-default-contrast);
 
     text-align: left;
     font-size: 14px;
@@ -49,12 +49,12 @@
         padding: 0.35em 0.5em;
 
         &:not(:only-child) {
-            border-bottom: 1px solid var(--sc-colour-light);
+            border-bottom: 1px solid var(--pi-colour-light);
             margin-bottom: 0.25em;
         }
 
         &:hover {
-            background: var(--sc-colour-light);
+            background: var(--pi-colour-light);
         }
     }
 
@@ -80,7 +80,7 @@
         }
 
         & + .link-section {
-            border-top: 1px solid var(--sc-colour-light);
+            border-top: 1px solid var(--pi-colour-light);
             padding-top: 0.25em;
         }
 
@@ -99,8 +99,8 @@
             text-align: left;
             font-size: 1em;
 
-            background-color: var(--sc-colour-default);
-            color: var(--sc-colour-default-contrast);
+            background-color: var(--pi-colour-default);
+            color: var(--pi-colour-default-contrast);
             margin-top: 2px;
 
             &.flexed {
@@ -115,8 +115,8 @@
 
             &:hover,
             &.active {
-                background-color: var(--sc-colour-light);
-                color: var(--sc-colour-light-contrast);
+                background-color: var(--pi-colour-light);
+                color: var(--pi-colour-light-contrast);
             }
 
             i,
@@ -128,8 +128,8 @@
 
             &:disabled,
             &.disabled {
-                background-color: var(--sc-colour-default);
-                color: var(--sc-colour-medium);
+                background-color: var(--pi-colour-default);
+                color: var(--pi-colour-medium);
                 cursor: pointer;
             }
         }

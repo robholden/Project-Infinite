@@ -8,7 +8,7 @@ export * from './recovery-code.model';
 export * from './report.model';
 export * from './session.model';
 export * from './smap.model';
-export * from './template-key.model';
+export * from './post.model';
 export * from './trx.model';
 export * from './user.model';
 export * from './user-prefs.model';

@@ -6,7 +6,7 @@ import { UserService } from '@shared/services/identity';
 import { AuthState } from '@shared/storage';
 
 @Component({
-    selector: 'sc-unsubscribe',
+    selector: 'pi-unsubscribe',
     templateUrl: './unsubscribe.page.html',
     styleUrls: ['./unsubscribe.page.scss'],
 })

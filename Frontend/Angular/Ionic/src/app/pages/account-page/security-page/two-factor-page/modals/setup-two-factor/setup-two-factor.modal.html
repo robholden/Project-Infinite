@@ -69,9 +69,9 @@
                 </p>
 
                 <form (submit)="complete()" [formGroup]="form" novalidate>
-                    <sc-custom-field [field]="code">
+                    <pi-custom-field [field]="code">
                         <ion-input type="text" inputmode="tel" formControlName="code" placeholder="Code"></ion-input>
-                    </sc-custom-field>
+                    </pi-custom-field>
 
                     <ion-button class="ion-margin-top" type="submit" expand="block" [disabled]="form.invalid"> Complete Setup </ion-button>
                 </form>

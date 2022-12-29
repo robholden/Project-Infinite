@@ -14,7 +14,7 @@ import { AuthService, PasswordService } from '@shared/services/identity';
 import { TwoFactorModal } from '../two-factor-modal/two-factor.modal';
 
 @Component({
-    selector: 'sc-login',
+    selector: 'pi-login',
     templateUrl: './login.modal.html',
     styleUrls: ['./login.modal.scss'],
 })

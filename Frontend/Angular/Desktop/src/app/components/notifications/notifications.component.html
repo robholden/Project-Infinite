@@ -33,7 +33,7 @@
             <div class="unread-bar" *ngIf="!notif.isGlobal"></div>
 
             <div class="inner-notif" *ngSwitchCase="NotificationType.NewLogin">
-                <div class="img-icon" colour="danger"><i class="far fa-map-marker-times"></i></div>
+                <div class="img-icon"><i class="far fa-lock"></i></div>
                 <div class="notif-text">
                     New successful login from {{ notif.identifier }}
 

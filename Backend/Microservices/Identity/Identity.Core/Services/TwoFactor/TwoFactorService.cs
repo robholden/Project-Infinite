@@ -117,9 +117,7 @@ public class TwoFactorService : ITwoFactorService
         using var transaction = await _ctx.Database.BeginTransactionAsync();
 
         // Remove existing codes
-        await _ctx.RecoveryCodes
-            .Where(r => r.UserId == userId && !r.UsedAt.HasValue)
-            .ExecuteDeleteAsync();
+        await _ctx.ExecuteDeleteAsync<RecoveryCode>(r => r.UserId == userId && !r.UsedAt.HasValue);
 
         // Add new codes
         await _ctx.CreateManyAsync(codes);
@@ -146,9 +144,7 @@ public class TwoFactorService : ITwoFactorService
         using var transaction = await _ctx.Database.BeginTransactionAsync();
 
         // Delete codes we haven't used
-        await _ctx.RecoveryCodes
-            .Where(r => r.UserId == userId && !r.UsedAt.HasValue && r.RecoveryCodeId != code.RecoveryCodeId)
-            .ExecuteDeleteAsync();
+        await _ctx.ExecuteDeleteAsync<RecoveryCode>(r => r.UserId == userId && !r.UsedAt.HasValue && r.RecoveryCodeId != code.RecoveryCodeId);
 
         // Update code to used
         code.UsedAt = DateTime.UtcNow;
@@ -166,8 +162,8 @@ public class TwoFactorService : ITwoFactorService
         await transaction.CommitAsync();
 
         // Send email to user for confirmation
-        var subject = "Your account has been recovered";
+        var subject = "Account Recovered";
         var message = "<p>We're informing you that you have successfully recovered your account and disabled your two-factor authentication.</p>";
-        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), message, subject));
+        _ = _commEvents?.SendEmailToUser(new(user.ToUserRecord(), user.Email, message, subject));
     }
 }

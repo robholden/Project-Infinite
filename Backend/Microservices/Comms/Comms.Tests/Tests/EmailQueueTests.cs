@@ -22,12 +22,13 @@ public class EmailQueueTests
     {
         // Arrange
         var user = new UserRecord(Guid.NewGuid(), "test");
+        var email = "unit_test@iamrobert.co.uk";
         var message = "Test Content";
         var subject = "Unit Testing";
         var hash = Guid.NewGuid().ToString();
 
         var contextMoq = new Mock<ConsumeContext<SendEmailToUserRq>>();
-        contextMoq.Setup(c => c.Message).Returns(new SendEmailToUserRq(user, message, subject, SendInstantly: false, IdentityHash: hash));
+        contextMoq.Setup(c => c.Message).Returns(new SendEmailToUserRq(user, email, message, subject, SendInstantly: false, IdentityHash: hash));
 
         // Act
         var consumer = new SendEmailToUserConsumer(helper.EmailService);

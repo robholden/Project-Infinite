@@ -11,7 +11,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
-    selector: 'sc-root',
+    selector: 'pi-root',
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss'],
 })

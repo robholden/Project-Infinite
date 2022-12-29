@@ -13,7 +13,7 @@ import { EventService } from '@shared/services';
 import { AuthService, UserService } from '@shared/services/identity';
 
 @Component({
-    selector: 'sc-register',
+    selector: 'pi-register',
     templateUrl: './register.modal.html',
     styleUrls: ['./register.modal.scss'],
 })

@@ -5,7 +5,7 @@ import { AbstractControl } from '@angular/forms';
 import { SMap } from '@shared/models';
 
 @Component({
-    selector: 'sc-custom-field',
+    selector: 'pi-custom-field',
     templateUrl: './custom-field.component.html',
     styleUrls: ['./custom-field.component.scss'],
     animations: [

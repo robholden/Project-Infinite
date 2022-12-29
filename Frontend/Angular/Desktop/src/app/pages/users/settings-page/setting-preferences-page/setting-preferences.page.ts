@@ -1,29 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-type TodoPrefs = {};
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { UserPrefs } from '@shared/models';
+import { UserService } from '@shared/services/identity';
+import { AuthState } from '@shared/storage';
 
 @Component({
-    selector: 'sc-setting-preferences',
+    selector: 'pi-setting-preferences',
     templateUrl: './setting-preferences.page.html',
     styleUrls: ['./setting-preferences.page.scss'],
 })
-export class SettingPreferencesPage implements OnInit {
-    errored: boolean = null;
-    settings: TodoPrefs;
+export class SettingPreferencesPage implements OnInit, OnDestroy {
+    private destroy$ = new Subject();
 
-    emailPrefs: string[] = [];
+    settings: UserPrefs;
+    emailPrefs: (keyof UserPrefs)[] = ['marketingEmails'];
 
-    constructor() {}
+    constructor(private authState: AuthState, private service: UserService) {}
 
     ngOnInit() {
-        this.load();
+        this.authState
+            .observe('user')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((user) => (this.settings = user.preferences || { marketingEmails: false }));
     }
 
-    private async load() {}
+    ngOnDestroy(): void {
+        this.destroy$.next();
+    }
 
     async toggle(key: string, state: boolean) {
         this.settings[key] = state;
-        // const resp = await this.commsService.updateSettings(this.settings);
-        // this.settings[key] = resp instanceof CustomError ? !state : state;
+        const resp = await this.service.updatePreferences(this.settings);
+        if (!resp) this.settings[key] = !state;
     }
 }

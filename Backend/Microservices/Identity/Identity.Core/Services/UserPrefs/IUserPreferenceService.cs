@@ -1,8 +1,10 @@
-﻿namespace Identity.Core.Services;
+﻿using Identity.Domain.Dtos;
+
+namespace Identity.Core.Services;
 
 public interface IUserPreferenceService
 {
-    Task SetMarketing(Guid userId, bool enabled);
+    Task AddOrUpdate(Guid userId, UserPreferencesDto prefs);
 
     Task UnsubscribeFromMarketing(Guid optOutKey);
 }

@@ -1,9 +1,9 @@
 {
-    "name": "sc-ionic",
+    "name": "project-infinite-ionic",
     "version": "0.0.1",
     "author": "Robert Holden",
-    "homepage": "https://snowcapture.com",
-    "description": "A snowy catalogue",
+    "homepage": "https://github.com/robholden/project-infinite",
+    "description": "A project of infinite",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",

@@ -36,7 +36,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: var(--sc-colour-medium);
+        background-color: var(--pi-colour-medium);
         transition: 0.25s;
         border-radius: 34px;
 
@@ -47,7 +47,7 @@
             width: 20px;
             left: 4px;
             bottom: 4px;
-            background-color: var(--sc-colour-medium-contrast);
+            background-color: var(--pi-colour-medium-contrast);
             transition: 0.25s;
             border-radius: 50%;
         }
@@ -59,11 +59,11 @@
         height: 0;
 
         &:checked + .slider {
-            background-color: var(--sc-colour-primary);
+            background-color: var(--pi-colour-primary);
 
             &:before {
                 transform: translateX(22px);
-                background-color: var(--sc-colour-primary-contrast);
+                background-color: var(--pi-colour-primary-contrast);
             }
         }
     }

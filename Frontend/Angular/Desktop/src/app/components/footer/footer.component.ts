@@ -17,7 +17,7 @@ interface TranslatedLanguage {
 }
 
 @Component({
-    selector: 'sc-footer',
+    selector: 'pi-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['footer.component.scss'],
     providers: [TrxPipe],

@@ -17,8 +17,8 @@
     }
 
     th {
-        background-color: var(--sc-colour-primary-shade);
-        color: var(--sc-colour-primary-contrast);
+        background-color: var(--pi-colour-primary-shade);
+        color: var(--pi-colour-primary-contrast);
         font-weight: normal;
     }
 
@@ -26,7 +26,7 @@
     }
 
     tr:nth-child(odd) td {
-        background-color: var(--sc-colour-default);
+        background-color: var(--pi-colour-default);
     }
 
     &.sm {

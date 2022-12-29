@@ -11,7 +11,7 @@ import { AppState, AuthState } from '@shared/storage';
 import { App } from '@capacitor/app';
 
 @Component({
-    selector: 'sc-account',
+    selector: 'pi-account',
     templateUrl: 'account.page.html',
     styleUrls: ['account.page.scss'],
 })

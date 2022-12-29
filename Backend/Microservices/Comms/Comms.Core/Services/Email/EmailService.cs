@@ -35,11 +35,6 @@ public class EmailService : IEmailService
         var emails = queues.Where(x => x.Email != null).Select(x => x.Email).ToList();
         var newEmails = queues.Where(x => x.Email == null).Select(queue =>
         {
-            if (queue.Email != null)
-            {
-                return queue.Email;
-            }
-
             // Set opting out text
             var optOutText = string.Empty;
             if (queue.OptOutKey != null)
@@ -77,7 +72,7 @@ public class EmailService : IEmailService
                 EmailQueueId = queue.EmailQueueId,
                 EmailQueue = queue
             };
-        });
+        }).ToList();
 
         // Create entries into database
         emails.AddRange(await _ctx.CreateManyAsync(newEmails));
@@ -153,7 +148,7 @@ public class EmailService : IEmailService
 
     public async Task DeleteQueues(IEnumerable<Guid> queueIds)
     {
-        await _ctx.Emails.Where(e => queueIds.Contains(e.EmailQueueId)).ExecuteDeleteAsync();
+        await _ctx.ExecuteDeleteAsync<Email>(e => queueIds.Contains(e.EmailQueueId));
     }
 
     public async Task<EmailQueue> CreateAndSend(EmailQueue model)
@@ -186,7 +181,8 @@ public class EmailService : IEmailService
         }
 
         // Remove older entries
-        await existing.Where(x => x.Completed && !x.CompletedAt.HasValue).ExecuteDeleteAsync();
+        _ctx.EmailQueue.RemoveRange(existing.Where(x => x.Completed && !x.CompletedAt.HasValue));
+        await _ctx.SaveChangesAsync();
 
         // Check for recently sent email
         var threshold = DateTime.UtcNow.AddSeconds(-30);

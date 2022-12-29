@@ -17,7 +17,7 @@ public class EmailQueue : IUser
     [MinLength(3), MaxLength(50)]
     public string Username { get; set; }
 
-    [EmailAddress, MaxLength(255)]
+    [Required, EmailAddress, MaxLength(255)]
     public string EmailAddress { get; set; }
 
     [MaxLength(100)]
@@ -52,6 +52,7 @@ public class EmailQueue : IUser
 
     public static EmailQueue FromUserReq(SendEmailToUserRq request) => request == null ? null : new()
     {
+        EmailAddress = request.Email,
         Message = request.Message,
         Subject = request.Subject,
         UserId = request.User.UserId,

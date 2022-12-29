@@ -63,6 +63,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reports.Domain", "Microserv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reports.Tests", "Microservices\Reports\Reports.Tests\Reports.Tests.csproj", "{7DBEE77B-E162-4A8F-A3E3-4026C3FFB41F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playground", "Playground\Playground.csproj", "{70676101-ECB2-4644-8271-140C41A97A5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,10 @@ Global
 		{7DBEE77B-E162-4A8F-A3E3-4026C3FFB41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DBEE77B-E162-4A8F-A3E3-4026C3FFB41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DBEE77B-E162-4A8F-A3E3-4026C3FFB41F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70676101-ECB2-4644-8271-140C41A97A5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70676101-ECB2-4644-8271-140C41A97A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70676101-ECB2-4644-8271-140C41A97A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70676101-ECB2-4644-8271-140C41A97A5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

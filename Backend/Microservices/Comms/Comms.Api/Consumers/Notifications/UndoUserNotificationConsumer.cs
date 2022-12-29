@@ -1,5 +1,6 @@
 ﻿using Comms.Domain;
 
+using Library.Core;
 using Library.Service.PubSub;
 
 using MassTransit;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comms.Api.Consumers.Notifications;
 
-public class UndoUserNotificationConsumer : ISnowConsumer, IConsumer<UndoUserNotificationRq>
+public class UndoUserNotificationConsumer : IRabbitConsumer, IConsumer<UndoUserNotificationRq>
 {
     private readonly CommsContext _ctx;
 
@@ -21,19 +22,15 @@ public class UndoUserNotificationConsumer : ISnowConsumer, IConsumer<UndoUserNot
     {
         // Mark entry as deleted
         var request = context.Message;
-        await _ctx.NotificationEntries
-            .Where(x =>
-                x.Notification.UserId == request.TriggeredUserId && x.Notification.Type == request.Type
-                && x.UserId == request.UserId && !x.Deleted
-            )
-            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Deleted, true));
+        await _ctx.ExecuteUpdateAsync<NotificationEntry>(
+            x => x.Notification.UserId == request.TriggeredUserId && x.Notification.Type == request.Type && x.UserId == request.UserId && !x.Deleted,
+            entry => entry.Deleted = true
+        );
 
         // If notification has no visible children, hide it
-        await _ctx.Notifications
-            .Where(x =>
-                x.UserId == request.TriggeredUserId && x.Type == request.Type && x.Identifier == request.Identifier
-                && x.Entries.All(e => e.Deleted)
-            )
-            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.Hidden, true));
+        await _ctx.ExecuteUpdateAsync<Notification>(
+             x => x.UserId == request.TriggeredUserId && x.Type == request.Type && x.Identifier == request.Identifier && x.Entries.All(e => e.Deleted),
+            entry => entry.Hidden = true
+        );
     }
 }

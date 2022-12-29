@@ -19,7 +19,7 @@ export interface ModalOptions<T = {}> {
 }
 
 @Component({
-    selector: 'sc-modal-component',
+    selector: 'pi-modal-component',
     template: '',
 })
 export class ModalComponent<T> implements IModalComponent<T>, OnInit {

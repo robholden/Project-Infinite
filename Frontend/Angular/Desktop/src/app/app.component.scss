@@ -1,9 +1,9 @@
 main {
-    min-height: calc(100% - var(--sc-header-height));
+    min-height: calc(100% - var(--pi-header-height));
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    background: var(--sc-colour-light);
+    background: var(--pi-colour-light);
 
     .router {
         display: flex;
@@ -23,8 +23,8 @@ main {
             flex-direction: column;
             flex-grow: 1;
 
-            sc-page,
-            :not(.small) sc-page-content {
+            pi-page,
+            :not(.small) pi-page-content {
                 display: flex;
                 flex-direction: column;
                 flex-grow: 1;
@@ -49,9 +49,9 @@ main {
     text-align: center;
 
     h1 {
-        font-family: var(--sc-logo-font);
+        font-family: var(--pi-logo-font);
         font-size: 28px;
-        color: var(--sc-colour-default-contrast);
+        color: var(--pi-colour-default-contrast);
     }
 
     i {

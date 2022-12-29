@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'sc-faq',
+    selector: 'pi-faq',
     templateUrl: 'faq.page.html',
     styleUrls: ['faq.page.scss'],
 })

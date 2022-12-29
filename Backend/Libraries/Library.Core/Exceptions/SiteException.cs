@@ -1,4 +1,6 @@
-﻿namespace Library.Core;
+﻿using System.Net;
+
+namespace Library.Core;
 
 public class SiteException : Exception
 {
@@ -16,6 +18,12 @@ public class SiteException : Exception
         _values = values;
     }
 
+    public SiteException(ErrorCode errorCode, HttpStatusCode statusCode, params object[] values)
+        : this(errorCode, values)
+    {
+        StatusCode = (int)statusCode;
+    }
+
     public SiteException(string message) : base(message)
     {
     }
@@ -27,6 +35,8 @@ public class SiteException : Exception
     private SiteException()
     {
     }
+
+    public int? StatusCode { get; internal set; }
 
     public ErrorCode ErrorCode { get; internal set; } = ErrorCode.Default;
 

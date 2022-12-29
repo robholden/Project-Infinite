@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 
 @Component({
-    selector: 'sc-update-username',
+    selector: 'pi-update-username',
     templateUrl: './update-username.modal.html',
     styleUrls: ['./update-username.modal.scss'],
 })

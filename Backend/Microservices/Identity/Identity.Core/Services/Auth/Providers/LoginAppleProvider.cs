@@ -27,11 +27,7 @@ public class LoginAppleProvider : IExternalLoginProvider
             // Validate jwt token
 
             var jwtHandler = new JwtSecurityTokenHandler();
-            var jwt = jwtHandler.ReadJwtToken(token);
-            if (jwt == null)
-            {
-                throw new Exception("Failed to read token");
-            }
+            var jwt = jwtHandler.ReadJwtToken(token) ?? throw new Exception("Failed to read token");
 
             // Source: https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/authenticating_users_with_sign_in_with_apple
             //

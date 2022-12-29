@@ -7,7 +7,7 @@ using Reports.Domain;
 
 namespace Reports.Api.Consumers.Users;
 
-public class DeletedUserConsumer : ISnowConsumer, IConsumer<DeletedUserRq>
+public class DeletedUserConsumer : IRabbitConsumer, IConsumer<DeletedUserRq>
 {
     private readonly ReportContext _ctx;
 

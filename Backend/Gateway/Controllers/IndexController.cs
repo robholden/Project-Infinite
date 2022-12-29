@@ -20,7 +20,7 @@ public class IndexController : ControllerBase
             <html lang='en'>
                 <head>
                     <meta charset='UTF-8' />
-                    <title>Snow Capture</title>
+                    <title>Project Infinite</title>
 
                     <style>
                         body {
@@ -45,7 +45,7 @@ public class IndexController : ControllerBase
                     </style>
                 </head>
                 <body>
-                    <h1>Snow Capture</h1>
+                    <h1>Project Infinite</h1>
                     <p>What you were expecting to find?</p>
                 </body>
             </html>

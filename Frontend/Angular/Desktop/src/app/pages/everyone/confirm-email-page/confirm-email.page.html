@@ -1,9 +1,9 @@
-<sc-page [small]="true">
-    <sc-page-header [attr.background]="valid === true ? 'success' : null">
+<pi-page [small]="true">
+    <pi-page-header [attr.background]="valid === true ? 'success' : null">
         <h2>Confirm Email</h2>
-    </sc-page-header>
+    </pi-page-header>
 
-    <sc-page-content>
+    <pi-page-content>
         <div *ngIf="valid === null">
             <i class="fas fa-spinner-third fa-spin"></i>
         </div>
@@ -13,5 +13,5 @@
         <div colour="danger" *ngIf="valid === false && error">{{ error | trx }}</div>
 
         <div *ngIf="valid === true">Your email has been confirmed successfully</div>
-    </sc-page-content>
-</sc-page>
+    </pi-page-content>
+</pi-page>

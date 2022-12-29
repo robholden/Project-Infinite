@@ -2,18 +2,18 @@
     <div class="footer-links flex-col">
         <div class="flex-row-align">
             <label for="night_mode">Night Mode &nbsp;</label>
-            <sc-toggle-switch
+            <pi-toggle-switch
                 name="night_mode"
                 [small]="true"
                 [checked]="appState.observe('nightMode') | async"
                 (checkedChange)="appState.toggleNightMode()"
-            ></sc-toggle-switch>
+            ></pi-toggle-switch>
         </div>
     </div>
 
     <div class="logo ma">
         <div class="flex-row-align">
-            <a colour-contrast="default" routerLink="/">Snow Capture</a>
+            <h2><a colour-contrast="default" routerLink="/">Project Infinite</a></h2>
 
             <div
                 class="ml-s"

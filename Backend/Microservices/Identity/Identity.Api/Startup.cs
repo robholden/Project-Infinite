@@ -52,6 +52,7 @@ public class Startup
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<ITwoFactorService, TwoFactorService>();
         services.AddTransient<IUserKeyService, UserKeyService>();
+        services.AddTransient<IUserPreferenceService, UserPreferenceService>();
 
         // Inject queries
         services.AddTransient<IUserQueries, UserQueries>();

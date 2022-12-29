@@ -12,7 +12,7 @@ import { ModalComponent } from '@app/shared/controllers/modal';
 import qrcode from 'qrcode';
 
 @Component({
-    selector: 'sc-setup-two-factor',
+    selector: 'pi-setup-two-factor',
     templateUrl: './setup-two-factor.modal.html',
     styleUrls: ['./setup-two-factor.modal.scss'],
 })

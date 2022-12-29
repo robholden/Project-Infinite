@@ -15,13 +15,13 @@
     margin: auto;
     text-align: center;
     font-weight: bold;
-    color: var(--sc-colour-medium);
+    color: var(--pi-colour-medium);
     height: 200px;
 }
 
 .notification-header {
     padding: 0.5rem;
-    border-bottom: 2px solid var(--sc-colour-light);
+    border-bottom: 2px solid var(--pi-colour-light);
 
     div {
         font-size: 16px;
@@ -51,7 +51,7 @@
     }
 
     .timestamp {
-        color: var(--sc-colour-medium);
+        color: var(--pi-colour-medium);
         font-size: 12px;
     }
 
@@ -62,7 +62,7 @@
         top: 0;
         width: 5px;
         height: 100%;
-        background: var(--sc-colour-primary);
+        background: var(--pi-colour-primary);
         transform: translateX(-2px);
         transition: ease 0.25s;
         z-index: 1;
@@ -70,7 +70,7 @@
         &:hover {
             transform: translateX(0);
             cursor: pointer;
-            background: var(--sc-colour-primary-shade);
+            background: var(--pi-colour-primary-shade);
         }
     }
 
@@ -78,15 +78,15 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        color: var(--sc-colour-light-contrast);
+        color: var(--pi-colour-light-contrast);
         padding: 0.5rem;
 
         &:hover {
-            background-color: var(--sc-colour-default-shade);
+            background-color: var(--pi-colour-default-shade);
 
             .img-icon,
             .img {
-                background-color: var(--sc-colour-default);
+                background-color: var(--pi-colour-default);
             }
         }
 
@@ -95,7 +95,7 @@
             width: 40px;
             height: 40px;
             margin-right: 0.5rem;
-            background: var(--sc-colour-default-shade) no-repeat center;
+            background: var(--pi-colour-default-shade) no-repeat center;
             border-radius: 50%;
             transition: 0.25s ease;
             flex-shrink: 0;
@@ -120,6 +120,6 @@
     right: 10px;
     width: 10px;
     height: 10px;
-    background-color: var(--sc-colour-secondary);
+    background-color: var(--pi-colour-secondary);
     border-radius: 50%;
 }

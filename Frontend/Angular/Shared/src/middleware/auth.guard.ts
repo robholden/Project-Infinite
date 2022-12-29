@@ -39,7 +39,8 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         // Only run logic when we have a token
         if (token) {
             if (!claimsAreOk || !rolesAreOk) {
-                this.router.navigate(['/', { queryParams: { err: 'permissions' } }]);
+                // this.router.navigate(['/'], { queryParams: { err: 'permissions' } });
+                return false;
             }
 
             return true;
@@ -49,6 +50,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         const good = await this.events.trigger<boolean>(CustomEvent.Login, { ref: state.url });
         if (!good) setTimeout(() => changeUrl(state.url), 0);
 
-        return good;
+        return good === true;
     }
 }

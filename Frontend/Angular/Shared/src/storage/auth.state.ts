@@ -10,7 +10,7 @@ export type AuthScheme = {
     savedUsername: string;
     user: User;
     twoFactor: TwoFactorType;
-    expires: Date;
+    expires: number;
     token: string;
     refreshToken: string;
     authToken: string;
@@ -23,20 +23,19 @@ export type AuthScheme = {
 })
 export class AuthState extends CustomStore<AuthScheme> {
     roles: SMap<boolean>;
-    is_simple: boolean;
-    is_advanced: boolean;
     is_mod: boolean;
     is_admin: boolean;
 
     constructor() {
         super({
-            savedUsername: { store: ['local'] },
-            authToken: { store: ['cookie'] },
-            token: { store: ['cookie'] },
-            refreshToken: { store: ['cookie'] },
-            expires: { store: ['cookie'] },
-            twoFactor: { store: ['session'] },
-            user: { store: ['session'] },
+            savedUsername: { store: 'local' },
+            authToken: { store: 'cookie' },
+            token: { store: 'cookie' },
+            refreshToken: { store: 'cookie' },
+            expires: { store: 'cookie' },
+            twoFactor: { store: 'session' },
+            user: { store: 'session' },
+            rememberMe: { store: 'cookie' },
         });
 
         this.observe('token').subscribe((token: string) => {
@@ -48,8 +47,6 @@ export class AuthState extends CustomStore<AuthScheme> {
                 else if (roles instanceof Array) roles.forEach((r) => (map[r] = true));
             }
 
-            this.is_simple = map['Simple'];
-            this.is_advanced = map['Advanced'];
             this.is_mod = map['Moderator'];
             this.is_admin = map['Admin'];
             this.roles = map;
@@ -72,15 +69,16 @@ export class AuthState extends CustomStore<AuthScheme> {
     }
 
     private async setToken(token: string, refreshToken: string, authToken: string) {
-        let expiryDate: Date = null;
+        let expiresIn: number = null;
         if (token != null) {
             try {
                 const payload = decodeJWT(token);
-                expiryDate = new Date((payload.exp - 15) * 1000);
+                const expiryDate = new Date((payload.exp - 15) * 1000);
+                expiresIn = expiryDate.getTime();
             } catch (ex) {}
         }
 
-        this.set('expires', expiryDate, { expiresIn: expiryDate }).set('token', token).set('refreshToken', refreshToken).set('authToken', authToken);
+        this.set('expires', expiresIn, { expiresIn }).set('token', token).set('refreshToken', refreshToken).set('authToken', authToken);
     }
 
     async setRememberMe(state: boolean) {

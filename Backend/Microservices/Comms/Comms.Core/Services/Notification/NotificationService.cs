@@ -29,9 +29,10 @@ public class NotificationService : INotificationService
 
     public async Task MarkAllAsRead(Guid userId, UserLevel? level = null)
     {
-        await _ctx.Notifications
-            .Where(x => x.UserId == userId && !x.ReadAt.HasValue && x.UserLevel == level)
-            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.ReadAt, DateTime.UtcNow));
+        await _ctx.ExecuteUpdateAsync<Notification>(
+           x => x.UserId == userId && !x.ReadAt.HasValue && x.UserLevel == level,
+           (notif) => notif.ReadAt = DateTime.UtcNow
+       );
     }
 
     public async Task MarkAsRead(Guid id)
@@ -44,9 +45,10 @@ public class NotificationService : INotificationService
 
     public async Task Viewed(Guid userId, UserLevel? level = null)
     {
-        await _ctx.Notifications
-            .Where(x => x.UserId == userId && !x.ViewedAt.HasValue && x.UserLevel == level)
-            .ExecuteUpdateAsync(prop => prop.SetProperty(p => p.ViewedAt, DateTime.UtcNow));
+        await _ctx.ExecuteUpdateAsync<Notification>(
+            x => x.UserId == userId && !x.ViewedAt.HasValue && x.UserLevel == level,
+            (notif) => notif.ViewedAt = DateTime.UtcNow
+        );
     }
 
     public async Task Delete(Guid id)

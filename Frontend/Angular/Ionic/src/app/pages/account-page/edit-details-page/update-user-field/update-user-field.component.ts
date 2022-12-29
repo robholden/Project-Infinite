@@ -12,7 +12,7 @@ import { UserService } from '@shared/services/identity';
 import { AuthState } from '@shared/storage';
 
 @Component({
-    selector: 'sc-update-user-field',
+    selector: 'pi-update-user-field',
     templateUrl: './update-user-field.component.html',
     styleUrls: ['./update-user-field.component.scss'],
 })

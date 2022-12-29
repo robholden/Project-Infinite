@@ -3,7 +3,7 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 import { CookieConsentService } from '@app/services/cookie-consent.service';
 
 @Component({
-    selector: 'sc-cookie-consent',
+    selector: 'pi-cookie-consent',
     templateUrl: './cookie-consent.component.html',
     styleUrls: ['cookie-consent.component.scss'],
 })

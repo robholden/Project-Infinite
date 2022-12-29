@@ -19,7 +19,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Markdig" Version="0.30.4" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -29,15 +28,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Libraries\Library.Service\Library.Service.csproj" />
 		<ProjectReference Include="..\Content.Core\Content.Core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="Templates\policy.privacy.md">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Templates\policy.terms.md">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 
 	<ItemGroup>

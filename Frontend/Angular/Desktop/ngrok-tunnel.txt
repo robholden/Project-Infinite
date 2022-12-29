@@ -1,2 +1,2 @@
-ngrok http --region=eu --hostname=snowcapture.eu.ngrok.io http://localhost:4200
-ngrok http --subdomain=snowcaptureapi http://localhost:7000
+ngrok http --subdomain=project-infinite-web http://localhost:4200
+ngrok http --subdomain=project-infinite-api http://localhost:7000

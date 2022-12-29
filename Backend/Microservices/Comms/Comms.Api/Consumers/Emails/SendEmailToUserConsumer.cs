@@ -7,7 +7,7 @@ using MassTransit;
 
 namespace Comms.Api.Consumers.Emails;
 
-public class SendEmailToUserConsumer : ISnowConsumer, IConsumer<SendEmailToUserRq>
+public class SendEmailToUserConsumer : IRabbitConsumer, IConsumer<SendEmailToUserRq>
 {
     private readonly IEmailService _service;
 
@@ -20,10 +20,12 @@ public class SendEmailToUserConsumer : ISnowConsumer, IConsumer<SendEmailToUserR
     {
         // Build email queue model with provided data
         var queue = EmailQueue.FromUserReq(context.Message);
-        var email = await _service.Queue(queue);
-        if (queue.Sendable)
+        queue = await _service.Queue(queue);
+
+        // Send email right away
+        if (queue?.Sendable == true)
         {
-            await _service.Send(email);
+            await _service.Send(queue);
         }
     }
 }

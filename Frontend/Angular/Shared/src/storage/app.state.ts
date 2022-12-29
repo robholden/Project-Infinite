@@ -18,7 +18,7 @@ export class AppState extends CustomStore<AppSchema> {
     constructor() {
         super({
             nightMode: {
-                store: ['local'],
+                store: 'local',
             },
         });
 

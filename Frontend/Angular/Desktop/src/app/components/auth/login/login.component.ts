@@ -11,7 +11,7 @@ import { LoadingController } from '@app/shared/controllers/loading';
 import { ToastController } from '@app/shared/controllers/toast';
 
 @Component({
-    selector: 'sc-login',
+    selector: 'pi-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
 })

@@ -9,7 +9,7 @@ import { AuthService, UserService } from '@shared/services/identity';
 import { LoadingController } from '@app/shared/controllers/loading/loading.controller';
 
 @Component({
-    selector: 'sc-register',
+    selector: 'pi-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
 })

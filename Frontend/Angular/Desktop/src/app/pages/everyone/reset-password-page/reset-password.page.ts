@@ -13,7 +13,7 @@ import { LoadingController } from '@app/shared/controllers/loading';
 import { ToastController } from '@app/shared/controllers/toast';
 
 @Component({
-    selector: 'sc-reset-password',
+    selector: 'pi-reset-password',
     templateUrl: './reset-password.page.html',
     styleUrls: ['./reset-password.page.scss'],
 })

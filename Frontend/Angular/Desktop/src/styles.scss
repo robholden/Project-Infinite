@@ -27,11 +27,11 @@
     visibility: collapse !important;
 }
 
-.sc-spin {
-    animation: sc-spin 2s linear infinite;
+.pi-spin {
+    animation: pi-spin 2s linear infinite;
 }
 
-@keyframes sc-spin {
+@keyframes pi-spin {
     0% {
         transform: rotate3d(0, 0, -1, 0deg);
     }

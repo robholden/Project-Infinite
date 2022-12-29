@@ -5,7 +5,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>en</string>
 		<key>CFBundleDisplayName</key>
-		<string>Snow Capture</string>
+		<string>Project Infinite</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -53,7 +53,7 @@
 		<key>NSFaceIDUsageDescription</key>
 		<string>$FACEID_USAGE_DESCRIPTION</string>
 		<key>FacebookDisplayName</key>
-		<string>Snow Capture</string>
+		<string>Project Infinite</string>
 		<key>FacebookAppID</key>
 		<string>1111781849247647</string>
 		<key>FacebookAutoLogAppEventsEnabled</key>

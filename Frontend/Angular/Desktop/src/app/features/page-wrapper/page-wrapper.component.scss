@@ -1,28 +1,28 @@
 :host {
     &::ng-deep {
-        sc-page-header {
-            background: var(--sc-colour-primary);
-            color: var(--sc-colour-primary-contrast);
+        pi-page-header {
+            background: var(--pi-colour-primary);
+            color: var(--pi-colour-primary-contrast);
 
             h2 {
-                color: var(--sc-colour-primary-contrast);
+                color: var(--pi-colour-primary-contrast);
             }
 
             .page-links {
                 a {
                     display: inline-block;
                     min-width: 75px;
-                    border-radius: var(--sc-button-br);
+                    border-radius: var(--pi-button-br);
                     padding: 5px 12px;
-                    color: var(--sc-colour-primary-contrast);
+                    color: var(--pi-colour-primary-contrast);
                     transition: ease 0.25s;
                     opacity: 1;
-                    border: 1px dotted var(--sc-colour-primary-shade);
+                    border: 1px dotted var(--pi-colour-primary-shade);
                     text-align: center;
 
                     &.active,
                     &:hover {
-                        background-color: var(--sc-colour-primary-shade);
+                        background-color: var(--pi-colour-primary-shade);
                         border-style: solid;
                     }
 
@@ -35,16 +35,16 @@
     }
 
     &:not(.small)::ng-deep {
-        sc-page-header {
+        pi-page-header {
             position: sticky;
-            top: var(--sc-header-height);
+            top: var(--pi-header-height);
             z-index: 10;
         }
     }
 
     &.small::ng-deep {
-        sc-page-header,
-        sc-page-content {
+        pi-page-header,
+        pi-page-content {
             position: relative;
             top: 0;
             width: 100%;
@@ -54,29 +54,29 @@
                 right: auto;
                 left: auto;
             }
-            box-shadow: 0 3px 3px rgba(var(--sc-colour-dark-rgb), 0.1);
+            box-shadow: 0 3px 3px rgba(var(--pi-colour-dark-rgb), 0.1);
         }
 
-        sc-page-header {
+        pi-page-header {
             position: relative;
             top: 0;
             margin-top: 1rem;
-            border-radius: var(--sc-br) var(--sc-br) 0 0;
+            border-radius: var(--pi-br) var(--pi-br) 0 0;
 
             .container {
                 padding: 1rem;
             }
         }
 
-        sc-page-content {
+        pi-page-content {
             position: relative;
             padding: 1rem;
-            border-radius: 0 0 var(--sc-br) var(--sc-br);
+            border-radius: 0 0 var(--pi-br) var(--pi-br);
             flex-grow: 0;
             margin-bottom: 1rem;
             z-index: 3;
-            background: var(--sc-colour-default);
-            color: var(--sc-colour-default-contrast);
+            background: var(--pi-colour-default);
+            color: var(--pi-colour-default-contrast);
         }
     }
 }

@@ -16,7 +16,7 @@ import { ModalController } from '@app/shared/controllers/modal';
 import { ReportUserModal } from './report-user/report-user.modal';
 
 @Component({
-    selector: 'sc-user',
+    selector: 'pi-user',
     templateUrl: './user.page.html',
     styleUrls: ['./user.page.scss'],
     animations: [fade],

@@ -1,7 +1,7 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'sc-skeleton-text',
+    selector: 'pi-skeleton-text',
     templateUrl: './skeleton-text.component.html',
     styleUrls: ['skeleton-text.component.scss'],
 })

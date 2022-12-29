@@ -1,9 +1,9 @@
-<sc-page>
-    <sc-page-header *ngIf="user || loading">
+<pi-page>
+    <pi-page-header *ngIf="user || loading">
         <div *ngIf="user && !loading" @fade>
             <div class="flex-row-align">
                 <div class="flex-row-align">
-                    <sc-avatar [name]="user.username" [size]="38" bg="var(--sc-colour-primary-contrast)" fg="var(--sc-colour-primary)"></sc-avatar>
+                    <pi-avatar [name]="user.username" [size]="38" bg="var(--pi-colour-primary-contrast)" fg="var(--pi-colour-primary)"></pi-avatar>
                     <div class="ml-s">
                         <h2>{{ user.username | titlecase }}</h2>
                     </div>
@@ -18,30 +18,30 @@
                 >
                     <i class="far fa-ellipsis-h"></i>
 
-                    <sc-drop-down position="bottomleft" [width]="200" [y]="-12">
+                    <pi-drop-down position="bottomleft" [width]="200" [y]="-12">
                         <div class="link-section">
                             <button type="button" (click)="report()" *ngIf="!author">Report</button>
                         </div>
-                    </sc-drop-down>
+                    </pi-drop-down>
                 </button>
             </div>
         </div>
 
         <div class="flex-row-align" *ngIf="loading">
-            <sc-skeleton-text height="35px" width="35px" radius="50%" [animated]="true"></sc-skeleton-text>
-            <sc-skeleton-text height="25px" width="200px" [animated]="true" class="ml"></sc-skeleton-text>
+            <pi-skeleton-text height="35px" width="35px" radius="50%" [animated]="true"></pi-skeleton-text>
+            <pi-skeleton-text height="25px" width="200px" [animated]="true" class="ml"></pi-skeleton-text>
         </div>
-    </sc-page-header>
+    </pi-page-header>
 
-    <sc-page-content>
+    <pi-page-content>
         <div class="container flex-col" *ngIf="user else loadingRef">This is the user page :)</div>
-    </sc-page-content>
-</sc-page>
+    </pi-page-content>
+</pi-page>
 
 <ng-template #loadingRef>
     <div *ngIf="!loading" class="full-content">hmm, we couldn't find this user</div>
 
     <div *ngIf="loading" class="container flex-row">
-        <sc-skeleton-text height="25px" width="200px" [animated]="true" class="mt"></sc-skeleton-text>
+        <pi-skeleton-text height="25px" width="200px" [animated]="true" class="mt"></pi-skeleton-text>
     </div>
 </ng-template>

@@ -1,11 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, delay, tap } from 'rxjs/operators';
 
-import { INJ_ENV } from '@shared/injectors';
-import { Environment } from '@shared/interfaces';
 import { SMap } from '@shared/models';
 
 class HtmlCache {
@@ -17,11 +15,9 @@ class HtmlCache {
     name: 'remoteContent',
 })
 export class RemoteContentPipe implements PipeTransform {
-    constructor(@Inject(INJ_ENV) private env: Environment, private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-    transform(name: string, type: string): Observable<string> {
-        const url = `${this.env.gateway}/content/template/${type}/${name}`;
-
+    transform(url: string): Observable<string> {
         if (HtmlCache.cache[url]) return of(HtmlCache.cache[url]);
         else if (HtmlCache.obs[url]) return HtmlCache.obs[url];
 

@@ -8,7 +8,7 @@ using Reports.Domain;
 
 namespace Report.Api.Consumers.Reports;
 
-public class ReportUserConsumer : ISnowConsumer, IConsumer<ReportUserRq>
+public class ReportUserConsumer : IRabbitConsumer, IConsumer<ReportUserRq>
 {
     private readonly ReportContext _ctx;
     private readonly IReportQueries _queries;

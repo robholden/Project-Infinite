@@ -3,7 +3,7 @@
     color: var(--button-foreground);
     min-width: 75px;
     padding: 6px 8px;
-    font-size: var(--sc-font-size);
+    font-size: var(--pi-font-size);
     height: 30px;
     cursor: default;
 
@@ -46,7 +46,7 @@
         width: 30px;
         height: 30px;
         padding: 0;
-        border-radius: var(--sc-br);
+        border-radius: var(--pi-br);
 
         > .icon,
         > i {
@@ -159,7 +159,7 @@
     align-items: center;
     flex-shrink: 0;
     outline: none;
-    border-radius: var(--sc-button-br);
+    border-radius: var(--pi-button-br);
 
     .remove-ico {
         display: inline-flex;
@@ -170,8 +170,8 @@
         border-radius: 50%;
         cursor: pointer;
         font-size: 12px;
-        background: rgba(var(--sc-colour-danger-rgb), 0.25);
-        color: var(--sc-colour-danger);
+        background: rgba(var(--pi-colour-danger-rgb), 0.25);
+        color: var(--pi-colour-danger);
         margin-left: -5px;
 
         i {
@@ -179,8 +179,8 @@
         }
 
         &:hover {
-            background: rgba(var(--sc-colour-danger-rgb), 0.75);
-            color: var(--sc-colour-danger-contrast);
+            background: rgba(var(--pi-colour-danger-rgb), 0.75);
+            color: var(--pi-colour-danger-contrast);
         }
     }
 }
@@ -200,14 +200,14 @@ a {
 
         &:active,
         &:focus {
-            outline: 1px dotted var(--sc-button-outline);
+            outline: 1px dotted var(--pi-button-outline);
             z-index: 1;
         }
 
         &[hover='light'] {
             &:hover,
             &:focus {
-                background-color: var(--sc-colour-light) !important;
+                background-color: var(--pi-colour-light) !important;
             }
         }
 
@@ -227,67 +227,67 @@ a {
     }
 
     &:not([background]) {
-        --button-foreground: var(--sc-colour-default-contrast);
-        --button-background: var(--sc-colour-default);
+        --button-foreground: var(--pi-colour-default-contrast);
+        --button-background: var(--pi-colour-default);
     }
 
     &[background='default'] {
-        --button-foreground: var(--sc-colour-default-contrast);
-        --button-background: var(--sc-colour-default);
-        --button-background-hover: var(--sc-colour-default-shade);
+        --button-foreground: var(--pi-colour-default-contrast);
+        --button-background: var(--pi-colour-default);
+        --button-background-hover: var(--pi-colour-default-shade);
     }
 
     &[background='light'] {
-        --button-foreground: var(--sc-colour-light-contrast);
-        --button-background: var(--sc-colour-light);
-        --button-background-hover: var(--sc-colour-light-shade);
+        --button-foreground: var(--pi-colour-light-contrast);
+        --button-background: var(--pi-colour-light);
+        --button-background-hover: var(--pi-colour-light-shade);
     }
 
     &[background='primary'] {
-        --button-foreground: var(--sc-colour-primary-contrast);
-        --button-background: var(--sc-colour-primary);
-        --button-background-hover: var(--sc-colour-primary-shade);
+        --button-foreground: var(--pi-colour-primary-contrast);
+        --button-background: var(--pi-colour-primary);
+        --button-background-hover: var(--pi-colour-primary-shade);
     }
 
     &[background='secondary'] {
-        --button-foreground: var(--sc-colour-secondary-contrast);
-        --button-background: var(--sc-colour-secondary);
-        --button-background-hover: var(--sc-colour-secondary-shade);
+        --button-foreground: var(--pi-colour-secondary-contrast);
+        --button-background: var(--pi-colour-secondary);
+        --button-background-hover: var(--pi-colour-secondary-shade);
     }
 
     &[background='tertiary'] {
-        --button-foreground: var(--sc-colour-tertiary-contrast);
-        --button-background: var(--sc-colour-tertiary);
-        --button-background-hover: var(--sc-colour-tertiary-shade);
+        --button-foreground: var(--pi-colour-tertiary-contrast);
+        --button-background: var(--pi-colour-tertiary);
+        --button-background-hover: var(--pi-colour-tertiary-shade);
     }
 
     &[background='success'] {
-        --button-foreground: var(--sc-colour-success-contrast);
-        --button-background: var(--sc-colour-success);
-        --button-background-hover: var(--sc-colour-success-shade);
+        --button-foreground: var(--pi-colour-success-contrast);
+        --button-background: var(--pi-colour-success);
+        --button-background-hover: var(--pi-colour-success-shade);
     }
 
     &[background='warning'] {
-        --button-foreground: var(--sc-colour-warning-contrast);
-        --button-background: var(--sc-colour-warning);
-        --button-background-hover: var(--sc-colour-warning-shade);
+        --button-foreground: var(--pi-colour-warning-contrast);
+        --button-background: var(--pi-colour-warning);
+        --button-background-hover: var(--pi-colour-warning-shade);
     }
 
     &[background='danger'] {
-        --button-foreground: var(--sc-colour-danger-contrast);
-        --button-background: var(--sc-colour-danger);
-        --button-background-hover: var(--sc-colour-danger-shade);
+        --button-foreground: var(--pi-colour-danger-contrast);
+        --button-background: var(--pi-colour-danger);
+        --button-background-hover: var(--pi-colour-danger-shade);
     }
 
     &[background='dark'] {
-        --button-foreground: var(--sc-colour-dark-contrast);
-        --button-background: var(--sc-colour-dark);
-        --button-background-hover: var(--sc-colour-dark-shade);
+        --button-foreground: var(--pi-colour-dark-contrast);
+        --button-background: var(--pi-colour-dark);
+        --button-background-hover: var(--pi-colour-dark-shade);
     }
 
     &[background='medium'] {
-        --button-foreground: var(--sc-colour-medium-contrast);
-        --button-background: var(--sc-colour-medium);
-        --button-background-hover: var(--sc-colour-medium-shade);
+        --button-foreground: var(--pi-colour-medium-contrast);
+        --button-background: var(--pi-colour-medium);
+        --button-background-hover: var(--pi-colour-medium-shade);
     }
 }

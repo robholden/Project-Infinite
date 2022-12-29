@@ -36,7 +36,8 @@ public class Startup
         services.RegisterAuth(Configuration);
 
         // Setup SignalR 
-        services.AddSignalR()
-            .AddStackExchangeRedis(Configuration.GetConnectionString("Redis"), options => options.Configuration.ChannelPrefix = "SnowCapture");
+        services
+            .AddSignalR()
+            .AddStackExchangeRedis(Configuration.GetConnectionString("Redis"), options => options.Configuration.ChannelPrefix = "ProjectInfinite");
     }
 }

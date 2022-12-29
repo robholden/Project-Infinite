@@ -11,14 +11,14 @@
 
 .container {
     padding: 0.75rem;
-    background-color: var(--sc-colour-dark);
-    color: var(--sc-colour-dark-contrast);
+    background-color: var(--pi-colour-dark);
+    color: var(--pi-colour-dark-contrast);
     margin: auto;
-    box-shadow: 0px -1px 4px rgba(var(--sc-colour-dark-rgb), 0.1);
-    border-radius: var(--sc-br);
+    box-shadow: 0px -1px 4px rgba(var(--pi-colour-dark-rgb), 0.1);
+    border-radius: var(--pi-br);
 }
 
 a {
-    color: var(--sc-colour-dark-contrast);
+    color: var(--pi-colour-dark-contrast);
     text-decoration: underline;
 }

@@ -24,7 +24,6 @@ public class Helper
         Context = new IdentityContext(
             new DbContextOptionsBuilder<IdentityContext>()
                 .UseInMemoryDatabase("IdentityDbTest")
-                .UseLazyLoadingProxies(false)
                 .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
                 .Options
         );

@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comms.Api.Consumers.Notifications;
 
-public class UpdateGeneralNotificationConsumer : ISnowConsumer, IConsumer<UpdateGeneralNotificationRq>
+public class UpdateGeneralNotificationConsumer : IRabbitConsumer, IConsumer<UpdateGeneralNotificationRq>
 {
     private readonly IMapper _mapper;
     private readonly CommsContext _ctx;

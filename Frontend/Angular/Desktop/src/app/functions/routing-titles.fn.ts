@@ -22,10 +22,10 @@ export function routingTitles(title: Title, router: Router, meta: Meta) {
             trackingUrl = url;
 
             // Get title from route data
-            title.setTitle(`${routeData(router, 'title', ' / ', true)} / Snow Capture`);
+            title.setTitle(`${routeData(router, 'title', ' / ', true)} / Project Infinite`);
 
             // Update meta tags
-            const desc = routeData(router, 'description') || 'Snow Capture';
+            const desc = routeData(router, 'description') || 'Project Infinite';
             const keywords = routeData(router, 'keywords', ', ');
 
             meta.updateTag({ name: 'description', content: desc });

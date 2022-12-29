@@ -34,26 +34,18 @@ public static class UserClaimsKeys
             return null;
         }
 
-        // Ensure we have these ids
-        var userId = user?.GetGuidClaim(UserIdentifier);
-        var authTokenId = user?.GetGuidClaim(AuthToken);
-        if (!userId.HasValue || !authTokenId.HasValue)
-        {
-            throw new SiteException(ErrorCode.SessionTokenInvalid);
-        }
-
-        var isAdmin = user.IsInRole(nameof(UserLevel.Admin));
-        var isMod = user.IsInRole(nameof(UserLevel.Moderator));
+        var isAdmin = user?.IsInRole(nameof(UserLevel.Admin)) == true;
+        var isMod = user?.IsInRole(nameof(UserLevel.Moderator)) == true;
 
         return new()
         {
-            Id = userId.Value,
-            AuthTokenId = authTokenId.Value,
+            Id = user?.GetGuidClaim(UserIdentifier) ?? new Guid(),
+            AuthTokenId = user?.GetGuidClaim(AuthToken) ?? new Guid(),
             Email = user?.GetClaim(Email),
             Username = user?.GetClaim(Username),
             HashToken = user?.GetClaim(HashToken),
             ExternalProviderIdentifier = user?.GetClaim(ExtProviderIdentifier),
-            ExternalProvider = user.GetClaim(ExtProvider)?.ToEnum(ExternalProvider.Unset) ?? ExternalProvider.Unset,
+            ExternalProvider = user?.GetClaim(ExtProvider)?.ToEnum(ExternalProvider.Unset) ?? ExternalProvider.Unset,
             Level = isAdmin ? UserLevel.Admin : (isMod ? UserLevel.Moderator : UserLevel.Default)
         };
     }
@@ -71,4 +63,16 @@ public class LoggedInUser
     public UserLevel Level { get; init; }
     public string ExternalProviderIdentifier { get; init; }
     public ExternalProvider ExternalProvider { get; init; }
+
+    public IUser AsRecord() => new UserRecord(Id, Username);
+
+    public LoggedInUser Secured()
+    {
+        if (Id == new Guid() || AuthTokenId == new Guid())
+        {
+            throw new SiteException(ErrorCode.SessionTokenInvalid, System.Net.HttpStatusCode.Forbidden);
+        }
+
+        return this;
+    }
 }

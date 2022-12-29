@@ -20,7 +20,7 @@ import { CookieConsentService } from './services/cookie-consent.service';
 import { DesktopStore } from './storage/desktop.store';
 
 @Component({
-    selector: 'sc-root',
+    selector: 'pi-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     animations: [fade, trigger('router', [state('in', style({ opacity: 1 })), transition(':enter', [style({ opacity: 0 }), animate(250)])])],

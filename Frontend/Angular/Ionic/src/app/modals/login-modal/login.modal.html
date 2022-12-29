@@ -14,20 +14,20 @@
     <form class="flex-col h-100" (submit)="login()" [formGroup]="form" novalidate="novalidate">
         <div class="ion-padding">
             <ion-card-title color="primary">Login</ion-card-title>
-            <ion-text>Welcome back to our snowy catalogue</ion-text>
+            <ion-text>Welcome back to Project Infinite</ion-text>
 
-            <sc-custom-field class="ion-margin-vertical" label="Username" [field]="username" [errors]="['maxlength']">
+            <pi-custom-field class="ion-margin-vertical" label="Username" [field]="username" [errors]="['maxlength']">
                 <ion-input type="email" formControlName="username" placeholder="..."></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
 
-            <sc-custom-field label="Password" [field]="password" [errors]="['maxlength']">
+            <pi-custom-field label="Password" [field]="password" [errors]="['maxlength']">
                 <ion-input type="password" [clearInput]="true" formControlName="password" placeholder="..."></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
 
             <div class="ion-margin-top">
                 <ion-button type="submit" expand="block" [disabled]="form.invalid"> Login </ion-button>
 
-                <sc-external-logins class="ion-margin-top" type="login" [ref]="ref" [presentingElement]="presentingElement"></sc-external-logins>
+                <pi-external-logins class="ion-margin-top" type="login" [ref]="ref" [presentingElement]="presentingElement"></pi-external-logins>
             </div>
         </div>
 

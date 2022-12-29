@@ -7,7 +7,7 @@ using Reports.Domain;
 
 namespace Reports.Api.Consumers.Users;
 
-public class UpdatedUsernameConsumer : ISnowConsumer, IConsumer<UpdatedUsernameRq>
+public class UpdatedUsernameConsumer : IRabbitConsumer, IConsumer<UpdatedUsernameRq>
 {
     private readonly ReportContext _ctx;
 

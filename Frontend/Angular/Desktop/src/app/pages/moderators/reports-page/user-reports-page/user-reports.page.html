@@ -1,4 +1,4 @@
-<sc-page-content *ngIf="!getting else loadingRef">
+<pi-page-content *ngIf="!getting else loadingRef">
     <div class="full-content" *ngIf="!result?.totalRows">
         <p>Nothing to report</p>
         <button type="button" class="button icon-only mt-s" (click)="reload()"><i class="far fa-redo"></i></button>
@@ -8,7 +8,7 @@
         <div class="grid mb" cols="3">
             <div class="user-report card-shadow" *ngFor="let report of result.rows">
                 <div class="user-info p-s">
-                    <sc-avatar [name]="report.username" [size]="28" bg="var(--sc-colour-primary)" fg="var(--sc-colour-primary-contrast)"></sc-avatar>
+                    <pi-avatar [name]="report.username" [size]="28" bg="var(--pi-colour-primary)" fg="var(--pi-colour-primary-contrast)"></pi-avatar>
                     <div>
                         <h4>{{ report.name }}</h4>
                         <small colour="medium">@{{ report.username }}</small>
@@ -42,10 +42,10 @@
         </div>
 
         <div class="mt-a">
-            <sc-paging [rows]="result.totalRows" [pageSize]="pager.pageSize" [page]="pager.page" (pageChange)="changePage($event)"></sc-paging>
+            <pi-paging [rows]="result.totalRows" [pageSize]="pager.pageSize" [page]="pager.page" (pageChange)="changePage($event)"></pi-paging>
         </div>
     </div>
-</sc-page-content>
+</pi-page-content>
 
 <ng-template #loadingRef>
     <div class="full-content">

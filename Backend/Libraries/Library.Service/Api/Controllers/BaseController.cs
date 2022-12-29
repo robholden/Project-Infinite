@@ -33,7 +33,9 @@ public class BaseController<T> : ControllerBase
 
     protected bool LoggedIn => LoggedInUser != null;
 
-    protected LoggedInUser LoggedInUser => _user ??= User.GetUser();
+    protected LoggedInUser LoggedInUser => (_user ??= User.GetUser()).Secured();
+
+    protected LoggedInUser CurrentUser => _user ??= User.GetUser();
 
     protected bool IsAdmin => User?.IsInRole(nameof(UserLevel.Admin)) == true;
 
@@ -83,6 +85,8 @@ public class BaseController<T> : ControllerBase
     protected void ThrowNotFound() => Throw(HttpStatusCode.NotFound);
 
     protected void ThrowUnauthorized(SiteException siteException = null) => Throw(HttpStatusCode.Unauthorized, siteException);
+
+    protected void ThrowForbidden(SiteException siteException = null) => Throw(HttpStatusCode.Forbidden, siteException);
 
     protected ApiSiteException Throw(HttpStatusCode statusCode, SiteException siteException = null)
     {

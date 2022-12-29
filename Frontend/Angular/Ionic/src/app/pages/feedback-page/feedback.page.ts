@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'sc-feedback',
+    selector: 'pi-feedback',
     templateUrl: './feedback.page.html',
     styleUrls: ['./feedback.page.scss'],
 })

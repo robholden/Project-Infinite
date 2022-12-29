@@ -1,17 +1,17 @@
 :host {
     position: relative;
     display: block;
-    background: linear-gradient(to right, var(--sc-colour-light) 0%, var(--sc-colour-light-shade) 50%, var(--sc-colour-light) 100%);
-    border-radius: var(--sc-br);
+    background: linear-gradient(to right, var(--pi-colour-light) 0%, var(--pi-colour-light-shade) 50%, var(--pi-colour-light) 100%);
+    border-radius: var(--pi-br);
 
     &.light {
         background: linear-gradient(
             to right,
-            var(--sc-colour-default) 0%,
-            var(--sc-colour-light) 25%,
-            var(--sc-colour-light-shade) 50%,
-            var(--sc-colour-light) 75%,
-            var(--sc-colour-default) 100%
+            var(--pi-colour-default) 0%,
+            var(--pi-colour-light) 25%,
+            var(--pi-colour-light-shade) 50%,
+            var(--pi-colour-light) 75%,
+            var(--pi-colour-default) 100%
         );
     }
 
@@ -27,11 +27,11 @@
     &.light {
         background: linear-gradient(
             to right,
-            var(--sc-colour-default) 0%,
-            var(--sc-colour-light) 25%,
-            var(--sc-colour-light-shade) 50%,
-            var(--sc-colour-light) 75%,
-            var(--sc-colour-default) 100%
+            var(--pi-colour-default) 0%,
+            var(--pi-colour-light) 25%,
+            var(--pi-colour-light-shade) 50%,
+            var(--pi-colour-light) 75%,
+            var(--pi-colour-default) 100%
         );
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'sc-settings',
+    selector: 'pi-settings',
     templateUrl: 'settings.page.html',
     styleUrls: ['settings.page.scss'],
 })

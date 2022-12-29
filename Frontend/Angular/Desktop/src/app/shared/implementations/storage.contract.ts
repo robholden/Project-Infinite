@@ -11,9 +11,10 @@ import { getCookie, getCookies, removeCookie, setCookie } from 'typescript-cooki
 export class StorageContract implements Storage {
     find<TValue>(key: string, options: StorageOptions<TValue>): Promise<TValue> {
         let value: string;
-        if (options.store?.includes('cookie')) value = getCookie(key);
-        else if (options.store?.includes('session')) value = sessionStorage.getItem(key);
-        else if (options.store?.includes('local')) localStorage.get(key);
+
+        if (options.store === 'cookie') value = getCookie(key);
+        else if (options.store === 'session') value = sessionStorage.getItem(key);
+        else if (options.store === 'local') localStorage.getItem(key);
         else return Promise.resolve(options.defaultValue);
 
         try {
@@ -28,17 +29,18 @@ export class StorageContract implements Storage {
 
         const stringData = this.toJson(value);
 
-        if (options.store?.includes('cookie')) setCookie(key, stringData, { expires: options.expiresIn, path: '/', sameSite: 'Strict' });
-        if (options.store?.includes('session')) sessionStorage.setItem(key, stringData);
-        if (options.store?.includes('local')) localStorage.setItem(key, stringData);
+        if (options.store === 'cookie')
+            setCookie(key, stringData, { expires: options.expiresIn ? new Date(options.expiresIn) : null, path: '/', sameSite: 'Strict' });
+        else if (options.store === 'session') sessionStorage.setItem(key, stringData);
+        else if (options.store?.includes('local')) localStorage.setItem(key, stringData);
 
         return Promise.resolve();
     }
 
     remove(key: string, options: StorageOptions): Promise<void> {
-        if (options.store.includes('cookie')) removeCookie(key, { path: '/' });
-        if (options.store.includes('session')) sessionStorage.removeItem(key);
-        else if (options.store.includes('local')) localStorage.removeItem(key);
+        if (options.store === 'cookie') removeCookie(key, { path: '/' });
+        else if (options.store === 'session') sessionStorage.removeItem(key);
+        else if (options.store === 'local') localStorage.removeItem(key);
 
         return Promise.resolve();
     }

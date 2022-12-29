@@ -1,7 +1,7 @@
 <form [formGroup]="form" novalidate="novalidate">
     <ng-content></ng-content>
 
-    <sc-custom-field [label]="label" [field]="value" [errors]="errors" [trxParams]="trxParams">
+    <pi-custom-field [label]="label" [field]="value" [errors]="errors" [trxParams]="trxParams">
         <ion-input [type]="type" formControlName="value" [readonly]="readonly"></ion-input>
-    </sc-custom-field>
+    </pi-custom-field>
 </form>

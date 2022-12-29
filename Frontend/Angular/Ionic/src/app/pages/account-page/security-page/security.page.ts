@@ -11,7 +11,7 @@ import { ChangePasswordModal } from './modals/change-password/change-password.mo
 import { RemoveAccountModal } from './modals/remove-account/remove-account.modal';
 
 @Component({
-    selector: 'sc-security',
+    selector: 'pi-security',
     templateUrl: './security.page.html',
     styleUrls: ['./security.page.scss'],
 })

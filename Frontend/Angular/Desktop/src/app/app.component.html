@@ -1,4 +1,4 @@
-<sc-header *ngIf="healthy" @router></sc-header>
+<pi-header *ngIf="healthy" @router></pi-header>
 
 <main *ngIf="healthy" @router>
     <div class="router" @router>
@@ -6,16 +6,16 @@
             <div class="full-content">You must be logged in to view this page</div>
         </router-outlet>
     </div>
-    <sc-footer></sc-footer>
+    <pi-footer></pi-footer>
 
-    <sc-cookie-consent></sc-cookie-consent>
-    <sc-remember-me *ngIf="authState.loggedIn"></sc-remember-me>
+    <pi-cookie-consent></pi-cookie-consent>
+    <pi-remember-me *ngIf="authState.loggedIn"></pi-remember-me>
 </main>
 
 <div id="loading" *ngIf="!healthy" @fade>
     <div [attr.colour]="siteLoader.healthy === null ? 'primary' : 'danger'">
-        <h1 class="mb" [attr.colour]="siteLoader.healthy === null ? 'primary' : 'danger'">Snow Capture</h1>
-        <div *ngIf="siteLoader.healthy === null"><i class="fas fa-spinner-third sc-spin"></i></div>
+        <h1 class="mb" [attr.colour]="siteLoader.healthy === null ? 'primary' : 'danger'">Project Infinite</h1>
+        <div *ngIf="siteLoader.healthy === null"><i class="fas fa-spinner-third pi-spin"></i></div>
         <div *ngIf="siteLoader.healthy === false"><i class="far fa-frown" (click)="reload()" [tippy]="env.gateway"></i></div>
     </div>
 </div>

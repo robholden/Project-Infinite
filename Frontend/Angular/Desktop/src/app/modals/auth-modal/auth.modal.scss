@@ -4,7 +4,7 @@
 }
 
 .auth-links {
-    border-bottom: 2px solid var(--sc-colour-light);
+    border-bottom: 2px solid var(--pi-colour-light);
 
     button {
         font-size: 1.4rem;
@@ -19,8 +19,8 @@
         border-bottom: 2px solid transparent;
 
         &.active {
-            color: var(--sc-colour-primary);
-            border-color: var(--sc-colour-primary);
+            color: var(--pi-colour-primary);
+            border-color: var(--pi-colour-primary);
         }
     }
 }
@@ -39,7 +39,7 @@
 }
 
 .login-providers {
-    border-top: 2px solid var(--sc-colour-light);
+    border-top: 2px solid var(--pi-colour-light);
 
     button {
         width: 100%;

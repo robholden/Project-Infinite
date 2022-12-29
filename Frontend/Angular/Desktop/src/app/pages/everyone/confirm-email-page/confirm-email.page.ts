@@ -7,7 +7,7 @@ import { UserService } from '@shared/services/identity/user.service';
 import { AuthState } from '@shared/storage';
 
 @Component({
-    selector: 'sc-confirm-email',
+    selector: 'pi-confirm-email',
     templateUrl: './confirm-email.page.html',
     styleUrls: ['./confirm-email.page.scss'],
 })

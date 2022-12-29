@@ -5,7 +5,7 @@ import { Environment } from '@shared/interfaces';
 import { SiteLoaderService } from '@shared/services';
 
 @Component({
-    selector: 'sc-home',
+    selector: 'pi-home',
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
 })

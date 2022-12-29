@@ -39,7 +39,7 @@ export interface Input {
 }
 
 @Component({
-    selector: 'sc-alert-component',
+    selector: 'pi-alert-component',
     templateUrl: 'alert.component.html',
     styleUrls: ['alert.component.scss'],
 })

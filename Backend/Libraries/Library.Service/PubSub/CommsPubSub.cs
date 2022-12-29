@@ -9,7 +9,7 @@ namespace Library.Service.PubSub;
 
 public record SendEmailDirectlyRq(string Name, string Email, string Message, string Subject, string IdentityHash = "");
 
-public record SendEmailToUserRq(UserRecord User, string Message, string Subject, bool SendInstantly = false, string IdentityHash = "");
+public record SendEmailToUserRq(UserRecord User, string Email, string Message, string Subject, bool SendInstantly = true, string IdentityHash = "");
 
 public record SendSmsToUserRq(UserRecord User, string Type, string Mobile, string Message);
 

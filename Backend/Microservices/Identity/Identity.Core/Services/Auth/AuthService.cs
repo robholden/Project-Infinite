@@ -28,6 +28,7 @@ public class AuthService : IAuthService
         // Find user
         username = username.ToLower().Trim();
         var user = await _ctx.Users
+            .Include(u => u.Preferences)
             .FindAsync(x => x.ExternalProvider == ExternalProvider.Unset && (x.Username.ToLower() == username || x.Email.ToLower() == username), ErrorCode.IncorrectUsernameOrPassword);
 
         // Verify password is correct
@@ -84,7 +85,9 @@ public class AuthService : IAuthService
     public async Task<AuthToken> ExternalProviderLogin(string identifier, string email, ExternalProvider provider, ClientIdentity identity)
     {
         // Find user via identity
-        var user = await _ctx.Users.FindOrNullAsync(x => x.ExternalProviderIdentifier == identifier);
+        var user = await _ctx.Users
+            .Include(u => u.Preferences)
+            .FindOrNullAsync(x => x.ExternalProviderIdentifier == identifier);
 
         // Check user exists
         if (user == null)
@@ -137,19 +140,13 @@ public class AuthService : IAuthService
     {
         // Find token
         var token = await _ctx.AuthTokens
-            .Include(t => t.User)
-            .FindOrNullAsync(t => t.AuthTokenId == authTokenId);
-
-        // Verify token exists
-        if (token == null)
-        {
-            throw new SiteException(ErrorCode.TokenInvalid);
-        }
+            .Include(t => t.User).ThenInclude(u => u.Preferences)
+            .FindAsync(t => t.AuthTokenId == authTokenId, ErrorCode.TokenInvalid);
 
         // Verify existance
         if ((token.Deleted && !token.TouchIdEnabled) || token.User == null)
         {
-            throw new SiteException(ErrorCode.SessionHasExpired);
+            throw new SiteException(ErrorCode.SessionHasExpired, System.Net.HttpStatusCode.Forbidden, "D");
         }
 
         // Verify user status
@@ -158,7 +155,7 @@ public class AuthService : IAuthService
         // Enforce refresh token?
         if (enforce)
         {
-            // If the token has been refreshed recently return the same on back
+            // If the token has been refreshed recently return the same one back
             if (token.RefreshedAt > DateTime.UtcNow.AddSeconds(-5))
             {
                 return token;
@@ -167,7 +164,7 @@ public class AuthService : IAuthService
             // Ensure the refresh token is legit
             if (refreshToken != token.RefreshToken)
             {
-                throw new SiteException(ErrorCode.SessionHasExpired);
+                throw new SiteException(ErrorCode.SessionHasExpired, System.Net.HttpStatusCode.Forbidden, "R");
             }
         }
 
@@ -233,7 +230,7 @@ public class AuthService : IAuthService
     {
         // Find token
         var token = await _ctx.AuthTokens
-            .Include(t => t.User)
+            .Include(t => t.User).ThenInclude(u => u.Preferences)
             .FindAsync(t => t.AuthTokenId == authTokenId);
 
         // Verify code

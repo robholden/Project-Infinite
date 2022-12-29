@@ -16,7 +16,7 @@
             <ion-card-title color="primary">Delete Account</ion-card-title>
             <ion-text color="danger">When we delete your account all data is permanently deleted immediately and cannot be recovered</ion-text>
 
-            <sc-custom-field
+            <pi-custom-field
                 class="ion-margin-vertical"
                 label="Password"
                 [field]="password"
@@ -24,7 +24,7 @@
                 *ngIf="password.enabled"
             >
                 <ion-input type="password" formControlName="password" autocomplete="password"></ion-input>
-            </sc-custom-field>
+            </pi-custom-field>
         </div>
 
         <div class="flex-row-align flex-shrink-0 mt-a">

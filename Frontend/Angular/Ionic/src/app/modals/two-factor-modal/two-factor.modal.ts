@@ -9,7 +9,7 @@ import { EventService } from '@shared/services';
 import { AuthService } from '@shared/services/identity';
 
 @Component({
-    selector: 'sc-two-factor',
+    selector: 'pi-two-factor',
     templateUrl: './two-factor.modal.html',
     styleUrls: ['./two-factor.modal.scss'],
 })

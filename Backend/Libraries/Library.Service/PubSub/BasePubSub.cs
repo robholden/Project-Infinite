@@ -21,12 +21,12 @@ public abstract class BasePubSub
         await bus.Publish(payload);
     }
 
-    protected async Task<SnowConsumerResponse> PublishWithResult<T>(T payload) where T : class
+    protected async Task<RabbitConsumerResponse> PublishWithResult<T>(T payload) where T : class
     {
         using var scope = _scopeFactory.CreateScope();
 
         var client = scope.ServiceProvider.GetRequiredService<IRequestClient<T>>();
-        var response = await client.GetResponse<SnowConsumerResponse>(payload);
+        var response = await client.GetResponse<RabbitConsumerResponse>(payload);
 
         if (response?.Message?.Error != null)
         {
@@ -36,12 +36,12 @@ public abstract class BasePubSub
         return response?.Message;
     }
 
-    protected async Task<SnowConsumerResponse<O>> PublishWithResult<T, O>(T payload) where T : class
+    protected async Task<RabbitConsumerResponse<O>> PublishWithResult<T, O>(T payload) where T : class
     {
         using var scope = _scopeFactory.CreateScope();
 
         var client = scope.ServiceProvider.GetRequiredService<IRequestClient<T>>();
-        var response = await client.GetResponse<SnowConsumerResponse<O>>(payload);
+        var response = await client.GetResponse<RabbitConsumerResponse<O>>(payload);
 
         if (response?.Message?.Error != null)
         {
@@ -59,10 +59,12 @@ public static class PubSubExtensions
         CommsPubSub.AddRequestClients(configurator);
         ContentPubSub.AddRequestClients(configurator);
         IdentityPubSub.AddRequestClients(configurator);
+        ReportPubSub.AddRequestClients(configurator);
 
         services.AddTransient<ICommsPubSub, CommsPubSub>();
         services.AddTransient<IContentPubSub, ContentPubSub>();
         services.AddTransient<IIdentityPubSub, IdentityPubSub>();
         services.AddTransient<ISocketsPubSub, SocketsPubSub>();
+        services.AddTransient<IReportPubSub, ReportPubSub>();
     }
 }

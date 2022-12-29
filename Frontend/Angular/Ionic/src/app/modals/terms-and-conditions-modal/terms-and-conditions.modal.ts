@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
-    selector: 'sc-terms-and-conditions',
+    selector: 'pi-terms-and-conditions',
     templateUrl: './terms-and-conditions.modal.html',
     styleUrls: ['./terms-and-conditions.modal.scss'],
 })

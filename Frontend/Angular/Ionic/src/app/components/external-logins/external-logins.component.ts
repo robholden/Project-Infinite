@@ -14,7 +14,7 @@ import { AuthService } from '@shared/services/identity';
 import { Device } from '@capacitor/device';
 
 @Component({
-    selector: 'sc-external-logins',
+    selector: 'pi-external-logins',
     templateUrl: './external-logins.component.html',
     styleUrls: ['./external-logins.component.scss'],
 })

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CustomEvent } from '@shared/enums';
 import { INJ_TOAST } from '@shared/injectors';
 import { Toast } from '@shared/interfaces';
-import { CustomError, SMap, User } from '@shared/models';
+import { CustomError, User } from '@shared/models';
 import { AppState, AuthState } from '@shared/storage';
 
 import { EventService, HttpApiService, ReCaptchaService, SocketService } from './';
@@ -71,13 +71,14 @@ export class SiteLoaderService {
             this.events.trigger(CustomEvent.Revoked);
         });
 
-        this.sockets.on('UpdatedUserFields', 'socket_service', (newValues: SMap<any>) =>
-            Object.keys(newValues).forEach((key: keyof User) =>
-                this.authState.update('user', (user) => {
-                    (user as any)[key] = newValues[key];
-                    return user;
-                })
-            )
+        this.sockets.on('UpdatedUserFields', 'socket_service', (changes: { property: keyof User; value: any }[]) =>
+            this.authState.update('user', (user) => {
+                (changes || []).forEach((change) => {
+                    const prop = change.property.slice(0, 1).toLowerCase() + change.property.slice(1, change.property.length);
+                    user[prop] = change.value;
+                });
+                return user;
+            })
         );
 
         this.sockets.on('InvalidateUser', 'socket_service', async () => await this.storage.remove('user'));

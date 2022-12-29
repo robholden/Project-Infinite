@@ -9,7 +9,7 @@ import { ModalComponent } from '@app/shared/controllers/modal';
 import { ToastController } from '@app/shared/controllers/toast';
 
 @Component({
-    selector: 'sc-report-user',
+    selector: 'pi-report-user',
     templateUrl: './report-user.modal.html',
     styleUrls: ['./report-user.modal.scss'],
 })

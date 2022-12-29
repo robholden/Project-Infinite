@@ -1,14 +1,12 @@
 ﻿
 using Content.Core;
+using Content.Core.Services;
 using Content.Domain;
 
 using Library.Core;
-using Library.Service.PubSub;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-
-using Moq;
 
 namespace Content.Tests;
 
@@ -22,7 +20,7 @@ internal class Helper
         Context = new ContentContext(
             new DbContextOptionsBuilder<ContentContext>()
                     .UseInMemoryDatabase("ContentDbTest")
-                    .UseLazyLoadingProxies(false)
+                    //.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=project_infinite_content;Trusted_Connection=True;MultipleActiveResultSets=true")
                     .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
                     .Options
         );
@@ -30,9 +28,7 @@ internal class Helper
         // Create test base user
         User = new UserRecord(Guid.NewGuid(), "test");
 
-        var mockCommEvents = new Mock<ICommsPubSub>().Object;
-        var mockSocketEvents = new Mock<ISocketsPubSub>().Object;
-
+        PostService = new PostService(Context);
     }
 
     public static ContentSettings ContentSettings => new()
@@ -40,4 +36,6 @@ internal class Helper
     };
 
     public ContentContext Context { get; }
+
+    public IPostService PostService { get; set; }
 }

@@ -9,7 +9,7 @@ import { ReportService } from '@shared/services/reports';
 import { ActionUserReportModal } from './action-user-report/action-user-report.modal';
 
 @Component({
-    selector: 'sc-user-reports',
+    selector: 'pi-user-reports',
     templateUrl: './user-reports.page.html',
     styleUrls: ['./user-reports.page.scss'],
 })

@@ -12,7 +12,7 @@ import { LoadingController } from '@app/shared/controllers/loading';
 import { ToastController } from '@app/shared/controllers/toast';
 
 @Component({
-    selector: 'sc-setting-sessions',
+    selector: 'pi-setting-sessions',
     templateUrl: './setting-sessions.page.html',
     styleUrls: ['./setting-sessions.page.scss'],
 })

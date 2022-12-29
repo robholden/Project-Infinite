@@ -17,7 +17,7 @@ export interface IToastComponent extends IControllerComponent {
 }
 
 @Component({
-    selector: 'sc-toast-component',
+    selector: 'pi-toast-component',
     templateUrl: './toast.component.html',
     styleUrls: ['./toast.component.scss'],
 })

@@ -17,12 +17,6 @@ public class ErrorCodeDto
             errorCode = ErrorCode.Default;
         }
 
-        // Format message with any provided values
-        if (values?.Any() == true)
-        {
-            message = string.Format(message, values);
-        }
-
         Message = message;
         Code = (int)errorCode;
         Params = values;

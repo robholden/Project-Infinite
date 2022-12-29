@@ -1,9 +1,9 @@
-<sc-modal-wrapper (closed)="dismiss()">
+<pi-modal-wrapper (closed)="dismiss()">
     <h2>Register with {{ providerResult.provider | titlecase }}</h2>
 
     <form (submit)="register()" [formGroup]="form" novalidate="novalidate" *ngIf="form">
         <p>
-            You are about to create a new account on Snow Capture using a login from {{ providerResult.provider | titlecase }} (<strong>{{
+            You are about to create a new account on Project Infinite using a login from {{ providerResult.provider | titlecase }} (<strong>{{
                 user.email
             }}</strong
             >)
@@ -23,7 +23,7 @@
             <p class="form-error" *ngIf="form.get('username').hasError('minlength')">{{ 'form_errors.minlength' | trx }}</p>
             <p class="form-error" *ngIf="form.get('username').hasError('maxlength')">{{ 'form_errors.maxlength' | trx }}</p>
             <p class="form-error" *ngIf="form.get('username').hasError('pattern')">
-                {{ 'form_errors.patter' | trx: { name: 'Username' } }}
+                {{ 'form_errors.patter' | trx : { name: 'Username' } }}
             </p>
         </div>
 
@@ -44,10 +44,10 @@
         <div class="flex-row mt">
             <button class="button mr" background="light" type="button" (click)="dismiss()" [disabled]="form.disabled">Cancel</button>
 
-            <button id="register-btn" class="button ml-a" background="primary" type="submit" [disabled]="form.invalid">
+            <button id="ext-register-btn" class="button ml-a" background="primary" type="submit" [disabled]="form.invalid">
                 Create Account
                 <i class="icon far fa-arrow-right"></i>
             </button>
         </div>
     </form>
-</sc-modal-wrapper>
+</pi-modal-wrapper>

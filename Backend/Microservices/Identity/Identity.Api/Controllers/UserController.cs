@@ -127,15 +127,15 @@ public class UserController : BaseController<UserController>
         ThrowWhenStateIsInvalid();
 
         // Verify providers match
-        var claimProvider = LoggedInUser.ExternalProvider;
+        var claimProvider = CurrentUser.ExternalProvider;
         if (claimProvider == ExternalProvider.Unset || claimProvider != provider.ToEnum(ExternalProvider.Unset))
         {
             ThrowNotFound();
         }
 
         // Send request to service
-        var providerInfo = new ExternalProviderRequest(claimProvider, LoggedInUser.ExternalProviderIdentifier);
-        var registration = new RegisterRequest(request.Username, request.Name, LoggedInUser.Email, "", request.AllowMarketing, request.Mobile, providerInfo);
+        var providerInfo = new ExternalProviderRequest(claimProvider, CurrentUser.ExternalProviderIdentifier);
+        var registration = new RegisterRequest(request.Username, request.Name, CurrentUser.Email, "", request.AllowMarketing, request.Mobile, providerInfo);
         var user = await _userService.Register(registration);
 
         return _mapper.Map<UserDto>(user);
@@ -174,7 +174,7 @@ public class UserController : BaseController<UserController>
 
     [ReCaptcha]
     [Authorize]
-    [HttpPut("update")]
+    [HttpPut]
     public async Task Update([FromBody] PasswordRequest<UpdateUserRequest> request)
     {
         // Verify model state
@@ -225,7 +225,7 @@ public class UserController : BaseController<UserController>
 
     [ReCaptcha]
     [Authorize]
-    [HttpPut("update/username")]
+    [HttpPut("username")]
     public async Task UpdateUsername([FromBody] PasswordRequest<UpdateUsernameRequest> request)
     {
         // Verify model state
@@ -246,7 +246,7 @@ public class UserController : BaseController<UserController>
 
     [ReCaptcha]
     [Authorize]
-    [HttpPut("update/email")]
+    [HttpPut("email")]
     public async Task UpdateEmail([FromBody] PasswordRequest<UpdateEmailRequest> request)
     {
         // Verify model state
@@ -267,7 +267,7 @@ public class UserController : BaseController<UserController>
 
     [ReCaptcha]
     [Authorize]
-    [HttpPut("update/mobile")]
+    [HttpPut("mobile")]
     public async Task UpdateMobile([FromBody] UpdateMobileRequest request)
     {
         // Verify model state
@@ -282,7 +282,7 @@ public class UserController : BaseController<UserController>
 
     [ReCaptcha]
     [Authorize]
-    [HttpPut("update/name")]
+    [HttpPut("name")]
     public async Task UpdateName([FromBody] UpdateNameRequest request)
     {
         // Verify model state
@@ -321,7 +321,7 @@ public class UserController : BaseController<UserController>
 
     [ReCaptcha]
     [Authorize(Policy = "CheckUser", Roles = nameof(UserLevel.Admin))]
-    [HttpPut("update/level")]
+    [HttpPut("level")]
     public async Task UpdateLevel([FromBody] UpdateUserLevelRequest request)
     {
         // Verify model state
@@ -335,5 +335,12 @@ public class UserController : BaseController<UserController>
 
         // Send request to service
         await _userService.UpdateLevel(request.UserId, request.Level);
+    }
+
+    [Authorize]
+    [HttpPut("preferences")]
+    public Task UpdatePreference([FromBody] UserPreferencesDto preferences)
+    {
+        return _prefService.AddOrUpdate(LoggedInUser.Id, preferences);
     }
 }

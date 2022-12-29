@@ -4,17 +4,17 @@ using MassTransit;
 
 namespace Library.Service.PubSub;
 
-public interface ISnowConsumer : IConsumer
+public interface IRabbitConsumer : IConsumer
 {
 }
 
-public class SnowConsumerResponse
+public class RabbitConsumerResponse
 {
     public ErrorCodeDto Error { get; set; }
 
-    public static SnowConsumerResponse Ok() => new();
+    public static RabbitConsumerResponse Ok() => new();
 
-    public static SnowConsumerResponse Throw(Exception exception)
+    public static RabbitConsumerResponse Throw(Exception exception)
     {
         if (exception is not SiteException siteExc)
         {
@@ -25,9 +25,9 @@ public class SnowConsumerResponse
     }
 }
 
-public class SnowConsumerResponse<T> : SnowConsumerResponse
+public class RabbitConsumerResponse<T> : RabbitConsumerResponse
 {
     public T Result { get; set; }
 
-    public static SnowConsumerResponse<T> FromResult(T result) => new() { Result = result };
+    public static RabbitConsumerResponse<T> FromResult(T result) => new() { Result = result };
 }

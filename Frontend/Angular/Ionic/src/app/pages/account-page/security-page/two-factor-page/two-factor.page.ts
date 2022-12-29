@@ -15,7 +15,7 @@ import { SetMobileModal } from './modals/set-mobile/set-mobile.modal';
 import { SetupTwoFactorModal } from './modals/setup-two-factor/setup-two-factor.modal';
 
 @Component({
-    selector: 'sc-two-factor',
+    selector: 'pi-two-factor',
     templateUrl: './two-factor.page.html',
     styleUrls: ['./two-factor.page.scss'],
 })

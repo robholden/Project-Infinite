@@ -2,7 +2,7 @@ import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@an
 import { FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'sc-toggle-switch',
+    selector: 'pi-toggle-switch',
     templateUrl: 'toggle-switch.component.html',
     styleUrls: ['toggle-switch.component.scss'],
 })

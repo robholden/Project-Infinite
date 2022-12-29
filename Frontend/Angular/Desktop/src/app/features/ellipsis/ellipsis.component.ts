@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { EllipsisPipe } from '@shared/pipes/ellipsis.pipe';
 
 @Component({
-    selector: 'sc-ellipsis',
+    selector: 'pi-ellipsis',
     templateUrl: './ellipsis.component.html',
     styleUrls: ['./ellipsis.component.scss'],
     providers: [EllipsisPipe],

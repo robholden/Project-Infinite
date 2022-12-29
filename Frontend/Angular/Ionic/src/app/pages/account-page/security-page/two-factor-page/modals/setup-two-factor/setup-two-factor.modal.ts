@@ -11,7 +11,7 @@ import { Clipboard } from '@capacitor/clipboard';
 import qrcode from 'qrcode';
 
 @Component({
-    selector: 'sc-setup-two-factor',
+    selector: 'pi-setup-two-factor',
     templateUrl: './setup-two-factor.modal.html',
     styleUrls: ['./setup-two-factor.modal.scss'],
 })
@@ -57,7 +57,7 @@ export class SetupTwoFactorModal implements OnInit {
             .trim();
 
         this.qrcode = await qrcode.toDataURL(
-            `otpauth://totp/Snow Capture:${this.email}?secret=${secret}&issuer=Snow Capture&algorithm=${this.data.mode}&digits=${this.data.size}&period=${this.data.step}`
+            `otpauth://totp/Project Infinite:${this.email}?secret=${secret}&issuer=Project Infinite&algorithm=${this.data.mode}&digits=${this.data.size}&period=${this.data.step}`
         );
     }
 

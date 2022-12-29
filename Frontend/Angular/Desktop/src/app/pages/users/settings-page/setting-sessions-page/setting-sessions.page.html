@@ -13,7 +13,7 @@
 </div>
 
 <h2 class="mt pt">Your Sessions</h2>
-<p>A list of all your sessions to Snow Capture</p>
+<p>A list of all your sessions to Project Infinite</p>
 
 <ng-container *ngIf="sessions">
     <ng-container *ngFor="let session of sessions || []; let $i = index">
@@ -59,15 +59,15 @@
 </div>
 
 <ng-container *ngIf="!sessions && getting">
-    <sc-skeleton-text height="20px" width="125px" [animated]="true" class="mt"></sc-skeleton-text>
+    <pi-skeleton-text height="20px" width="125px" [animated]="true" class="mt"></pi-skeleton-text>
 
     <div class="card flex-row-align mt-s" *ngFor="let a of [0,1,2]">
-        <sc-skeleton-text height="25px" width="80px" radius="15px" [animated]="true" class="mr-s"></sc-skeleton-text>
-        <sc-skeleton-text height="25px" width="80px" radius="15px" [animated]="true" class="mr-s"></sc-skeleton-text>
-        <sc-skeleton-text height="25px" width="80px" radius="15px" [animated]="true"></sc-skeleton-text>
+        <pi-skeleton-text height="25px" width="80px" radius="15px" [animated]="true" class="mr-s"></pi-skeleton-text>
+        <pi-skeleton-text height="25px" width="80px" radius="15px" [animated]="true" class="mr-s"></pi-skeleton-text>
+        <pi-skeleton-text height="25px" width="80px" radius="15px" [animated]="true"></pi-skeleton-text>
 
         <div class="flex-spacer"></div>
 
-        <sc-skeleton-text height="25px" width="55px" radius="15px" [animated]="true"></sc-skeleton-text>
+        <pi-skeleton-text height="25px" width="55px" radius="15px" [animated]="true"></pi-skeleton-text>
     </div>
 </ng-container>

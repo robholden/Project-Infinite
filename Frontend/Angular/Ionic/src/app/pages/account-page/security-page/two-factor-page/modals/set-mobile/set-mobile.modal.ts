@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
 @Component({
-    selector: 'sc-set-mobile',
+    selector: 'pi-set-mobile',
     templateUrl: './set-mobile.modal.html',
     styleUrls: ['./set-mobile.modal.scss'],
 })

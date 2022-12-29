@@ -9,7 +9,7 @@ body {
     line-height: 1.4;
 }
 
-sc-root {
+pi-root {
     display: flex;
     position: relative;
     flex-direction: column;
@@ -21,10 +21,10 @@ button,
 input,
 textarea,
 select {
-    font-family: var(--sc-font-family);
-    font-size: var(--sc-font-size);
-    color: var(--sc-colour-default-contrast);
-    background-color: var(--sc-colour-default);
+    font-family: var(--pi-font-family);
+    font-size: var(--pi-font-size);
+    color: var(--pi-colour-default-contrast);
+    background-color: var(--pi-colour-default);
     box-shadow: none;
 }
 
@@ -54,7 +54,7 @@ button {
 a,
 .anchor {
     text-decoration: none;
-    color: var(--sc-colour-primary);
+    color: var(--pi-colour-primary);
     cursor: pointer;
 
     &:hover,
@@ -90,12 +90,12 @@ h6 {
 }
 
 h2 {
-    color: var(--sc-colour-primary);
+    color: var(--pi-colour-primary);
     font-size: 1.4rem;
 }
 
 h3 {
-    color: var(--sc-colour-primary);
+    color: var(--pi-colour-primary);
     font-size: 1.25rem;
 }
 
@@ -116,5 +116,5 @@ small {
 }
 
 .fa-spinner-third[data-prefix='fad'] {
-    color: var(--sc-colour-primary);
+    color: var(--pi-colour-primary);
 }

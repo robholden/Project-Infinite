@@ -20,10 +20,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EditorConfigFiles Remove="C:\Coding\SnowCapture\Backend\Gateway\.editorconfig" />
+		<EditorConfigFiles Remove="C:\Coding\Project-Infinite\Backend\Gateway\.editorconfig" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<EditorConfigFiles Remove="C:\Coding\SnowCapture\Backend\Gateway\.editorconfig" />
+		<EditorConfigFiles Remove="C:\Coding\Project-Infinite\Backend\Gateway\.editorconfig" />
 	</ItemGroup>
 </Project>

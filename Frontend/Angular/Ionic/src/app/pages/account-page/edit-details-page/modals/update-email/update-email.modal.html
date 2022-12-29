@@ -15,10 +15,10 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-    <sc-update-user-field #userField field="email" type="email" [requestPw]="true" [readonly]="!!authState.provider" (saved)="saved()">
+    <pi-update-user-field #userField field="email" type="email" [requestPw]="true" [readonly]="!!authState.provider" (saved)="saved()">
         <ion-card-title color="primary">Email</ion-card-title>
         <ion-text>Used for logging in, password recovery and communication purposes</ion-text>
-    </sc-update-user-field>
+    </pi-update-user-field>
 
     <div class="mt-s" *ngIf="userField?.hasChange; else showEmailStatus">
         <ion-text color="danger"><small>You will need to re-confirm any new email address</small></ion-text>

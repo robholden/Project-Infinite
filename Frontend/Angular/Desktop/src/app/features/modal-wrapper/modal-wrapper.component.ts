@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppColour } from '@shared/types';
 
 @Component({
-    selector: 'sc-modal-wrapper',
+    selector: 'pi-modal-wrapper',
     templateUrl: 'modal-wrapper.component.html',
     styleUrls: ['modal-wrapper.component.scss'],
 })

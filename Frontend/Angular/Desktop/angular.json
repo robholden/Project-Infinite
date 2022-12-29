@@ -29,7 +29,7 @@
             },
             "root": "",
             "sourceRoot": "src",
-            "prefix": "sc",
+            "prefix": "pi",
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
@@ -119,6 +119,5 @@
                 }
             }
         }
-    },
-    "defaultProject": "app"
+    }
 }

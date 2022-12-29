@@ -1,15 +1,11 @@
-<sc-page>
-    <sc-page-header
+<pi-page>
+    <pi-page-header
         [pageLinks]="[
-            { url: 'approvals', name: 'Approvals' },
-            { url: 'reports', name: 'User Reports' },
-            { url: 'reports/pictures', name: 'Picture Reports' },
-            { url: 'locations', name: 'Locations', visible: authState.is_admin },
-            { url: 'tags', name: 'Tags', visible: authState.is_admin }
+            { url: 'reports', name: 'User Reports' }
         ]"
     >
         <h2>Moderator Dashboard</h2>
-    </sc-page-header>
+    </pi-page-header>
 
     <router-outlet></router-outlet>
-</sc-page>
+</pi-page>

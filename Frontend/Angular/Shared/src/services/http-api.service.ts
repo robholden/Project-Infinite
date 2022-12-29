@@ -262,8 +262,8 @@ export class HttpApiService {
         }
 
         // Check if our refresh token has expired
-        const date: Date = await this.authState.retrieve('expires');
-        if (!force && user && date && new Date(date) >= new Date()) {
+        const expiresIn: number = await this.authState.retrieve('expires');
+        if (!force && user && expiresIn && new Date(expiresIn) >= new Date()) {
             return null;
         }
 

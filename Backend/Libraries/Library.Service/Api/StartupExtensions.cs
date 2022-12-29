@@ -99,7 +99,7 @@ public static class StartupExtensions
         });
     }
 
-    public static void AddDatabase<T>(this IServiceCollection services, IConfiguration config, string assembly = null, bool lazyLoad = false) where T : DbContext
+    public static void AddDatabase<T>(this IServiceCollection services, IConfiguration config, string assembly = null) where T : DbContext
     {
         // Null set assembly
         assembly ??= typeof(T).Assembly.GetName().Name;
@@ -114,8 +114,7 @@ public static class StartupExtensions
                 .AddDbContext<T>(x => x
                     .EnableDetailedErrors(false)
                     .UseSqlServer(connectionString, options => options.MigrationsAssembly(assembly))
-                    //.UseMySQL(connectionString, options => options.MigrationsAssembly(assembly))
-                    .UseLazyLoadingProxies(lazyLoad)
+                //.UseMySQL(connectionString, options => options.MigrationsAssembly(assembly))
                 );
         }
         catch (Exception ex)
@@ -230,7 +229,7 @@ public static class StartupExtensions
         services.AddMassTransit(x =>
         {
             var assemblyTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes());
-            var types = assemblyTypes.Where(p => typeof(ISnowConsumer).IsAssignableFrom(p) && p.Name != nameof(ISnowConsumer));
+            var types = assemblyTypes.Where(p => typeof(IRabbitConsumer).IsAssignableFrom(p) && p.Name != nameof(IRabbitConsumer));
             foreach (var consumer in types) x.AddConsumer(consumer);
 
             x.UsingRabbitMq((context, cfg) =>

@@ -8,7 +8,7 @@ import { CustomError, ErrorCode } from '@shared/models';
 import { PasswordService } from '@shared/services/identity';
 
 @Component({
-    selector: 'sc-change-password',
+    selector: 'pi-change-password',
     templateUrl: './change-password.modal.html',
     styleUrls: ['./change-password.modal.scss'],
 })

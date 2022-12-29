@@ -5,7 +5,7 @@ import { AuthState } from '@shared/storage';
 import { CommsService } from '@shared/services/comms';
 
 @Component({
-    selector: 'sc-preferences',
+    selector: 'pi-preferences',
     templateUrl: './preferences.page.html',
     styleUrls: ['./preferences.page.scss'],
 })

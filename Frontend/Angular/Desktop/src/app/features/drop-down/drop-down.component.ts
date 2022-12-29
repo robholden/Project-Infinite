@@ -14,7 +14,7 @@ class DropdownState {
 }
 
 @Component({
-    selector: 'sc-drop-down',
+    selector: 'pi-drop-down',
     templateUrl: './drop-down.component.html',
 })
 export class DropDownComponent implements OnInit {

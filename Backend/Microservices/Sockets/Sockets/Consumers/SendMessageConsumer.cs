@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Sockets.Consumers;
 
-public class SendMessageConsumer : ISnowConsumer, IConsumer<SendMessageRq>
+public class SendMessageConsumer : IRabbitConsumer, IConsumer<SendMessageRq>
 {
     private readonly IHubContext<SocketHub> _hub;
 

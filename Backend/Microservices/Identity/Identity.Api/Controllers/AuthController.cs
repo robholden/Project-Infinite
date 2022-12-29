@@ -152,7 +152,7 @@ public class AuthController : BaseController<AuthController>
 
         return new LoginDto
         {
-            Token = CreateJwt(claims, 120),
+            Token = CreateJwt(claims, 300),
             User = new UserDto()
             {
                 Name = externalUser.Name,
@@ -181,7 +181,7 @@ public class AuthController : BaseController<AuthController>
         await _sockets.NewSession(LoggedInUser.Id);
     }
 
-    [ResponseCache(Duration = 120, VaryByHeader = "Site-Token")]
+    [ResponseCache(Duration = 60, VaryByHeader = "Site-Token")]
     [HttpPost("validate")]
     public async Task<LoginDto> Refresh([FromBody] TokenRefreshRequest request)
     {
@@ -352,7 +352,7 @@ public class AuthController : BaseController<AuthController>
     {
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_sharedSettings.JwtIssuerKey));
         var jwt = new JwtSecurityToken(
-            issuer: "Snow Capture",
+            issuer: "Project Infinite",
             audience: "Everyone",
             claims: claims,
             notBefore: DateTime.UtcNow,

@@ -1,9 +1,8 @@
-import { Directive, EventEmitter, Injector, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Directive, EventEmitter, inject, Injector, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { buildQueryString, deepCopy, obj2QueryString, QueryType, valueHasChanged, wait, writeQueryString } from '@shared/functions';
 import { CustomError, PagedList, PageRequest, pageRequestFromQueryString, SMap } from '@shared/models';
-import { LoadingService } from '@shared/services';
 
 export interface PageChange {
     pageNumber: number;
@@ -37,7 +36,6 @@ export class PagedStore {
 @Directive()
 export class PagedComponent<T, S extends Object> implements OnChanges {
     private _initialised: boolean;
-    private _loading: LoadingService;
 
     pagerDefaults: PageRequest = this.pageOptions.pager || new PageRequest();
     pager: PageRequest = this.pageOptions.pager;
@@ -63,8 +61,7 @@ export class PagedComponent<T, S extends Object> implements OnChanges {
         private pageOptions: PagedOptions<S>,
         private componentOptions?: PagedComponentOptions
     ) {
-        const ar = injector.get<ActivatedRoute>(ActivatedRoute);
-        this._loading = injector.get<LoadingService>(LoadingService);
+        const ar = inject(ActivatedRoute);
 
         this.route = componentOptions?.route || '';
         this.pager = deepCopy(this.pagerDefaults);
@@ -139,10 +136,7 @@ export class PagedComponent<T, S extends Object> implements OnChanges {
         // If we have no result, call api
         if (!result) {
             // Show temporary loader
-            if (options.reload) {
-                this.reloading = true;
-                this._loading.show();
-            }
+            if (options.reload) this.reloading = true;
 
             this.getting = true;
             this.gettingChange.emit(true);

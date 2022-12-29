@@ -9,7 +9,10 @@ export const executeReCaptcha = async (reCaptchaKey: string, action: string): Pr
     await continueWhen(() => loaded, 50, 10 * 1000);
 
     // If we haven't loaded return null
-    if (!loaded) return null;
+    if (!loaded) {
+        console.error('Failed to load ReCapatcha!');
+        return null;
+    }
 
     // Execute recaptcha
     return await new Promise((res) => {
@@ -19,7 +22,7 @@ export const executeReCaptcha = async (reCaptchaKey: string, action: string): Pr
                 .then((token: string) => res(token))
                 .catch(() => res(null));
         } catch (err) {
-            console.log(err);
+            console.error('Recapctca Failed!', err);
             res(null);
         }
     });

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CookieConsentService } from '@app/services/cookie-consent.service';
 
 @Component({
-    selector: 'sc-policy-cookies',
+    selector: 'pi-policy-cookies',
     templateUrl: 'policy-cookies.page.html',
     styleUrls: ['policy-cookies.page.scss'],
 })

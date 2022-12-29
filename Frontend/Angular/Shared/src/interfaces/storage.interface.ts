@@ -1,8 +1,8 @@
-export type StorageTypes = 'local' | 'session' | 'cookie';
+export type StorageType = 'local' | 'session' | 'cookie';
 
 export type StorageOptions<TValue = {}> = {
     keyName?: string;
-    store?: StorageTypes[];
+    store?: StorageType;
     expiresIn?: Date | number;
     defaultValue?: TValue;
 };

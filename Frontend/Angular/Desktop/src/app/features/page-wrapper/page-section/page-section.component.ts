@@ -7,7 +7,7 @@ export interface PageSectionImg {
 }
 
 @Component({
-    selector: 'sc-page-section',
+    selector: 'pi-page-section',
     templateUrl: './page-section.component.html',
     styleUrls: ['page-section.component.scss'],
 })
