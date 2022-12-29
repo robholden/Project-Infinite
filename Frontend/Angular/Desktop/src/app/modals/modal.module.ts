@@ -13,9 +13,7 @@ import { FeaturesModule } from '@app/features/features.module';
 
 import { AuthModal } from './auth-modal/auth.modal';
 
-import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { MarkdownModule } from 'ngx-markdown';
-import { SortablejsModule } from 'ngx-sortablejs';
 
 @NgModule({
     imports: [
@@ -25,13 +23,11 @@ import { SortablejsModule } from 'ngx-sortablejs';
         ReactiveFormsModule,
         ComponentsModule,
         FeaturesModule,
-        LazyLoadImageModule,
         PipesModule,
         DirectivesModule,
         MarkdownModule.forRoot(),
-        SortablejsModule,
     ],
     declarations: [AuthModal],
-    exports: [TranslateModule, PipesModule, DirectivesModule, LazyLoadImageModule],
+    exports: [TranslateModule, PipesModule, DirectivesModule],
 })
 export class ModalsModule {}

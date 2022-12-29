@@ -40,6 +40,7 @@
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "tsconfig.app.json",
                         "assets": [
+                            "src/assets/content",
                             "src/assets/images",
                             "src/assets/scripts",
                             {
