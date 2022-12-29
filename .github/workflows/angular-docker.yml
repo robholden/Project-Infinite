@@ -26,7 +26,7 @@ jobs:
       - name: Build image and push to Docker Hub
         uses: docker/build-push-action@v3.2.0
         with:
-          context: ./Frontend
+          context: ./Frontend/Angular
           file: ./Frontend/Angular/Desktop/Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/project-infinite-ui-ng:latest
           push: true
