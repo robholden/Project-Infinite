@@ -30,4 +30,4 @@ FROM nginx:1.17.1-alpine
 COPY Desktop/nginx-custom.conf /etc/nginx/nginx.conf
 COPY --from=builder /src/Desktop/dist /usr/share/nginx/html
 
-# docker build -t iamrobert/project-infinite-ng:latest --build-arg FONTAWESOME_NPM_AUTH_TOKEN=${FONTAWESOME_NPM_AUTH_TOKEN} -f Desktop/Dockerfile .
+# docker build -t iamrobert/project-infinite-ui-ng:latest --build-arg FONTAWESOME_NPM_AUTH_TOKEN=${FONTAWESOME_NPM_AUTH_TOKEN} -f Desktop/Dockerfile .
