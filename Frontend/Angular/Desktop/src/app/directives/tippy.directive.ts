@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 
-import { combineLatest, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AppState } from '@shared/storage/app.state';
@@ -23,9 +23,12 @@ export class TippyDirective implements OnInit, OnDestroy {
     constructor(private el: ElementRef, private appState: AppState, private viewContainerRef: ViewContainerRef) {}
 
     ngOnInit() {
-        combineLatest([this.appState.observe('nightMode'), this.appState.language$])
+        this.appState
+            .observe('nightMode')
             .pipe(takeUntil(this.destroy$))
-            .subscribe(([nightMode]) => this.set(nightMode));
+            .subscribe((nightMode) => this.set(nightMode));
+
+        this.appState.language$.pipe(takeUntil(this.destroy$)).subscribe(() => this.set());
     }
 
     ngOnDestroy(): void {
@@ -33,6 +36,8 @@ export class TippyDirective implements OnInit, OnDestroy {
     }
 
     private set(night_mode: boolean = this.nightMode) {
+        console.log(this.tippy);
+
         let content: Content;
         if (this.tippy instanceof TemplateRef) {
             const view = this.viewContainerRef.createEmbeddedView(<TemplateRef<any>>this.tippy);

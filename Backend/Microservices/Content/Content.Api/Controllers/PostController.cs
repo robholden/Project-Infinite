@@ -30,7 +30,7 @@ public class PostController : BaseController<PostController>
     }
 
     [HttpGet("{id}")]
-    public async Task<PostDto> Create([FromRoute] Guid id)
+    public async Task<PostDto> Get([FromRoute] Guid id)
     {
         var post = await _postQueries.Get(id);
         if (post == null) ThrowNotFound();

@@ -1,7 +1,9 @@
 export type Post = {
+    postId: string;
     title: string;
     body: string;
     author: string;
+    created: Date;
 };
 
 export type PostSearch = {

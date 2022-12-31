@@ -1,0 +1,28 @@
+:host {
+    display: block;
+    background-color: var(--pi-colour-default);
+    border-radius: var(--pi-br);
+    box-shadow: 0 2px 4px rgba(var(--pi-colour-dark-rgb), 0.05);
+    max-width: 500px;
+    padding: 0.75rem;
+}
+
+.post-avatar {
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+}
+
+.post-title {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.post-date {
+    color: var(--pi-colour-medium);
+}
+
+.post-link {
+    margin-left: auto;
+    color: var(--pi-colour-medium);
+}

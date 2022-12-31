@@ -12,6 +12,15 @@ export class PostService {
     constructor(private api: HttpApiService) {}
 
     /**
+     * Get a post by its id
+     *
+     * @param id The post's id
+     */
+    async getById(id: string): Promise<Post | CustomError> {
+        return await this.api.get<Post>(`/content/post/${id}`);
+    }
+
+    /**
      * Searches posts by given parameters
      *
      * @param route The api route to use for the endpoint

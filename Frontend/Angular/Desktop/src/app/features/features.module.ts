@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { DirectivesModule } from '@app/directives/directives.module';
+
 import { AvatarComponent } from './avatar/avatar.component';
 import { CookieConsentComponent } from './cookie-consent/cookie-consent.component';
 import { DropDownComponent } from './drop-down/drop-down.component';
@@ -15,12 +17,15 @@ import { PageHeaderComponent } from './page-wrapper/page-header/page-header.comp
 import { PageSectionComponent } from './page-wrapper/page-section/page-section.component';
 import { PageWrapperComponent } from './page-wrapper/page-wrapper.component';
 import { PagingComponent } from './paging/paging.component';
+import { PostComponent } from './post/post.component';
 import { RememberMeComponent } from './remember-me/remember-me.component';
 import { SkeletonTextComponent } from './skeleton-text/skeleton-text.component';
 import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 
+import { MarkdownModule } from 'ngx-markdown';
+
 @NgModule({
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, PipesModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, PipesModule, MarkdownModule, DirectivesModule],
     declarations: [
         ToggleSwitchComponent,
         DropDownComponent,
@@ -35,6 +40,7 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
         AvatarComponent,
         RememberMeComponent,
         EllipsisComponent,
+        PostComponent,
     ],
     exports: [
         ToggleSwitchComponent,
@@ -50,6 +56,7 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
         AvatarComponent,
         RememberMeComponent,
         EllipsisComponent,
+        PostComponent,
     ],
 })
 export class FeaturesModule {}

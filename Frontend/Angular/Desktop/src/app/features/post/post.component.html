@@ -1,0 +1,13 @@
+<div class="flex-row flex-mid mb">
+    <img class="post-avatar" [src]="post.author | avatar" />
+    <div class="post-info">
+        <div class="post-title">{{ post.title }}</div>
+        <div class="post-date">by @{{ post.author }} &nbsp;&bull;&nbsp; {{ post.created | timeago }}</div>
+    </div>
+
+    <a class="post-link" routerLink="post/{{ post.postId }}" target="_blank" tippy="Open post in new window">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+    </a>
+</div>
+
+<div [innerHTML]="post.body | markdown"></div>

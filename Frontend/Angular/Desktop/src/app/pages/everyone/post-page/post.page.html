@@ -1,1 +1,15 @@
-<p>post-page works!</p>
+<pi-page>
+    <pi-page-content>
+        <div class="container" *ngIf="post else loadingRef">
+            <pi-post [post]="post"></pi-post>
+        </div>
+    </pi-page-content>
+</pi-page>
+
+<ng-template #loadingRef>
+    <div *ngIf="!loading" class="full-content">hmm, we couldn't find this post</div>
+
+    <div *ngIf="loading" class="container flex-row">
+        <pi-skeleton-text height="25px" width="200px" [animated]="true" class="mt"></pi-skeleton-text>
+    </div>
+</ng-template>

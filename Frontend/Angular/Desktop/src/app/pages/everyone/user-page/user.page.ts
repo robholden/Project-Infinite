@@ -28,7 +28,8 @@ export class UserPage implements OnInit {
     username: string;
     action: string;
     reported: boolean;
-    CustomEvent = CustomEvent;
+
+    readonly CustomEvent = CustomEvent;
 
     constructor(
         private activatedRoute: ActivatedRoute,
