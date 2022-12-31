@@ -1,10 +1,10 @@
-import { Component, Injector, OnInit } from '@angular/core';
-
-import { PagedComponent } from '@app/features/paged-component.helper';
-import { ModalController } from '@app/shared/controllers/modal';
+import { Component, OnInit } from '@angular/core';
 
 import { PageRequest, ReportSearch, ReportUserReason, UserReport } from '@shared/models';
 import { ReportService } from '@shared/services/reports';
+
+import { PagedComponent } from '@app/features/paged-component.helper';
+import { ModalController } from '@app/shared/controllers/modal';
 
 import { ActionUserReportModal } from './action-user-report/action-user-report.modal';
 
@@ -14,11 +14,10 @@ import { ActionUserReportModal } from './action-user-report/action-user-report.m
     styleUrls: ['./user-reports.page.scss'],
 })
 export class UserReportsPage extends PagedComponent<UserReport, ReportSearch> implements OnInit {
-    ReportReason = ReportUserReason;
+    readonly ReportReason = ReportUserReason;
 
-    constructor(injector: Injector, service: ReportService<UserReport>, private modalCtrl: ModalController) {
+    constructor(service: ReportService<UserReport>, private modalCtrl: ModalController) {
         super(
-            injector,
             service,
             {
                 pager: new PageRequest(),

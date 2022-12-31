@@ -17,6 +17,7 @@ import { TwoFactorComponent } from './auth/two-factor/two-factor.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { PostListComponent } from './post-list/post-list.component';
 
 @NgModule({
     imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, FeaturesModule, PipesModule, DirectivesModule],
@@ -28,6 +29,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
         RegisterComponent,
         RegisterExternalComponent,
         TwoFactorComponent,
+        PostListComponent,
     ],
     exports: [
         TranslateModule,
@@ -40,6 +42,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
         RegisterComponent,
         RegisterExternalComponent,
         TwoFactorComponent,
+        PostListComponent,
     ],
 })
 export class ComponentsModule {}

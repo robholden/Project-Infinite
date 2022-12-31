@@ -1,3 +1,4 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
     "compileOnSave": false,
     "compilerOptions": {
@@ -7,12 +8,11 @@
         "declaration": false,
         "downlevelIteration": true,
         "experimentalDecorators": true,
-        "module": "esnext",
         "moduleResolution": "node",
         "importHelpers": true,
-        "target": "es2015",
-        "typeRoots": ["node_modules/@types"],
-        "lib": ["es2018", "dom"],
+        "target": "ES2022",
+        "module": "ES2022",
+        "lib": ["ES2022", "dom"],
         "paths": {
             "@env/*": ["src/environments/*"],
             "@app/*": ["src/app/*"],
@@ -24,6 +24,12 @@
         "enableI18nLegacyMessageIdFormat": false,
         "strictInjectionParameters": true,
         "strictInputAccessModifiers": true,
-        "strictTemplates": true
+        "strictTemplates": true,
+
+        "extendedDiagnostics": {
+            "checks": {
+                "optionalChainNotNullable": "suppress"
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, inject, Injector, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Directive, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { buildQueryString, deepCopy, obj2QueryString, QueryType, valueHasChanged, wait, writeQueryString } from '@shared/functions';
@@ -37,8 +37,8 @@ export class PagedStore {
 export class PagedComponent<T, S extends Object> implements OnChanges {
     private _initialised: boolean;
 
-    pagerDefaults: PageRequest = this.pageOptions.pager || new PageRequest();
-    pager: PageRequest = this.pageOptions.pager;
+    pagerDefaults: PageRequest = this.pageOptions?.pager || new PageRequest();
+    pager: PageRequest = this.pageOptions?.pager;
     result: PagedList<T>;
     @Output() resultChange = new EventEmitter<PagedList<T>>();
 
@@ -55,12 +55,7 @@ export class PagedComponent<T, S extends Object> implements OnChanges {
     params: S;
     filtered: boolean;
 
-    constructor(
-        injector: Injector,
-        private lookupService: LookupService<T, S>,
-        private pageOptions: PagedOptions<S>,
-        private componentOptions?: PagedComponentOptions
-    ) {
+    constructor(private lookupService: LookupService<T, S>, private pageOptions: PagedOptions<S>, private componentOptions?: PagedComponentOptions) {
         const ar = inject(ActivatedRoute);
 
         this.route = componentOptions?.route || '';

@@ -17,6 +17,7 @@ const routes: Routes = [
     },
     { path: 'unsubscribe', loadChildren: () => import('./pages/everyone/unsubscribe-page/unsubscribe.module').then((m) => m.UnsubscribePageModule) },
     { path: 'user', loadChildren: () => import('./pages/everyone/user-page/user.module').then((m) => m.UserPageModule) },
+    { path: 'post', loadChildren: () => import('./pages/everyone/post-page/post.module').then((m) => m.PostPageModule) },
 
     {
         path: 'settings',

@@ -37,8 +37,9 @@
                         "outputPath": "dist",
                         "index": "src/index.html",
                         "main": "src/main.ts",
-                        "polyfills": "src/polyfills.ts",
+                        "polyfills": ["zone.js"],
                         "tsConfig": "tsconfig.app.json",
+                        "inlineStyleLanguage": "scss",
                         "assets": [
                             "src/assets/content",
                             "src/assets/images",
@@ -96,7 +97,7 @@
                             ]
                         }
                     },
-                    "defaultConfiguration": "dev"
+                    "defaultConfiguration": "production"
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",

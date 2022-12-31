@@ -39,7 +39,7 @@ public class PostController : BaseController<PostController>
     }
 
     [HttpGet]
-    public async Task<PagedList<PostDto>> Lookup(LookupQueryRequest request)
+    public async Task<PagedList<PostDto>> Lookup([FromQuery] LookupQueryRequest request)
     {
         // Check cache
         if (_cache.TryGetValue<PagedList<PostDto>>(request.CacheKey, out var cached))

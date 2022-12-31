@@ -1,0 +1,25 @@
+<pi-page-content *ngIf="!getting; else loadingRef">
+    <div class="full-content" *ngIf="!result?.totalRows">
+        <p>No posts have been add yet!</p>
+        <button type="button" class="button icon-only mt-s" (click)="reload()"><i class="far fa-redo"></i></button>
+    </div>
+
+    <div class="container flex-col" *ngIf="result?.totalRows">
+        <div>
+            <div *ngFor="let post of result.rows">
+                {{ post.title }}
+            </div>
+        </div>
+
+        <div class="mt-a">
+            <pi-paging [rows]="result.totalRows" [pageSize]="pager.pageSize" [page]="pager.page" (pageChange)="changePage($event)"></pi-paging>
+        </div>
+    </div>
+</pi-page-content>
+
+<ng-template #loadingRef>
+    <div class="full-content">
+        <p>Loading</p>
+        <p><i class="fas fa-spinner-third fa-spin"></i></p>
+    </div>
+</ng-template>
