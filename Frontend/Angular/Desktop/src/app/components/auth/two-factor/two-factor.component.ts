@@ -23,7 +23,7 @@ export class TwoFactorComponent implements OnInit {
         doNotAskAgain: new FormControl(false),
     });
 
-    TwoFactorType = TwoFactorType;
+    readonly TwoFactorType = TwoFactorType;
 
     @Output() completed = new EventEmitter<boolean>();
 
@@ -37,7 +37,7 @@ export class TwoFactorComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.desktopStore.set('preventRefresh', true);
+        this.desktopStore.setCanReload({ fn: () => false });
         setTimeout(() => {
             const el = document.getElementById('code');
             if (el) el.focus();
@@ -46,7 +46,7 @@ export class TwoFactorComponent implements OnInit {
 
     dismiss() {
         this.completed.emit();
-        this.desktopStore.set('preventRefresh', false);
+        this.desktopStore.unsetCanReload();
     }
 
     async verify() {

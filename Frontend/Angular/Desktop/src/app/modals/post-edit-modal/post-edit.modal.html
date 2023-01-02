@@ -1,0 +1,4 @@
+<pi-modal-wrapper background="light" [showClose]="true" (closed)="dismiss()">
+    <h2 class="mb">{{ post?'Edit' : 'New' }} Post</h2>
+    <pi-post-edit [post]="post" (postChange)="complete($event ? $event : false)" (closed)="dismiss()"></pi-post-edit>
+</pi-modal-wrapper>

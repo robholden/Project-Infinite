@@ -1,0 +1,37 @@
+<form class="form" (submit)="update()" [formGroup]="form" novalidate="novalidate">
+    <div class="form-box">
+        <label>Title</label>
+        <p>A short description of the post</p>
+        <div class="form-section button-attached">
+            <input id="post-title" class="input" type="text" formControlName="title" />
+            <label for="post-title" class="button affix icon-only" background="primary">
+                <i class="icon far fa-pencil"></i>
+            </label>
+        </div>
+
+        <p class="form-error" *ngIf="form.get('title').hasError('minlength')">{{ 'form_errors.minlength' | trx }}</p>
+        <p class="form-error" *ngIf="form.get('title').hasError('maxlength')">{{ 'form_errors.maxlength' | trx }}</p>
+    </div>
+
+    <div class="form-box mt">
+        <label>Content</label>
+        <div class="form-section no-limit">
+            <textarea id="post-body" class="input" formControlName="body" rows="15"></textarea>
+        </div>
+
+        <p class="form-error" *ngIf="form.get('body').hasError('minlength')">{{ 'form_errors.minlength' | trx }}</p>
+        <p class="form-error" *ngIf="form.get('body').hasError('maxlength')">{{ 'form_errors.maxlength' | trx }}</p>
+    </div>
+
+    <div class="flex-row-align mt">
+        <button type="button" class="button" (click)="dismiss()">Cancel</button>
+
+        <div class="flex-spacer"></div>
+
+        <button type="button" id="delete-btn" class="button icon-only mr-s" background="danger" tippy="Delete" placement="top" (click)="delete()">
+            <i class="icon far fa-trash"></i>
+        </button>
+
+        <button type="submit" id="save-btn" class="button" background="primary" [disabled]="form.invalid">Save</button>
+    </div>
+</form>

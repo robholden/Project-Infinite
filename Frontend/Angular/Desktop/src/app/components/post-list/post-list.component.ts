@@ -1,13 +1,13 @@
-import { Component, ContentChild, OnInit, TemplateRef } from '@angular/core';
+import { Component, ContentChild, Directive, OnInit, TemplateRef } from '@angular/core';
 
+import { enumValues } from '@shared/functions';
 import { PageRequest, Post, PostOrderByEnum, PostSearch } from '@shared/models';
 import { PostService } from '@shared/services/content';
+import { AuthState } from '@shared/storage';
 
 import { PagedComponent } from '@app/features/paged-component.helper';
+import { PostEditModal } from '@app/modals/post-edit-modal/post-edit.modal';
 import { ModalController } from '@app/shared/controllers/modal';
-import { enumValues } from '@shared/functions';
-
-import { Directive } from '@angular/core';
 
 @Directive({ selector: '[posts-header]' })
 export class PostsHeaderDirective {
@@ -31,7 +31,7 @@ export class PostListComponent extends PagedComponent<Post, PostSearch> implemen
         };
     }
 
-    constructor(service: PostService, private modalCtrl: ModalController) {
+    constructor(service: PostService, public authState: AuthState, private modalCtrl: ModalController) {
         super(service, {
             pager: new PageRequest(),
             def: {},
@@ -40,4 +40,25 @@ export class PostListComponent extends PagedComponent<Post, PostSearch> implemen
     }
 
     ngOnInit(): void {}
+
+    async create() {
+        const modal = this.modalCtrl.add('create-post', PostEditModal);
+        const updated = await modal.present();
+
+        if (updated) {
+            this.result.rows.unshift(updated);
+            this.result.totalRows++;
+        }
+    }
+
+    updated(index: number, post: Post) {
+        // Post has been deleted
+        if (!post) {
+            this.result.rows.splice(index, 1);
+            this.result.totalRows--;
+            return;
+        }
+
+        this.result.rows[index] = post;
+    }
 }

@@ -1,4 +1,4 @@
-import { Component, HostBinding, HostListener, Injector, Input as NgInput, OnInit } from '@angular/core';
+import { Component, HostBinding, HostListener, Input as NgInput, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 
 import { SMap, Trx } from '@shared/models';
@@ -55,8 +55,8 @@ export class AlertComponent extends ModalComponent<any> implements OnInit, Dismi
 
     @HostBinding('class.alert-content') _ = true;
 
-    constructor(injector: Injector) {
-        super(injector);
+    constructor() {
+        super();
     }
 
     ngOnInit() {

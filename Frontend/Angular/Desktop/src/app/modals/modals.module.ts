@@ -12,6 +12,7 @@ import { DirectivesModule } from '@app/directives/directives.module';
 import { FeaturesModule } from '@app/features/features.module';
 
 import { AuthModal } from './auth-modal/auth.modal';
+import { PostEditModal } from './post-edit-modal/post-edit.modal';
 
 import { MarkdownModule } from 'ngx-markdown';
 
@@ -27,7 +28,7 @@ import { MarkdownModule } from 'ngx-markdown';
         DirectivesModule,
         MarkdownModule.forRoot(),
     ],
-    declarations: [AuthModal],
+    declarations: [AuthModal, PostEditModal],
     exports: [TranslateModule, PipesModule, DirectivesModule],
 })
 export class ModalsModule {}

@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { CustomError, ErrorCode, ProviderResult, Trx, User, userValidators } from '@shared/models';
@@ -23,7 +23,6 @@ export class RegisterExternalComponent extends ModalComponent<boolean> implement
     loginError: Trx;
 
     constructor(
-        injector: Injector,
         public events: EventService,
         private userService: UserService,
         private authService: AuthService,
@@ -31,7 +30,7 @@ export class RegisterExternalComponent extends ModalComponent<boolean> implement
         private modalCtrl: ModalController,
         private loadingCtrl: LoadingController
     ) {
-        super(injector);
+        super();
     }
 
     ngOnInit() {

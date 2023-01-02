@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { CustomError, ReportUserReason, User } from '@shared/models';
@@ -22,8 +22,8 @@ export class ReportUserModal extends ModalComponent<boolean> implements OnInit {
 
     ReportReason = ReportUserReason;
 
-    constructor(injector: Injector, private service: UserService, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
-        super(injector);
+    constructor(private service: UserService, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+        super();
     }
 
     ngOnInit(): void {}

@@ -1,13 +1,13 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { LoginProvidersService } from '@app/services/login-providers.service';
-import { ModalComponent } from '@app/shared/controllers/modal';
 
 import { CustomEvent } from '@shared/enums';
 import { CustomError, Provider } from '@shared/models';
 import { EventService } from '@shared/services';
 import { AuthService } from '@shared/services/identity';
+
+import { LoginProvidersService } from '@app/services/login-providers.service';
+import { ModalComponent } from '@app/shared/controllers/modal';
 
 @Component({
     selector: 'pi-auth',
@@ -21,14 +21,8 @@ export class AuthModal extends ModalComponent<boolean> implements OnInit {
     providers: Provider[] = ['google', 'facebook', 'apple'];
     loading: boolean;
 
-    constructor(
-        injector: Injector,
-        private router: Router,
-        private events: EventService,
-        private authService: AuthService,
-        private loginProviders: LoginProvidersService
-    ) {
-        super(injector);
+    constructor(private router: Router, private events: EventService, private authService: AuthService, private loginProviders: LoginProvidersService) {
+        super();
         this.loginProviders.init();
     }
 

@@ -2,11 +2,15 @@
     <ng-container *ngIf="content" [ngTemplateOutlet]="content" [ngTemplateOutletContext]="context"></ng-container>
 
     <ng-container *ngIf="result?.totalRows || filtered">
-        <button class="button dropdown-toggle ml-a">
+        <div class="flex-spacer"></div>
+
+        <button class="button ml-s" background="primary" type="button" (click)="create()">New Post</button>
+
+        <button class="button dropdown-toggle ml-s">
             <button
                 type="button"
                 class="remove-ico mr-s"
-                (click)="removeOrderBy(); reload(); $event.stopPropagation()"
+                (click)="removeOrderBy(); search(); $event.stopPropagation()"
                 tippy="Remove filter"
                 placement="left"
                 *ngIf="!sameOrderBy()"
@@ -25,7 +29,7 @@
                     <button
                         type="button"
                         *ngFor="let o of orderByValues"
-                        (click)="pager.orderBy = o; reload()"
+                        (click)="pager.orderBy = o; search()"
                         [class.active]="pager.orderBy === o"
                         data-dropdown-link
                     >
@@ -36,8 +40,9 @@
         </button>
 
         <button
+            type="button"
             class="ml-s"
-            (click)="pager.orderDir = 'desc'; reload()"
+            (click)="pager.orderDir = 'desc'; search()"
             tippy="Sort by descending"
             placement="bottom-start"
             *ngIf="pager.orderBy && pager.orderDir === 'asc'"
@@ -46,7 +51,7 @@
         </button>
         <button
             class="ml-s"
-            (click)="pager.orderDir = 'asc'; reload()"
+            (click)="pager.orderDir = 'asc'; search()"
             tippy="Sort by ascending"
             placement="bottom-start"
             *ngIf="pager.orderBy && pager.orderDir === 'desc'"
@@ -59,12 +64,14 @@
 <ng-container *ngIf="!getting; else loadingRef">
     <div class="full-content" *ngIf="!result?.totalRows">
         <p>No posts have been add yet!</p>
-        <button type="button" class="button icon-only mt-s" (click)="reload()"><i class="far fa-redo"></i></button>
+        <button type="button" class="button mt-s" background="primary" (click)="create()">
+            New Post <i class="far fa-add icon" position="right"></i>
+        </button>
     </div>
 
     <div class="flex-col flex-spacer" *ngIf="result?.totalRows">
         <div>
-            <pi-post [post]="post" *ngFor="let post of result.rows"></pi-post>
+            <pi-post [post]="post" (postChange)="updated($i, $event)" *ngFor="let post of result.rows; let $i = index"></pi-post>
         </div>
 
         <div class="mt-a">

@@ -5,8 +5,12 @@
         <div class="post-date">by @{{ post.author }} &nbsp;&bull;&nbsp; {{ post.created | timeago }}</div>
     </div>
 
+    <button class="post-link" tippy="Edit post" (click)="edit()" *ngIf="author">
+        <i class="fas fa-pencil"></i>
+    </button>
+
     <a class="post-link" routerLink="post/{{ post.postId }}" target="_blank" tippy="Open post in new window">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        <i class="fas fa-arrow-up-right-from-square"></i>
     </a>
 </div>
 

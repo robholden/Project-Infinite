@@ -32,4 +32,37 @@ export class PostService {
             toastError: false,
         });
     }
+
+    /**
+     * Creates a new post
+     *
+     * @param post The post to create
+     */
+    async create(post: Partial<Post>): Promise<Post | CustomError> {
+        return await this.api.post(`/content/post`, post, {
+            toastError: false,
+        });
+    }
+
+    /**
+     * Updates a given post
+     *
+     * @param id The post id
+     * @param post The new post data
+     */
+    async update(id: string, post: Partial<Post>): Promise<Post | CustomError> {
+        return await this.api.post(`/content/post/${id}`, post, {
+            toastError: false,
+        });
+    }
+
+    /**
+     * Deletes a post
+     *
+     * @param id The post id
+     */
+    async delete(id: string): Promise<boolean> {
+        const resp = await this.api.delete(`/content/post/${id}`);
+        return !(resp instanceof CustomError);
+    }
 }

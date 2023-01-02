@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { TwoFactorType } from '@shared/enums';
@@ -31,8 +31,8 @@ export class SetupTwoFactorModal extends ModalComponent<any> implements OnInit, 
         return TwoFactorType;
     }
 
-    constructor(injector: Injector, private authService: AuthService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
-        super(injector);
+    constructor(private authService: AuthService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+        super();
     }
 
     ngOnInit() {

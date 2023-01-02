@@ -1,13 +1,13 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+
+import { CustomError, ReportedAction, ReportUserReason, User, UserReport } from '@shared/models';
+import { UserService } from '@shared/services/identity';
+import { ReportService } from '@shared/services/reports';
 
 import { AlertController } from '@app/shared/controllers/alert';
 import { LoadingController } from '@app/shared/controllers/loading';
 import { ModalComponent } from '@app/shared/controllers/modal';
 import { ToastController } from '@app/shared/controllers/toast';
-
-import { CustomError, ReportedAction, ReportUserReason, User, UserReport } from '@shared/models';
-import { UserService } from '@shared/services/identity';
-import { ReportService } from '@shared/services/reports';
 
 @Component({
     selector: 'pi-action-user-report',
@@ -23,14 +23,13 @@ export class ActionUserReportModal extends ModalComponent<boolean> implements On
     ReportReason = ReportUserReason;
 
     constructor(
-        injector: Injector,
         private reportService: ReportService<UserReport>,
         private userService: UserService,
         private alertCtrl: AlertController,
         private loadingCtrl: LoadingController,
         private toastCtrl: ToastController
     ) {
-        super(injector);
+        super();
     }
 
     ngOnInit(): void {

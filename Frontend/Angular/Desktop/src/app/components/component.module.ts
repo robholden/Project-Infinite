@@ -17,6 +17,7 @@ import { TwoFactorComponent } from './auth/two-factor/two-factor.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { PostEditComponent } from './post-list/post-edit/post-edit.component';
 import { PostListComponent, PostsHeaderDirective } from './post-list/post-list.component';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { PostListComponent, PostsHeaderDirective } from './post-list/post-list.c
         TwoFactorComponent,
         PostListComponent,
         PostsHeaderDirective,
+        PostEditComponent,
     ],
     exports: [
         TranslateModule,
@@ -45,6 +47,7 @@ import { PostListComponent, PostsHeaderDirective } from './post-list/post-list.c
         TwoFactorComponent,
         PostListComponent,
         PostsHeaderDirective,
+        PostEditComponent,
     ],
 })
 export class ComponentsModule {}

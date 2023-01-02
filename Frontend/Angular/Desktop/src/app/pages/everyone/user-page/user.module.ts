@@ -6,7 +6,7 @@ import { AuthGuard } from '@shared/middleware';
 
 import { ComponentsModule } from '@app/components/component.module';
 import { LoadingTitlePlaceholder } from '@app/functions/routing-titles.fn';
-import { ModalsModule } from '@app/modals/modal.module';
+import { ModalsModule } from '@app/modals/modals.module';
 import { SharedModule } from '@app/shared/shared.module';
 
 import { ReportUserModal } from './report-user/report-user.modal';

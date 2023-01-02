@@ -1,4 +1,4 @@
-import { Component, HostBinding, HostListener, Injector, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, HostListener, inject, Input, OnInit } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
@@ -30,17 +30,12 @@ export class ModalComponent<T> implements IModalComponent<T>, OnInit {
     };
     dismissing: boolean;
 
-    protected desktopStore: DesktopStore;
-    protected ctrl: ControllersService;
+    protected desktopStore = inject(DesktopStore);
+    protected ctrl = inject(ControllersService);
     protected result = new BehaviorSubject<T>(null);
 
     @HostBinding('attr.class') className = 'modal-content';
     @Input() text: string;
-
-    constructor(injector: Injector) {
-        this.ctrl = injector.get<ControllersService>(ControllersService);
-        this.desktopStore = injector.get<DesktopStore>(DesktopStore);
-    }
 
     ngOnInit() {}
 
@@ -92,13 +87,18 @@ export class ModalComponent<T> implements IModalComponent<T>, OnInit {
         this.result.complete();
     }
 
+    complete(result: T) {
+        this.result.next(result);
+    }
+
     @HostListener('document:keydown.escape')
     onEscape(): void {
         if (this.options?.dismissOnEscape) this.dismiss();
     }
 
     preventClosing(prevent: boolean) {
-        this.desktopStore.set('preventRefresh', prevent);
+        if (prevent) this.desktopStore.setCanReload({ fn: () => !prevent, id: this.id });
+        else this.desktopStore.unsetCanReload(this.id);
         this.options.canDismiss = !prevent;
     }
 }

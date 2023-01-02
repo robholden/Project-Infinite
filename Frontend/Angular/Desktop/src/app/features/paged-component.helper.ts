@@ -108,11 +108,11 @@ export class PagedComponent<T, S extends Object> implements OnChanges {
         await wait(0);
 
         this.setParams(this.params);
-        this.search({ reload: true });
+        this.search({ reload: true, page: this.pager.page });
     }
 
     async search(options: { page?: number; pageSize?: number; reload?: boolean } = { page: 1, pageSize: null, reload: false }) {
-        this.pager.page = options.page;
+        this.pager.page = options.page || 1;
 
         if (!options.pageSize) options.pageSize = this.pager.pageSize;
         else this.pager.pageSize = options.pageSize;

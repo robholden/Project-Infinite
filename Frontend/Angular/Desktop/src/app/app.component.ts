@@ -73,7 +73,7 @@ export class AppComponent implements OnInit {
 
     @HostListener('window:beforeunload', ['$event'])
     onBeforeUnload(event: any) {
-        if (this.desktopStore.snapshot('preventRefresh')) {
+        if (!this.desktopStore.canRefresh()) {
             event.preventDefault();
             event.returnValue = 'Changes that you made may not be saved.';
         }
