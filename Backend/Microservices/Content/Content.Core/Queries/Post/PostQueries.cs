@@ -56,25 +56,13 @@ public class PostQueries : IPostQueries
         }
 
         // Return in given order
-        Expression<Func<Post, object>> orderBy = null;
-        switch (pageRequest.Options.OrderBy)
+        Expression<Func<Post, object>> orderBy = pageRequest.Options.OrderBy switch
         {
-            case PostQueryOptions.OrderByEnum.CreatedDate:
-                orderBy = x => x.Created;
-                break;
-
-            case PostQueryOptions.OrderByEnum.UpdatedDate:
-                orderBy = x => x.Updated;
-                break;
-
-            case PostQueryOptions.OrderByEnum.Username:
-                orderBy = x => x.Author;
-                break;
-
-            case PostQueryOptions.OrderByEnum.Title:
-                orderBy = x => x.Title;
-                break;
-        }
+            PostQueryOptions.OrderByEnum.UpdatedDate => x => x.Updated,
+            PostQueryOptions.OrderByEnum.Username => x => x.Author,
+            PostQueryOptions.OrderByEnum.Title => x => x.Title,
+            _ => x => x.Created,
+        };
 
         return _ctx.Posts
             .AsNoTracking()

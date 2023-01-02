@@ -8,7 +8,7 @@ public class AuthTokenQueryOptions : IPageListQuery<AuthTokenQueryOptions.OrderB
 {
     public enum OrderByEnum
     {
-        None = 0,
+        None,
         CreationDate,
         RefreshedDate,
         UpdatedDate

@@ -45,6 +45,7 @@ public class SendEmailsTask : BackgroundTask<SendEmailsTask>
                     && !x.OwnedBy.HasValue
                     && (x.Email != null && !x.Email.DateSent.HasValue)
                 )
+                .OrderBy(x => x.Date)
                 .Take(50)
                 .ToListAsync();
 

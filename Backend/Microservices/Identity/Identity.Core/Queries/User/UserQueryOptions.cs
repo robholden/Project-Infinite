@@ -8,7 +8,7 @@ public class UserQueryOptions : IPageListQuery<UserQueryOptions.OrderByEnum>
 {
     public enum OrderByEnum
     {
-        None = 0,
+        None,
         CreationDate,
         LastActive,
         Email,

@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Data;
+using System.Linq.Expressions;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -9,30 +10,36 @@ namespace Library.Core;
 public static class DatabaseExtensions
 {
     public static async Task<PagedList<T>> QueryAsync<T, O>(
-        this IQueryable<T> q,
+        this IQueryable<T> query,
         Expression<Func<T, bool>> where,
         IPagedListRequest<O> pageRequest,
-        Expression<Func<T, object>> order = null,
+        Expression<Func<T, object>> order,
         Action<IQueryable<T>> postQueryAction = null
     ) where T : class
     {
-        IQueryable<T> items = q.Where(where);
+        // Require some kind of ordering
+        if (order == null) throw new ArgumentNullException(nameof(order));
 
-        if (order != null)
+        // Apply where to query
+        query = query.Where(where);
+
+        // Apply ordering to queryable
+        IOrderedQueryable<T> orderQuery;
+
+        if (query.IsOrdered() && query is IOrderedQueryable<T> oq)
         {
-            if (q.IsOrdered() && q is IOrderedQueryable<T> oq)
-            {
-                items = pageRequest.OrderDir == OrderByDirection.Asc ? oq.ThenBy(order) : oq.ThenByDescending(order);
-            }
-            else
-            {
-                items = pageRequest.OrderDir == OrderByDirection.Asc ? items.OrderBy(order) : items.OrderByDescending(order);
-            }
+            orderQuery = pageRequest.OrderDir == OrderByDirection.Asc ? oq.ThenBy(order) : oq.ThenByDescending(order);
+        }
+        else
+        {
+            orderQuery = pageRequest.OrderDir == OrderByDirection.Asc ? query.OrderBy(order) : query.OrderByDescending(order);
         }
 
-        postQueryAction?.Invoke(items);
+        // Run any actions post query
+        postQueryAction?.Invoke(query);
 
-        return await PagedList<T>.CreateAsync(items, pageRequest.PageNumber, pageRequest.PageSize);
+        // Build result set
+        return await PagedList<T>.CreateAsync(orderQuery, pageRequest.PageNumber, pageRequest.PageSize);
     }
 
     public static async Task<(T, bool exists)> FindWithDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> where, T useDefault) where T : class

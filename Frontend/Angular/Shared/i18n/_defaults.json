@@ -6,11 +6,12 @@
         "fr": "Français",
         "de": "Deutsche"
     },
-    "pictures": {
+    "posts": {
         "order_by": {
-            "date_taken": "Date Taken",
-            "upload_date": "Upload Date",
-            "name": "Name"
+            "created_date": "Release Date",
+            "updated_date": "Last Updated",
+            "title": "Title",
+            "username": "User"
         }
     },
     "collections": {

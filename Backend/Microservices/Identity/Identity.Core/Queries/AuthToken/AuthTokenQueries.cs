@@ -74,21 +74,12 @@ public class AuthTokenQueries : IAuthTokenQueries
         }
 
         // Return in given order
-        Expression<Func<AuthToken, object>> orderBy = null;
-        switch (pageRequest.Options.OrderBy)
+        Expression<Func<AuthToken, object>> orderBy = pageRequest.Options.OrderBy switch
         {
-            case AuthTokenQueryOptions.OrderByEnum.CreationDate:
-                orderBy = x => x.Created;
-                break;
-
-            case AuthTokenQueryOptions.OrderByEnum.RefreshedDate:
-                orderBy = x => x.RefreshedAt;
-                break;
-
-            case AuthTokenQueryOptions.OrderByEnum.UpdatedDate:
-                orderBy = x => x.Updated;
-                break;
-        }
+            AuthTokenQueryOptions.OrderByEnum.CreationDate => x => x.Created,
+            AuthTokenQueryOptions.OrderByEnum.RefreshedDate => x => x.RefreshedAt,
+            _ => x => x.Updated,
+        };
 
         return _ctx.AuthTokens
             .AsNoTracking()

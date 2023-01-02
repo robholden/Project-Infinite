@@ -20,6 +20,8 @@ export class DesktopEnvironment implements Environment {
     };
 
     constructor(env: Environment) {
-        Object.keys(env).forEach((key) => (this[key] = env[key]));
+        Object.entries(env)
+            .filter(([key, value]) => typeof value !== 'undefined' && value !== null)
+            .forEach(([key, value]) => (this[key] = value));
     }
 }

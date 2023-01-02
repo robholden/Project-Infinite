@@ -1,26 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
-using System.Text.Json;
-
-using Microsoft.EntityFrameworkCore.Diagnostics;
-
-var a = new A()
-{
-    Test = "!",
-    Test2 = "?"
-};
-
-var prop = new CustomPropertyCalls<A>(a);
-
-prop.Apply<A>(p => p.SetProperty(t => t.Test, "Lol").SetProperty(t => t.Test2, "="));
-
-var dict = new Dictionary<string, object>()
-{
-    ["Name"] = 1
-};
-var options = new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-Console.WriteLine(JsonSerializer.Serialize(dict, options));
-
+﻿
 Console.WriteLine("1 => {0} 2 => {1}", a.Test, a.Test2);
 Console.ReadLine();
 

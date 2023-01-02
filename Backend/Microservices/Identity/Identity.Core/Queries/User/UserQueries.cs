@@ -76,29 +76,14 @@ public class UserQueries : IUserQueries
         }
 
         // Return in given order
-        Expression<Func<User, object>> orderBy = null;
-        switch (pageRequest.Options.OrderBy)
+        Expression<Func<User, object>> orderBy = pageRequest.Options.OrderBy switch
         {
-            case UserQueryOptions.OrderByEnum.CreationDate:
-                orderBy = x => x.Created;
-                break;
-
-            case UserQueryOptions.OrderByEnum.Email:
-                orderBy = x => x.Email;
-                break;
-
-            case UserQueryOptions.OrderByEnum.LastActive:
-                orderBy = x => x.LastActive;
-                break;
-
-            case UserQueryOptions.OrderByEnum.Name:
-                orderBy = x => x.Name;
-                break;
-
-            case UserQueryOptions.OrderByEnum.Username:
-                orderBy = x => x.Username;
-                break;
-        }
+            UserQueryOptions.OrderByEnum.Email => x => x.Email,
+            UserQueryOptions.OrderByEnum.LastActive => x => x.LastActive,
+            UserQueryOptions.OrderByEnum.Name => x => x.Name,
+            UserQueryOptions.OrderByEnum.Username => x => x.Username,
+            _ => x => x.Created,
+        };
 
         return _ctx.Users
             .AsNoTracking()

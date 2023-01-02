@@ -1,8 +1,11 @@
 <pi-page>
     <pi-page-content>
         <div class="container flex-col">
-            <h2 class="mb-s">Posts</h2>
-            <pi-post-list></pi-post-list>
+            <pi-post-list>
+                <ng-template posts-header>
+                    <h2>Posts</h2>
+                </ng-template>
+            </pi-post-list>
         </div>
     </pi-page-content>
 </pi-page>

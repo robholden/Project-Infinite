@@ -40,13 +40,10 @@ public class ReportQueries : IReportQueries
         }
 
         // Return in given order
-        Expression<Func<T, object>> orderBy = null;
-        switch (options.OrderBy)
+        Expression<Func<T, object>> orderBy = options.OrderBy switch
         {
-            case ReportQueryOptions.OrderByEnum.Date:
-                orderBy = x => x.Date;
-                break;
-        }
+            _ => x => x.Date,
+        };
 
         return await _ctx.Set<T>()
             .AsNoTracking()

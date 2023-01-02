@@ -1,3 +1,61 @@
+<div class="flex-row flex-align mb-s">
+    <ng-container *ngIf="content" [ngTemplateOutlet]="content" [ngTemplateOutletContext]="context"></ng-container>
+
+    <ng-container *ngIf="result?.totalRows || filtered">
+        <button class="button dropdown-toggle ml-a">
+            <button
+                type="button"
+                class="remove-ico mr-s"
+                (click)="removeOrderBy(); reload(); $event.stopPropagation()"
+                tippy="Remove filter"
+                placement="left"
+                *ngIf="!sameOrderBy()"
+            >
+                <i class="far fa-times"></i>
+            </button>
+
+            <span *ngIf="!pager.orderBy">Order By</span>
+
+            <strong *ngIf="pager.orderBy">{{ 'posts.order_by.' + pager.orderBy | trx }}</strong>
+
+            <i class="far fa-angle-down ml-s"></i>
+
+            <pi-drop-down position="bottomleft">
+                <div class="link-section">
+                    <button
+                        type="button"
+                        *ngFor="let o of orderByValues"
+                        (click)="pager.orderBy = o; reload()"
+                        [class.active]="pager.orderBy === o"
+                        data-dropdown-link
+                    >
+                        {{ 'posts.order_by.' + o | trx }}
+                    </button>
+                </div>
+            </pi-drop-down>
+        </button>
+
+        <button
+            class="ml-s"
+            (click)="pager.orderDir = 'desc'; reload()"
+            tippy="Sort by descending"
+            placement="bottom-start"
+            *ngIf="pager.orderBy && pager.orderDir === 'asc'"
+        >
+            <i class="far fa-sort-amount-down-alt"></i>
+        </button>
+        <button
+            class="ml-s"
+            (click)="pager.orderDir = 'asc'; reload()"
+            tippy="Sort by ascending"
+            placement="bottom-start"
+            *ngIf="pager.orderBy && pager.orderDir === 'desc'"
+        >
+            <i class="far fa-sort-amount-up-alt"></i>
+        </button>
+    </ng-container>
+</div>
+
 <ng-container *ngIf="!getting; else loadingRef">
     <div class="full-content" *ngIf="!result?.totalRows">
         <p>No posts have been add yet!</p>

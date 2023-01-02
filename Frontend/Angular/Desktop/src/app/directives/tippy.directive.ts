@@ -36,8 +36,6 @@ export class TippyDirective implements OnInit, OnDestroy {
     }
 
     private set(night_mode: boolean = this.nightMode) {
-        console.log(this.tippy);
-
         let content: Content;
         if (this.tippy instanceof TemplateRef) {
             const view = this.viewContainerRef.createEmbeddedView(<TemplateRef<any>>this.tippy);

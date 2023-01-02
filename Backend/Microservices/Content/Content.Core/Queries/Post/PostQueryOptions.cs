@@ -8,7 +8,7 @@ public class PostQueryOptions : IPageListQuery<PostQueryOptions.OrderByEnum>
 {
     public enum OrderByEnum
     {
-        None = 0,
+        None,
         CreatedDate,
         UpdatedDate,
         Title,

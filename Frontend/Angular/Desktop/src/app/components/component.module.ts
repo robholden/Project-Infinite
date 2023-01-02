@@ -17,7 +17,7 @@ import { TwoFactorComponent } from './auth/two-factor/two-factor.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { PostListComponent } from './post-list/post-list.component';
+import { PostListComponent, PostsHeaderDirective } from './post-list/post-list.component';
 
 @NgModule({
     imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, FeaturesModule, PipesModule, DirectivesModule],
@@ -30,6 +30,7 @@ import { PostListComponent } from './post-list/post-list.component';
         RegisterExternalComponent,
         TwoFactorComponent,
         PostListComponent,
+        PostsHeaderDirective,
     ],
     exports: [
         TranslateModule,
@@ -43,6 +44,7 @@ import { PostListComponent } from './post-list/post-list.component';
         RegisterExternalComponent,
         TwoFactorComponent,
         PostListComponent,
+        PostsHeaderDirective,
     ],
 })
 export class ComponentsModule {}

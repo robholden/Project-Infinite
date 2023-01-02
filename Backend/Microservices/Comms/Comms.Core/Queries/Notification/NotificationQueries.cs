@@ -71,7 +71,6 @@ public class NotificationQueries : INotificationQueries
     private static Expression<Func<Notification, bool>> BuildExpression(NotificationQueryOptions options, out Expression<Func<Notification, object>> orderBy)
     {
         // Build where clause
-        orderBy = null;
         Expression<Func<Notification, bool>> where = x => !x.Hidden;
 
         // User & user level
@@ -120,13 +119,10 @@ public class NotificationQueries : INotificationQueries
         }
 
         // Return in given order
-        switch (options.OrderBy)
+        orderBy = options.OrderBy switch
         {
-            case NotificationQueryOptions.OrderByEnum.Date:
-                orderBy = x => x.Date;
-                break;
-        }
-
+            _ => x => x.Date,
+        };
         return where;
     }
 }

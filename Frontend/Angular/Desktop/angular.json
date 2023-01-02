@@ -52,7 +52,7 @@
                         ],
                         "styles": ["src/styles.scss"],
                         "scripts": [],
-                        "allowedCommonJsDependencies": ["js-sha256", "zxcvbn", "jwt-decode", "qrcode", "uuid"],
+                        "allowedCommonJsDependencies": [],
                         "vendorChunk": true,
                         "extractLicenses": false,
                         "buildOptimizer": false,
