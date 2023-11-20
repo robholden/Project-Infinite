@@ -27,7 +27,6 @@
         "@angular/platform-browser-dynamic": "~15.0.4",
         "@angular/platform-server": "~15.0.4",
         "@angular/router": "~15.0.4",
-        "@fortawesome/fontawesome-pro": "^6.2.0",
         "@microsoft/signalr": "^7.0.0",
         "@ngx-translate/core": "^14.0.0",
         "@ngx-translate/http-loader": "^7.0.0",

@@ -50,7 +50,7 @@
                                 "glob": "*.json"
                             }
                         ],
-                        "styles": ["src/styles.scss"],
+                        "styles": ["src/styles.scss", "src/assets/fonts/font-awesome/css/all.min.css"],
                         "scripts": [],
                         "allowedCommonJsDependencies": [],
                         "vendorChunk": true,
