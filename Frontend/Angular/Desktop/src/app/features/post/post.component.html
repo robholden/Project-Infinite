@@ -2,7 +2,7 @@
     <img class="post-avatar" [src]="post.author | avatar" />
     <div class="post-info">
         <div class="post-title">{{ post.title }}</div>
-        <div class="post-date">by @{{ post.author }} &nbsp;&bull;&nbsp; {{ post.created | timeago }}</div>
+        <div class="post-date">by &#64;{{ post.author }} &nbsp;&bull;&nbsp; {{ post.created | timeago }}</div>
     </div>
 
     <button class="post-link" tippy="Edit post" (click)="edit()" *ngIf="author">

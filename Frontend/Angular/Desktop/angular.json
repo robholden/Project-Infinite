@@ -102,21 +102,21 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "app:build:dev"
+                      "buildTarget": "app:build:dev"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "app:build:production"
+                          "buildTarget": "app:build:production"
                         },
                         "ngrok": {
-                            "browserTarget": "app:build:ngrok"
+                          "buildTarget": "app:build:ngrok"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "app:build"
+                      "buildTarget": "app:build"
                     }
                 }
             }
